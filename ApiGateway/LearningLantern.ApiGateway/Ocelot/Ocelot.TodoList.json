@@ -1,0 +1,52 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/Tasks",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "TodoList",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/Tasks",
+      "UpstreamHttpMethod": [
+        "Post",
+        "Get"
+      ],
+      "Priority": 1
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Tasks{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "TodoList",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/Tasks{everything}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "Priority": 1
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/tasks/{taskId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "TodoList",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/tasks/{taskId}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Delete"
+      ],
+      "Priority": 1
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+# Docker
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/docker-compose?view=azure-devops
+
+trigger:
+  - Deploy
+
+resources:
+  - repo: self
+
+
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'b5be6472-cd28-4b34-929d-1b4fc56d54e6'
+  containerRegistry: 'learninglantern.azurecr.io'
+  azureSubscription: 'Azure for Students(b4993184-564d-43e9-b526-1d61330aeeac)'
+  azureContainerRegistry: '{"loginServer":"learninglantern.azurecr.io", "id" : "/subscriptions/b4993184-564d-43e9-b526-1d61330aeeac/resourceGroups/learning-lantern_group/providers/Microsoft.ContainerRegistry/registries/learninglantern"}'
+
+stages:
+  - stage: Docker
+    jobs:
+      - job: Docker
+        displayName: Docker
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: DockerCompose@0
+            displayName: Build Services
+            inputs:
+              action: 'Build services'
+              azureSubscription: $(azureSubscription)
+              azureContainerRegistry: $(azureContainerRegistry)
+              dockerComposeFile: '**/docker-compose.yml'
+          - task: DockerCompose@0
+            displayName: Push services
+            inputs:
+              action: 'Push services'
+              azureSubscription: $(azureSubscription)
+              azureContainerRegistry: $(azureContainerRegistry)
+              dockerComposeFile: '**/docker-compose.yml'
+          - task: AzureWebAppContainer@1
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appName: 'learninglanternapi'
+              multicontainerConfigFile: '**/docker-compose.yml'
+

@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+  TodoList:
+    image: learninglantern.todolist
+    build:
+      context: .
+      dockerfile: TodoList/LearningLantern.TodoList/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - Seq
+
+  Calendar:
+    image: learninglantern.calendar
+    build:
+      context: .
+      dockerfile: Calendar/LearningLantern.Calendar/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - Seq
+
+  ApiGateway:
+    image: learninglantern.apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/LearningLantern.ApiGateway/Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - TodoList
+      - Calendar
+      - Seq
+
+  Seq:
+    image: datalust/seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "6001:80"

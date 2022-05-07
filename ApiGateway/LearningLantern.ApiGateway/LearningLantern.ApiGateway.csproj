@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>906f7ee5-78bf-482a-99c6-83d1ffa2aca5</UserSecretsId>
+        <DockerfileContext>..\..</DockerfileContext>
+        <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
+        <PackageReference Include="MMLib.SwaggerForOcelot" Version="5.1.0" />
+        <PackageReference Include="Ocelot.Provider.Polly" Version="18.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="OcelotDocker\ocelot.SwaggerEndPoints.json" />
+        <_ContentIncludedByDefault Remove="OcelotDocker\OcelotDocker.Calendar.json" />
+        <_ContentIncludedByDefault Remove="OcelotDocker\OcelotDocker.global.json" />
+        <_ContentIncludedByDefault Remove="OcelotDocker\OcelotDocker.TodoList.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\LearningLantern.Common\LearningLantern.Common.csproj" />
+    </ItemGroup>
+
+</Project>
