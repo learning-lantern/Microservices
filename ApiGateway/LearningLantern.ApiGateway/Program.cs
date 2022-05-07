@@ -1,4 +1,5 @@
-using LearningLantern.ApiGateway;
+using LearningLantern.ApiGateway.Configurations;
+using LearningLantern.Common.DependencyInjection;
 using LearningLantern.Common.Logging;
 using Ocelot.Middleware;
 using Serilog;
@@ -10,9 +11,12 @@ builder.Services.AddControllers();
 builder.Services.AddApplication();
 builder.AddOcelotConfiguration();
 
+
+ConfigProvider.Configuration = builder.Configuration;
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddAuthorizedSwaggerGen();
+builder.Services.AddAuthorizedSwaggerGen("ApiGateway.API", "v1");
 
 
 var app = builder.Build();

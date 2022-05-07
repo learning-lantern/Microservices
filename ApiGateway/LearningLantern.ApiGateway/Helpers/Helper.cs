@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using LearningLantern.ApiGateway.Configurations;
 
 namespace LearningLantern.ApiGateway.Helpers;
 

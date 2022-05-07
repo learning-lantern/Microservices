@@ -10,51 +10,18 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using MMLib.SwaggerForOcelot.DependencyInjection;
 using Ocelot.DependencyInjection;
 using Ocelot.Provider.Polly;
 
-namespace LearningLantern.ApiGateway;
+namespace LearningLantern.ApiGateway.Configurations;
 
 public static class DependencyInjection
 {
-    public static void AddAuthorizedSwaggerGen(this IServiceCollection services)
-    {
-        services.AddSwaggerGen(option =>
-        {
-            option.SwaggerDoc("v1", new OpenApiInfo {Title = "ApiGateway.API", Version = "v1"});
-            option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                In = ParameterLocation.Header,
-                Description =
-                    "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey,
-                BearerFormat = "JWT",
-                Scheme = "Bearer"
-            });
-            option.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new string[] { }
-                }
-            });
-        });
-    }
-
     public static WebApplicationBuilder AddOcelotConfiguration(this WebApplicationBuilder builder)
     {
         // https://mahedee.net/configure-swagger-on-api-gateway-using-ocelot-in-asp.net-core-application/
-        var routes = "Ocelot";
+        const string routes = "Ocelot";
         builder.Configuration.AddOcelotWithSwaggerSupport(options => { options.Folder = routes; });
         builder.Services.AddOcelot(builder.Configuration).AddPolly();
         builder.Services.AddSwaggerForOcelot(builder.Configuration);
@@ -85,16 +52,17 @@ public static class DependencyInjection
                 $"Server={myServerAddress};Database={myDatabase};User Id={myUsername};Password={password}";
             builder.UseSqlServer(connectionString);
         });
-        services.AddIdentity<UserModel, IdentityRole>(setupAction =>
-        {
-            setupAction.SignIn.RequireConfirmedAccount = true;
-            setupAction.User.RequireUniqueEmail = true;
-        }).AddEntityFrameworkStores<LearningLanternContext>().AddDefaultTokenProviders();
         return services;
     }
 
     private static IServiceCollection AddAuthenticationConfigurations(this IServiceCollection services)
     {
+        
+        services.AddIdentity<UserModel, IdentityRole>(setupAction =>
+        {
+            setupAction.SignIn.RequireConfirmedAccount = true;
+            setupAction.User.RequireUniqueEmail = true;
+        }).AddEntityFrameworkStores<LearningLanternContext>().AddDefaultTokenProviders();
         services.AddAuthentication(configureOptions =>
         {
             configureOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -103,23 +71,27 @@ public static class DependencyInjection
             configureOptions.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
             configureOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             configureOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(configureOptions =>
+        }).AddJwtBearer(ConfigProvider.AuthenticationProviderKey, configureOptions =>
         {
             configureOptions.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
-                ValidIssuer = JWT.ValidIssuer,
+                ValidIssuer = ConfigProvider.JWTValidIssuer,
                 ValidateAudience = true,
-                ValidAudience = JWT.ValidAudience,
+                ValidAudience = ConfigProvider.JWTValidAudience,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = JWT.IssuerSigningKey
+                IssuerSigningKey = ConfigProvider.JWTIssuerSigningKey
             };
         });
         return services;
     }
 
+
     private static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
+        services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        services.AddHttpContextAccessor();
+        
         // TODO: Rethink about each service life time (Singleton, Scoped, or Transient).
         services.AddTransient<IAuthRepository, AuthRepository>();
         services.AddTransient<IUserRepository, UserRepository>();

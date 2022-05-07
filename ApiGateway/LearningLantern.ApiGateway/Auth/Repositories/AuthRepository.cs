@@ -3,6 +3,7 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Web;
 using LearningLantern.ApiGateway.Auth.DTOs;
+using LearningLantern.ApiGateway.Configurations;
 using LearningLantern.ApiGateway.Helpers;
 using LearningLantern.ApiGateway.User.DTOs;
 using LearningLantern.ApiGateway.User.Models;
@@ -58,15 +59,15 @@ public class AuthRepository : IAuthRepository
         foreach (var role in roles) claims.Add(new Claim(ClaimTypes.Role, role));
 
         var token = new JwtSecurityToken(
-            JWT.ValidIssuer,
-            JWT.ValidAudience,
+            ConfigProvider.JWTValidIssuer,
+            ConfigProvider.JWTValidAudience,
             claims,
             expires: DateTime.UtcNow.AddDays(30),
-            signingCredentials: new SigningCredentials(JWT.IssuerSigningKey, SecurityAlgorithms.HmacSha256Signature)
+            signingCredentials: new SigningCredentials(ConfigProvider.JWTIssuerSigningKey,
+                SecurityAlgorithms.HmacSha256Signature)
         );
 
-        return new SignInResponseDTO(new UserDTO(user),
-            new JwtSecurityTokenHandler().WriteToken(token));
+        return new SignInResponseDTO(new UserDTO(user), new JwtSecurityTokenHandler().WriteToken(token));
     }
 
     public async Task<IdentityResult> SendConfirmationEmailAsync(string userEmail)

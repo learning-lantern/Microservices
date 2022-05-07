@@ -7,7 +7,7 @@ public static class HttpHelperMethods
     public static string ToJsonStringContent<T>(this T data) =>
         JsonConvert.SerializeObject(data);
 
-    public static IEnumerable<KeyValuePair<string, string?>> GetQueryNameValuePairs(this HttpRequestMessage request)
+    public static IEnumerable<KeyValuePair<string, string?>> GetQueryKeyValuePairs(this HttpRequestMessage request)
     {
         var list = new List<KeyValuePair<string, string?>>();
 
@@ -22,7 +22,7 @@ public static class HttpHelperMethods
 
     public static string? GetQueryString(this HttpRequestMessage request, string key)
     {
-        var queryStrings = request.GetQueryNameValuePairs();
+        var queryStrings = request.GetQueryKeyValuePairs();
 
 
         var match = queryStrings.FirstOrDefault(

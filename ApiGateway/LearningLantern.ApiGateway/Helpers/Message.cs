@@ -8,17 +8,9 @@ public static class Message
     public const string NameNotValid =
         "If the name has spaces, then the length of his alphabetic characters must be greater than or equal to 2.";
 
-    public const string TaskNotFound = "There is no task with this Id.";
-    public const string TaskRemoved = "The task was deleted successfully.";
-
-    public const string QuizNotFound = "There is no quiz with this Id.";
-    public const string QuizRemoved = "The quiz was deleted successfully.";
 
     public const string ClassroomNotFound = "There is no classroom with this Id.";
     public const string ClassroomRemoved = "The classroom was deleted successfully.";
-
-    public const string EventNotFound = "There is no event with this Id.";
-    public const string EventRemoved = "The event was deleted successfully.";
 
     public const string UserDeleted = "The user was deleted successfully.";
     public const string UserIdNotFound = "There is no user in this University with this Id.";

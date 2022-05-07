@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using LearningLantern.ApiGateway.Helpers;
+using LearningLantern.ApiGateway.Configurations;
 
 namespace LearningLantern.ApiGateway.Auth.DTOs;
 

@@ -1,4 +1,5 @@
 using LearningLantern.Calendar;
+using LearningLantern.Common.DependencyInjection;
 using LearningLantern.Common.Logging;
 using Serilog;
 
@@ -10,7 +11,7 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddAuthorizedSwaggerGen("Calendar.API", "v1");
 
 builder.Services.AddApplication();
 
