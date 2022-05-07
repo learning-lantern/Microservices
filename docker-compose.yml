@@ -42,4 +42,4 @@ services:
     depends_on:
       - TodoList
       - Calendar
-      - seq
+      - Seq
