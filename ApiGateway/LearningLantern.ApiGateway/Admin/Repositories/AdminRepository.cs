@@ -6,20 +6,21 @@ namespace LearningLantern.ApiGateway.Admin.Repositories;
 
 public class AdminRepository : IAdminRepository
 {
-    private readonly RoleManager<IdentityRole> roleManager;
-    private readonly UserManager<UserModel> userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly UserManager<UserModel> _userManager;
 
     public AdminRepository(UserManager<UserModel> userManager, RoleManager<IdentityRole> roleManager)
     {
-        this.userManager = userManager;
-        this.roleManager = roleManager;
+        _userManager = userManager;
+        _roleManager = roleManager;
     }
 
-    public async Task<IdentityResult> CreateAdminRoleAsync() => await roleManager.CreateAsync(new IdentityRole(Role.Admin));
+    public async Task<IdentityResult> CreateAdminRoleAsync() =>
+        await _roleManager.CreateAsync(new IdentityRole(Role.Admin));
 
     public async Task<IdentityResult> AddToRoleAdminAsync(string userId)
     {
-        var user = await userManager.FindByIdAsync(userId);
+        var user = await _userManager.FindByIdAsync(userId);
 
         if (user == null)
             return IdentityResult.Failed(new IdentityError
@@ -28,15 +29,15 @@ public class AdminRepository : IAdminRepository
                 Description = Message.UserIdNotFound
             });
 
-        return await userManager.AddToRoleAsync(user, Role.Admin);
+        return await _userManager.AddToRoleAsync(user, Role.Admin);
     }
 
     public async Task<IdentityResult> CreateUniversityAdminRoleAsync() =>
-        await roleManager.CreateAsync(new IdentityRole(Role.UniversityAdmin));
+        await _roleManager.CreateAsync(new IdentityRole(Role.UniversityAdmin));
 
     public async Task<IdentityResult> AddToRoleUniversityAdminAsync(string userId)
     {
-        var user = await userManager.FindByIdAsync(userId);
+        var user = await _userManager.FindByIdAsync(userId);
 
         if (user == null)
             return IdentityResult.Failed(new IdentityError
@@ -45,9 +46,9 @@ public class AdminRepository : IAdminRepository
                 Description = Message.UserIdNotFound
             });
 
-        return await userManager.AddToRoleAsync(user, Role.UniversityAdmin);
+        return await _userManager.AddToRoleAsync(user, Role.UniversityAdmin);
     }
 
     public async Task<IdentityResult> CreateInstructorRoleAsync() =>
-        await roleManager.CreateAsync(new IdentityRole(Role.Instructor));
+        await _roleManager.CreateAsync(new IdentityRole(Role.Instructor));
 }

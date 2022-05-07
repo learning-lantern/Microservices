@@ -13,11 +13,11 @@ namespace LearningLantern.ApiGateway.Classroom.Controllers;
 [Authorize]
 public class ClassroomController : ControllerBase
 {
-    private readonly IClassroomRepository classroomRepository;
+    private readonly IClassroomRepository _classroomRepository;
 
     public ClassroomController(IClassroomRepository classroomRepository)
     {
-        this.classroomRepository = classroomRepository;
+        _classroomRepository = classroomRepository;
     }
 
     [HttpGet]
@@ -25,7 +25,7 @@ public class ClassroomController : ControllerBase
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-        var classrooms = await classroomRepository.GetAsync(userId);
+        var classrooms = await _classroomRepository.GetAsync(userId);
 
         return Ok(JsonConvert.SerializeObject(classrooms));
     }
@@ -36,7 +36,7 @@ public class ClassroomController : ControllerBase
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-        var addAsyncResult = await classroomRepository.AddAsync(addClassroomDTO, userId);
+        var addAsyncResult = await _classroomRepository.AddAsync(addClassroomDTO, userId);
 
         if (addAsyncResult == null) return NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound));
 
@@ -52,7 +52,7 @@ public class ClassroomController : ControllerBase
     {
         var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-        var addUserAsyncResult = await classroomRepository.AddUserAsync(classroomId, requestUserId, userId);
+        var addUserAsyncResult = await _classroomRepository.AddUserAsync(classroomId, requestUserId, userId);
 
         if (addUserAsyncResult == null) return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
 
@@ -67,7 +67,7 @@ public class ClassroomController : ControllerBase
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-        var updateAsyncResult = await classroomRepository.UpdateAsync(classroomDTO, userId);
+        var updateAsyncResult = await _classroomRepository.UpdateAsync(classroomDTO, userId);
 
         if (updateAsyncResult == null) return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
 
@@ -82,7 +82,7 @@ public class ClassroomController : ControllerBase
     {
         var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-        var removeUserAsyncResult = await classroomRepository.RemoveUserAsync(classroomId, requestUserId, userId);
+        var removeUserAsyncResult = await _classroomRepository.RemoveUserAsync(classroomId, requestUserId, userId);
 
         if (removeUserAsyncResult == null) return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
 
@@ -98,7 +98,7 @@ public class ClassroomController : ControllerBase
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-        var removeAsyncResult = await classroomRepository.RemoveAsync(classroomId, userId);
+        var removeAsyncResult = await _classroomRepository.RemoveAsync(classroomId, userId);
 
         if (removeAsyncResult == null) return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
 

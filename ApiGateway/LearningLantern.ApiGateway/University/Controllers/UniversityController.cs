@@ -11,11 +11,11 @@ namespace LearningLantern.ApiGateway.University.Controllers;
 [Authorize(Roles = Role.UniversityAdmin)]
 public class UniversityController : ControllerBase
 {
-    private readonly IUniversityRepository universityAdminRepository;
+    private readonly IUniversityRepository _universityAdminRepository;
 
     public UniversityController(IUniversityRepository universityAdminRepository)
     {
-        this.universityAdminRepository = universityAdminRepository;
+        _universityAdminRepository = universityAdminRepository;
     }
 
     [HttpPost]
@@ -24,7 +24,7 @@ public class UniversityController : ControllerBase
         if (!Helper.IsUniversityValid(university))
             return BadRequest(JsonConvert.SerializeObject(Message.UniversityNotFound));
 
-        var addToRoleInstructorAsyncResult = await universityAdminRepository.AddToRoleInstructorAsync(userId);
+        var addToRoleInstructorAsyncResult = await _universityAdminRepository.AddToRoleInstructorAsync(userId);
 
         if (!addToRoleInstructorAsyncResult.Succeeded)
         {

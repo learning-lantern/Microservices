@@ -14,17 +14,17 @@ namespace LearningLantern.ApiGateway.User.Controllers;
 [Authorize]
 public class UserController : ControllerBase
 {
-    private readonly IUserRepository userRepository;
+    private readonly IUserRepository _userRepository;
 
     public UserController(IUserRepository userRepository)
     {
-        this.userRepository = userRepository;
+        _userRepository = userRepository;
     }
 
     [HttpGet]
     public async Task<IActionResult> FindById([FromQuery] string userId)
     {
-        var user = await userRepository.FindByIdAsync(userId);
+        var user = await _userRepository.FindByIdAsync(userId);
 
         return user == null
             ? NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound))
@@ -34,7 +34,7 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> FindByEmail([FromQuery] string userEmail)
     {
-        var user = await userRepository.FindByEmailAsync(userEmail);
+        var user = await _userRepository.FindByEmailAsync(userEmail);
 
         return user == null
             ? NotFound(JsonConvert.SerializeObject(Message.UserEmailNotFound))
@@ -52,7 +52,7 @@ public class UserController : ControllerBase
 
         userDTO.Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-        var user = await userRepository.UpdateAsync(userDTO);
+        var user = await _userRepository.UpdateAsync(userDTO);
 
         return user == null
             ? NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound))
@@ -65,7 +65,7 @@ public class UserController : ControllerBase
         if (!Helper.IsUniversityValid(signInDTO.University))
             return BadRequest(JsonConvert.SerializeObject(Message.UniversityNotFound));
 
-        var deleteAsyncResult = await userRepository.DeleteAsync(signInDTO.Email, signInDTO.Password);
+        var deleteAsyncResult = await _userRepository.DeleteAsync(signInDTO.Email, signInDTO.Password);
 
         if (!deleteAsyncResult.Succeeded)
         {

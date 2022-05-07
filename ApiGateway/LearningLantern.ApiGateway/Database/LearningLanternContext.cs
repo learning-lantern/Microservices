@@ -10,13 +10,12 @@ namespace LearningLantern.ApiGateway.Database;
 /// </summary>
 public class LearningLanternContext : IdentityDbContext<UserModel>
 {
-    public DbSet<ClassroomModel> Classrooms { get; set; } = null!;
-    public DbSet<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
-
     public LearningLanternContext(DbContextOptions option) : base(option)
     {
-        
     }
+
+    public DbSet<ClassroomModel> Classrooms { get; set; } = null!;
+    public DbSet<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

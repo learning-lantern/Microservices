@@ -6,14 +6,14 @@ public static class Helper
 {
     public static readonly Regex PasswordRegex = new(Pattern.Password);
 
-    private static readonly List<string> universities = new()
+    private static readonly List<string> Universities = new()
     {
         "Assiut University"
     };
 
     public static bool IsUniversityValid(string universityName)
     {
-        foreach (var university in universities)
+        foreach (var university in Universities)
             if (university == universityName)
                 return true;
 

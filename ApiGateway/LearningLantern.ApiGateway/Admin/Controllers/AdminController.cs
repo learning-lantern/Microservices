@@ -11,17 +11,17 @@ namespace LearningLantern.ApiGateway.Admin.Controllers;
 [Authorize(Roles = Role.Admin)]
 public class AdminController : ControllerBase
 {
-    private readonly IAdminRepository adminRepository;
+    private readonly IAdminRepository _adminRepository;
 
     public AdminController(IAdminRepository adminRepository)
     {
-        this.adminRepository = adminRepository;
+        _adminRepository = adminRepository;
     }
 
     [HttpGet]
     public async Task<IActionResult> CreateAdminRole()
     {
-        var createAdminRoleAsyncResult = await adminRepository.CreateAdminRoleAsync();
+        var createAdminRoleAsyncResult = await _adminRepository.CreateAdminRoleAsync();
 
         return createAdminRoleAsyncResult.Succeeded
             ? Ok(JsonConvert.SerializeObject(Message.CreatedRole(Role.Admin)))
@@ -34,7 +34,7 @@ public class AdminController : ControllerBase
         if (!Helper.IsUniversityValid(university))
             return BadRequest(JsonConvert.SerializeObject(Message.UniversityNotFound));
 
-        var addToRoleAdminAsyncResult = await adminRepository.AddToRoleAdminAsync(userId);
+        var addToRoleAdminAsyncResult = await _adminRepository.AddToRoleAdminAsync(userId);
 
         if (!addToRoleAdminAsyncResult.Succeeded)
         {
@@ -51,7 +51,7 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> CreateUniversityAdminRole()
     {
-        var createUniversityAdminRoleAsyncResult = await adminRepository.CreateUniversityAdminRoleAsync();
+        var createUniversityAdminRoleAsyncResult = await _adminRepository.CreateUniversityAdminRoleAsync();
 
         return createUniversityAdminRoleAsyncResult.Succeeded
             ? Ok(JsonConvert.SerializeObject(Message.CreatedRole(Role.UniversityAdmin)))
@@ -64,7 +64,7 @@ public class AdminController : ControllerBase
         if (!Helper.IsUniversityValid(university))
             return BadRequest(JsonConvert.SerializeObject(Message.UniversityNotFound));
 
-        var addToRoleUniversityAdminAsyncResult = await adminRepository.AddToRoleUniversityAdminAsync(userId);
+        var addToRoleUniversityAdminAsyncResult = await _adminRepository.AddToRoleUniversityAdminAsync(userId);
 
         if (!addToRoleUniversityAdminAsyncResult.Succeeded)
         {
@@ -81,7 +81,7 @@ public class AdminController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> CreateInstructorRole()
     {
-        var createInstructorRoleAsyncResult = await adminRepository.CreateInstructorRoleAsync();
+        var createInstructorRoleAsyncResult = await _adminRepository.CreateInstructorRoleAsync();
 
         return createInstructorRoleAsyncResult.Succeeded
             ? Ok(JsonConvert.SerializeObject(Message.CreatedRole(Role.Instructor)))

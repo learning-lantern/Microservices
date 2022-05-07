@@ -10,11 +10,11 @@ namespace LearningLantern.ApiGateway.Auth.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthRepository authRepository;
+    private readonly IAuthRepository _authRepository;
 
     public AuthController(IAuthRepository authRepository)
     {
-        this.authRepository = authRepository;
+        _authRepository = authRepository;
     }
 
     [HttpPost]
@@ -26,7 +26,7 @@ public class AuthController : ControllerBase
         if (!Helper.IsNameValid(createDTO.FirstName) || !Helper.IsNameValid(createDTO.LastName))
             return BadRequest(JsonConvert.SerializeObject(Message.NameNotValid));
 
-        var createAsyncResult = await authRepository.CreateAsync(createDTO);
+        var createAsyncResult = await _authRepository.CreateAsync(createDTO);
 
         return createAsyncResult.Succeeded
             ? CreatedAtAction(nameof(ConfirmEmail),
@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
         if (!Helper.IsUniversityValid(signInDTO.University))
             return BadRequest(JsonConvert.SerializeObject(Message.UniversityNotFound));
 
-        var signInResponseDTO = await authRepository.SignInAsync(signInDTO);
+        var signInResponseDTO = await _authRepository.SignInAsync(signInDTO);
 
         if (signInResponseDTO.User == null) return NotFound(JsonConvert.SerializeObject(Message.UserEmailNotFound));
 
@@ -52,7 +52,7 @@ public class AuthController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> ResendConfirmationEmail([FromQuery] string userEmail)
     {
-        var sendConfirmationEmailResult = await authRepository.SendConfirmationEmailAsync(userEmail);
+        var sendConfirmationEmailResult = await _authRepository.SendConfirmationEmailAsync(userEmail);
 
         if (!sendConfirmationEmailResult.Succeeded)
         {
@@ -69,7 +69,7 @@ public class AuthController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string token)
     {
-        var confirmEmailAsyncResult = await authRepository.ConfirmEmailAsync(userId, token);
+        var confirmEmailAsyncResult = await _authRepository.ConfirmEmailAsync(userId, token);
 
         if (!confirmEmailAsyncResult.Succeeded)
         {

@@ -7,44 +7,44 @@ namespace LearningLantern.ApiGateway.User.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private readonly UserManager<UserModel> userManager;
+    private readonly UserManager<UserModel> _userManager;
 
     public UserRepository(UserManager<UserModel> userManager)
     {
-        this.userManager = userManager;
+        _userManager = userManager;
     }
 
     public async Task<UserDTO?> FindByIdAsync(string userId)
     {
-        var user = await userManager.FindByIdAsync(userId);
+        var user = await _userManager.FindByIdAsync(userId);
 
         return user == null || !user.EmailConfirmed ? null : new UserDTO(user);
     }
 
     public async Task<UserDTO?> FindByEmailAsync(string userEmail)
     {
-        var user = await userManager.FindByEmailAsync(userEmail);
+        var user = await _userManager.FindByEmailAsync(userEmail);
 
         return user == null || !user.EmailConfirmed ? null : new UserDTO(user);
     }
 
     public async Task<UserDTO?> UpdateAsync(UserDTO userDTO)
     {
-        var user = await userManager.FindByIdAsync(userDTO.Id);
+        var user = await _userManager.FindByIdAsync(userDTO.Id);
 
         if (user == null) return null;
 
         user.FirstName = userDTO.FirstName.Trim();
         user.LastName = userDTO.LastName.Trim();
 
-        var updateAsyncResult = await userManager.UpdateAsync(user);
+        var updateAsyncResult = await _userManager.UpdateAsync(user);
 
         return updateAsyncResult.Succeeded ? new UserDTO(user) : null;
     }
 
     public async Task<IdentityResult> DeleteAsync(string userEmail, string userPassword)
     {
-        var user = await userManager.FindByEmailAsync(userEmail);
+        var user = await _userManager.FindByEmailAsync(userEmail);
 
         if (user == null)
             return IdentityResult.Failed(new IdentityError
@@ -53,8 +53,8 @@ public class UserRepository : IUserRepository
                 Description = Message.UserEmailNotFound
             });
 
-        return await userManager.DeleteAsync(user);
+        return await _userManager.DeleteAsync(user);
     }
 
-    public async Task<UserModel?> FindUserByIdAsync(string userId) => await userManager.FindByIdAsync(userId);
+    public async Task<UserModel?> FindUserByIdAsync(string userId) => await _userManager.FindByIdAsync(userId);
 }
