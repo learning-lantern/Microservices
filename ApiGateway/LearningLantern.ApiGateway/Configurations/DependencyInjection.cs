@@ -1,7 +1,7 @@
 using LearningLantern.ApiGateway.Data;
 using LearningLantern.ApiGateway.Data.Models;
-using LearningLantern.ApiGateway.Helpers;
 using LearningLantern.ApiGateway.Repositories;
+using LearningLantern.ApiGateway.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -48,17 +48,16 @@ public static class DependencyInjection
                 $"Server={myServerAddress};Database={myDatabase};User Id={myUsername};Password={password}";
             builder.UseSqlServer(connectionString);
         });
-        return services;
-    }
-
-    private static IServiceCollection AddAuthenticationConfigurations(this IServiceCollection services)
-    {
-        
         services.AddIdentity<UserModel, IdentityRole>(setupAction =>
         {
             setupAction.SignIn.RequireConfirmedAccount = true;
             setupAction.User.RequireUniqueEmail = true;
         }).AddEntityFrameworkStores<LearningLanternContext>().AddDefaultTokenProviders();
+        return services;
+    }
+
+    private static IServiceCollection AddAuthenticationConfigurations(this IServiceCollection services)
+    {
         services.AddAuthentication(configureOptions =>
         {
             configureOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -67,7 +66,7 @@ public static class DependencyInjection
             configureOptions.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
             configureOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             configureOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(ConfigProvider.AuthenticationProviderKey, configureOptions =>
+        }).AddJwtBearer(configureOptions =>
         {
             configureOptions.TokenValidationParameters = new TokenValidationParameters
             {
@@ -87,7 +86,12 @@ public static class DependencyInjection
     {
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
         services.AddHttpContextAccessor();
-        
+
+        services.AddSingleton<IEmailSender, EmailSender>(
+            op => new EmailSender(ConfigProvider.MyEmail, ConfigProvider.MyPassword, ConfigProvider.SmtpServerAddress,
+                ConfigProvider.MailPort)
+        );
+
         // TODO: Rethink about each service life time (Singleton, Scoped, or Transient).
         services.AddTransient<IIdentityRepository, IdentityRepository>();
         services.AddTransient<IClassroomRepository, ClassroomRepository>();

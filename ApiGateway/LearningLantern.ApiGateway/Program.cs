@@ -1,15 +1,14 @@
 using LearningLantern.ApiGateway.Configurations;
 using LearningLantern.Common.DependencyInjection;
 using LearningLantern.Common.Logging;
-using Ocelot.Middleware;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args).AddSerilog();
 
 // Add services to the container.
-builder.Services.AddControllers();
 builder.Services.AddApplication();
-builder.AddOcelotConfiguration();
+builder.Services.AddControllers();
+//builder.AddOcelotConfiguration();
 
 
 ConfigProvider.Configuration = builder.Configuration;
@@ -24,17 +23,20 @@ app.UseSerilogRequestLogging();
 
 app.UseCors();
 
-app.UseAuthentication();
 
 app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseEndpoints(endpoints =>
     endpoints.MapControllers()
 );
 
 
 app.UseSwagger();
-app.UseSwaggerForOcelotUI(options => { options.PathToSwaggerGenerator = "/swagger/docs"; }).UseOcelot().Wait();
+app.UseSwaggerUI();
+//app.UseSwaggerForOcelotUI(options => { options.PathToSwaggerGenerator = "/swagger/docs"; }).UseOcelot().Wait();
 
 
 app.Run();

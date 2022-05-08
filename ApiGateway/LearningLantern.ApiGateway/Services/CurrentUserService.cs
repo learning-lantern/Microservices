@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace LearningLantern.ApiGateway.Helpers;
+namespace LearningLantern.ApiGateway.Services;
 
 public class CurrentUserService : ICurrentUserService
 {

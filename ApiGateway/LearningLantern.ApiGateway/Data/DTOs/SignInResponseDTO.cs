@@ -5,17 +5,13 @@
 /// </summary>
 public class SignInResponseDTO
 {
-    public UserDTO? User;
-
-    public SignInResponseDTO()
-    {
-    }
-
     public SignInResponseDTO(UserDTO userDTO, string token)
     {
         User = new UserDTO(userDTO);
         Token = token;
     }
 
-    public string? Token { get; set; }
+    public UserDTO User { get; set; } = null!;
+
+    public string Token { get; set; } = null!;
 }

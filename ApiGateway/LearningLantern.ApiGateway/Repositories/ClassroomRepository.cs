@@ -7,8 +7,8 @@ namespace LearningLantern.ApiGateway.Repositories;
 
 public class ClassroomRepository : IClassroomRepository
 {
-    private readonly LearningLanternContext _learningLanternContext;
     private readonly IIdentityRepository _identityRepository;
+    private readonly LearningLanternContext _learningLanternContext;
 
     public ClassroomRepository(IIdentityRepository identityRepository, LearningLanternContext learningLanternContext)
     {
