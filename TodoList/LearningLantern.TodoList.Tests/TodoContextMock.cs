@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
-using LearningLantern.Common.Models.TodoModels;
-using LearningLantern.TodoList.Database;
+using LearningLantern.TodoList.Data;
+using LearningLantern.TodoList.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.TodoList.Tests;

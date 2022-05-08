@@ -1,6 +1,6 @@
 using LearningLantern.Common;
-using LearningLantern.Common.Models.TodoModels;
-using LearningLantern.Common.Result;
+using LearningLantern.Common.Response;
+using LearningLantern.TodoList.Data.Models;
 using LearningLantern.TodoList.Exceptions;
 using LearningLantern.TodoList.Repositories;
 using LearningLantern.TodoList.Utility;
@@ -20,7 +20,7 @@ public class TasksController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Result<TaskModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<TaskModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] TaskDTO taskDTO)
     {
@@ -36,7 +36,7 @@ public class TasksController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(Result<IEnumerable<TaskModel>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<IEnumerable<TaskModel>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromQuery] string userId, [FromQuery] string? list)
     {
         var response = await _todoRepository.GetAsync(userId, list);
@@ -44,8 +44,8 @@ public class TasksController : ControllerBase
     }
 
     [HttpGet("{taskId:int}")]
-    [ProducesResponseType(typeof(Result<TaskModel>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<TaskModel>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response<TaskModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<TaskModel>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetTask([FromRoute] int taskId)
     {
         try
@@ -55,14 +55,14 @@ public class TasksController : ControllerBase
         }
         catch (TaskNotFoundException)
         {
-            var response = ResultFactory.Fail(ErrorsList.TaskNotFound(taskId));
+            var response = ResponseFactory.Fail(ErrorsList.TaskNotFound(taskId));
             return NotFound(response.ToJsonStringContent());
         }
     }
 
     [HttpPut("{taskId:int}")]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update([FromRoute] int taskId, [FromBody] UpdateTaskDTO updateTaskDTO)
     {
         var response = await _todoRepository.UpdateAsync(taskId, updateTaskDTO);
@@ -71,8 +71,8 @@ public class TasksController : ControllerBase
     }
 
     [HttpDelete("{taskId:int}")]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Remove([FromRoute] int taskId)
     {
         var response = await _todoRepository.RemoveAsync(taskId);

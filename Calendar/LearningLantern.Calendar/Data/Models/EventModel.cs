@@ -1,8 +1,10 @@
-namespace LearningLantern.Common.Models.CalendarModels;
+using System.ComponentModel.DataAnnotations;
 
-public class EventModel : EventDTO, IEntity
+namespace LearningLantern.Calendar.Data.Models;
+
+public class EventModel : EventDTO
 {
-    public int Id { get; set; }
+    [Required] [Key] public int Id { get; set; }
 
     public void Update(UpdateEventDTO updateEventDTO)
     {

@@ -1,13 +1,13 @@
-﻿using LearningLantern.Common.Models.TodoModels;
-using LearningLantern.Common.Result;
+﻿using LearningLantern.Common.Response;
+using LearningLantern.TodoList.Data.Models;
 
 namespace LearningLantern.TodoList.Repositories;
 
 public interface ITodoRepository
 {
-    public Task<Result<TaskModel>> AddAsync(TaskDTO taskDTO);
-    public Task<Result<IEnumerable<TaskModel>>> GetAsync(string userId, string? list);
-    public Task<Result<TaskModel>> GetTaskByIdAsync(int taskId);
-    public Task<Result> UpdateAsync(int taskId, UpdateTaskDTO updateTaskDTO);
-    public Task<Result> RemoveAsync(int taskId);
+    public Task<Response<TaskModel>> AddAsync(TaskDTO taskDTO);
+    public Task<Response<IEnumerable<TaskModel>>> GetAsync(string userId, string? list);
+    public Task<Response<TaskModel>> GetTaskByIdAsync(int taskId);
+    public Task<Response> UpdateAsync(int taskId, UpdateTaskDTO updateTaskDTO);
+    public Task<Response> RemoveAsync(int taskId);
 }

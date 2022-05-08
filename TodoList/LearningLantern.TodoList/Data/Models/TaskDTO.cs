@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LearningLantern.Common.Models.TodoModels;
+namespace LearningLantern.TodoList.Data.Models;
 
 public class TaskDTO : UpdateTaskDTO
 {

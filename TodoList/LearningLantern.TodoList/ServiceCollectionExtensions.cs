@@ -1,11 +1,11 @@
-using LearningLantern.TodoList.Database;
+using LearningLantern.TodoList.Data;
 using LearningLantern.TodoList.Repositories;
 using LearningLantern.TodoList.Utility;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.TodoList;
 
-public static class DependencyInjection
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {

@@ -1,4 +1,4 @@
-using LearningLantern.Common.Models.TodoModels;
+using LearningLantern.TodoList.Data.Models;
 using Xunit;
 
 namespace LearningLantern.TodoList.Tests;

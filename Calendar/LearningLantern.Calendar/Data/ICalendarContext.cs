@@ -1,7 +1,7 @@
-using LearningLantern.Common.Models.CalendarModels;
+using LearningLantern.Calendar.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LearningLantern.Calendar.Database;
+namespace LearningLantern.Calendar.Data;
 
 public interface ICalendarContext
 {

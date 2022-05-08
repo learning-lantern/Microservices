@@ -1,5 +1,5 @@
 using AutoMapper;
-using LearningLantern.Common.Models.CalendarModels;
+using LearningLantern.Calendar.Data.Models;
 
 namespace LearningLantern.Calendar.Utility;
 

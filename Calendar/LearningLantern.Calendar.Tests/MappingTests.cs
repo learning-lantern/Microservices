@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.Serialization;
 using AutoMapper;
+using LearningLantern.Calendar.Data.Models;
 using LearningLantern.Calendar.Utility;
-using LearningLantern.Common.Models.CalendarModels;
 using Xunit;
 
 namespace LearningLantern.Calendar.Tests;

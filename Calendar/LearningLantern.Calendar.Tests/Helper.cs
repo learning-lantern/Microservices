@@ -1,8 +1,8 @@
 using System;
 using AutoMapper;
 using Bogus;
+using LearningLantern.Calendar.Data.Models;
 using LearningLantern.Calendar.Utility;
-using LearningLantern.Common.Models.CalendarModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.Calendar.Tests;

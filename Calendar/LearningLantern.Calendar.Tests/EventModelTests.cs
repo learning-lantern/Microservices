@@ -1,4 +1,4 @@
-using LearningLantern.Common.Models.CalendarModels;
+using LearningLantern.Calendar.Data.Models;
 using Xunit;
 
 namespace LearningLantern.Calendar.Tests;

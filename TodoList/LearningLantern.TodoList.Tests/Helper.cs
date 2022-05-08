@@ -1,7 +1,7 @@
 using System;
 using AutoMapper;
 using Bogus;
-using LearningLantern.Common.Models.TodoModels;
+using LearningLantern.TodoList.Data.Models;
 using LearningLantern.TodoList.Utility;
 using Microsoft.EntityFrameworkCore;
 

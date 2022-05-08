@@ -1,5 +1,5 @@
 using AutoMapper;
-using LearningLantern.Common.Models.TodoModels;
+using LearningLantern.TodoList.Data.Models;
 
 namespace LearningLantern.TodoList.Utility;
 

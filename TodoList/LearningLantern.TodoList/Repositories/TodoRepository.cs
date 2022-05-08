@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
-using LearningLantern.Common.Models.TodoModels;
-using LearningLantern.Common.Result;
-using LearningLantern.TodoList.Database;
+using LearningLantern.Common.Response;
+using LearningLantern.TodoList.Data;
+using LearningLantern.TodoList.Data.Models;
 using LearningLantern.TodoList.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +19,7 @@ public class TodoRepository : ITodoRepository
         _mapper = mapper;
     }
 
-    public async Task<Result<TaskModel>> AddAsync(TaskDTO taskDTO)
+    public async Task<Response<TaskModel>> AddAsync(TaskDTO taskDTO)
     {
         var tmpTask = _mapper.Map<TaskModel>(taskDTO);
 
@@ -29,10 +29,10 @@ public class TodoRepository : ITodoRepository
 
         if (result == 0) throw new CreateTaskFailedException();
 
-        return ResultFactory.Ok(task.Entity);
+        return ResponseFactory.Ok(task.Entity);
     }
 
-    public async Task<Result<IEnumerable<TaskModel>>> GetAsync(string userId, string? list)
+    public async Task<Response<IEnumerable<TaskModel>>> GetAsync(string userId, string? list)
     {
         IQueryable<TaskModel> query;
 
@@ -53,19 +53,19 @@ public class TodoRepository : ITodoRepository
         }
 
         IEnumerable<TaskModel> result = await query.ToListAsync();
-        return ResultFactory.Ok(result);
+        return ResponseFactory.Ok(result);
     }
 
-    public async Task<Result<TaskModel>> GetTaskByIdAsync(int taskId)
+    public async Task<Response<TaskModel>> GetTaskByIdAsync(int taskId)
     {
         var task = await GetTasks(task => task.Id == taskId).FirstOrDefaultAsync();
 
         if (task == null) throw new TaskNotFoundException();
 
-        return ResultFactory.Ok(task);
+        return ResponseFactory.Ok(task);
     }
 
-    public async Task<Result> UpdateAsync(int taskId, UpdateTaskDTO updateTaskDTO)
+    public async Task<Response> UpdateAsync(int taskId, UpdateTaskDTO updateTaskDTO)
     {
         var task = await GetTasks(task => task.Id == taskId).FirstOrDefaultAsync();
         if (task == null) throw new TaskNotFoundException();
@@ -74,20 +74,19 @@ public class TodoRepository : ITodoRepository
         _context.Tasks.Update(task);
 
         var result = await _context.SaveChangesAsync() != 0;
-        return result ? ResultFactory.Ok() : ResultFactory.Fail(default);
+        return result ? ResponseFactory.Ok() : ResponseFactory.Fail();
     }
 
-    public async Task<Result> RemoveAsync(int taskId)
+    public async Task<Response> RemoveAsync(int taskId)
     {
         var task = await GetTasks(task => task.Id == taskId).FirstOrDefaultAsync();
 
-        if (task == null) return ResultFactory.Ok();
-        ;
+        if (task == null) return ResponseFactory.Ok();
 
         _context.Tasks.Remove(task);
 
         var result = await _context.SaveChangesAsync() != 0;
-        return result ? ResultFactory.Ok() : ResultFactory.Fail(default);
+        return result ? ResponseFactory.Ok() : ResponseFactory.Fail();
     }
 
     private IQueryable<TaskModel> GetTasks(Expression<Func<TaskModel, bool>> filter) => _context.Tasks.Where(filter);

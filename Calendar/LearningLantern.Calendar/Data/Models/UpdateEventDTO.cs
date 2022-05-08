@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LearningLantern.Common.Models.CalendarModels;
+namespace LearningLantern.Calendar.Data.Models;
 
 public class UpdateEventDTO
 {

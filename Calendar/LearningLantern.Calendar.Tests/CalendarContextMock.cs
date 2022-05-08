@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
-using LearningLantern.Calendar.Database;
-using LearningLantern.Common.Models.CalendarModels;
+using LearningLantern.Calendar.Data;
+using LearningLantern.Calendar.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.Calendar.Tests;

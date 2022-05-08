@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 using AutoMapper;
-using LearningLantern.Common.Models.TodoModels;
+using LearningLantern.TodoList.Data.Models;
 using LearningLantern.TodoList.Utility;
 using Xunit;
 

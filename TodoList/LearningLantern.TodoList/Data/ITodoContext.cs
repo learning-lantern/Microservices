@@ -1,7 +1,7 @@
-using LearningLantern.Common.Models.TodoModels;
+using LearningLantern.TodoList.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LearningLantern.TodoList.Database;
+namespace LearningLantern.TodoList.Data;
 
 public interface ITodoContext
 {

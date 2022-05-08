@@ -1,11 +1,11 @@
-using LearningLantern.Calendar.Database;
+using LearningLantern.Calendar.Data;
 using LearningLantern.Calendar.Repositories;
 using LearningLantern.Calendar.Utility;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.Calendar;
 
-public static class DependencyInjection
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {

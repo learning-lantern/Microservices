@@ -1,8 +1,10 @@
-namespace LearningLantern.Common.Models.TodoModels;
+using System.ComponentModel.DataAnnotations;
 
-public class TaskModel : TaskDTO, IEntity
+namespace LearningLantern.TodoList.Data.Models;
+
+public class TaskModel : TaskDTO
 {
-    public int Id { get; set; }
+    [Required] [Key] public int Id { get; set; }
 
 
     public void Update(UpdateTaskDTO updateTaskDTO)
