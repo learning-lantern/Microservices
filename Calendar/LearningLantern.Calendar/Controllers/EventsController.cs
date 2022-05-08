@@ -3,7 +3,7 @@ using LearningLantern.Calendar.Repositories;
 using LearningLantern.Calendar.Utility;
 using LearningLantern.Common;
 using LearningLantern.Common.Models.CalendarModels;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Result;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearningLantern.Calendar.Controllers;
@@ -20,7 +20,7 @@ public class EventsController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Response<EventModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<EventModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] EventDTO eventDTO)
     {
@@ -36,7 +36,7 @@ public class EventsController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(Response<IEnumerable<EventModel>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<IEnumerable<EventModel>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromQuery] int classroomId)
     {
         var response = await _calendarRepository.GetAsync(classroomId);
@@ -44,8 +44,8 @@ public class EventsController : ControllerBase
     }
 
     [HttpGet("{eventId:int}")]
-    [ProducesResponseType(typeof(Response<EventModel>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<EventModel>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result<EventModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<EventModel>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetEvent([FromRoute] int eventId)
     {
         try
@@ -55,14 +55,14 @@ public class EventsController : ControllerBase
         }
         catch (EventNotFoundException)
         {
-            var response = ResponseFactory.Fail(ErrorsList.EventNotFound(eventId));
+            var response = ResultFactory.Fail(ErrorsList.EventNotFound(eventId));
             return NotFound(response.ToJsonStringContent());
         }
     }
 
     [HttpPut("{eventId:int}")]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update([FromRoute] int eventId, [FromBody] UpdateEventDTO updateEventDTO)
     {
         var response = await _calendarRepository.UpdateAsync(eventId, updateEventDTO);
@@ -71,8 +71,8 @@ public class EventsController : ControllerBase
     }
 
     [HttpDelete("{eventId:int}")]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Remove([FromRoute] int eventId)
     {
         var response = await _calendarRepository.RemoveAsync(eventId);

@@ -1,11 +1,7 @@
-using LearningLantern.ApiGateway.Admin.Repositories;
-using LearningLantern.ApiGateway.Auth.Repositories;
-using LearningLantern.ApiGateway.Classroom.Repositories;
-using LearningLantern.ApiGateway.Database;
+using LearningLantern.ApiGateway.Data;
+using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Helpers;
-using LearningLantern.ApiGateway.University.Repositories;
-using LearningLantern.ApiGateway.User.Models;
-using LearningLantern.ApiGateway.User.Repositories;
+using LearningLantern.ApiGateway.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -93,10 +89,7 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         
         // TODO: Rethink about each service life time (Singleton, Scoped, or Transient).
-        services.AddTransient<IAuthRepository, AuthRepository>();
-        services.AddTransient<IUserRepository, UserRepository>();
-        services.AddTransient<IAdminRepository, AdminRepository>();
-        services.AddTransient<IUniversityRepository, UniversityRepository>();
+        services.AddTransient<IIdentityRepository, IdentityRepository>();
         services.AddTransient<IClassroomRepository, ClassroomRepository>();
         return services;
     }

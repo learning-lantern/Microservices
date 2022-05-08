@@ -1,13 +1,13 @@
 using LearningLantern.Common.Models.CalendarModels;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Result;
 
 namespace LearningLantern.Calendar.Repositories;
 
 public interface ICalendarRepository
 {
-    public Task<Response<EventModel>> AddAsync(EventDTO eventDTO);
-    public Task<Response<IEnumerable<EventModel>>> GetAsync(int classroomId);
-    public Task<Response<EventModel>> GetEventByIdAsync(int eventId);
-    public Task<Response> UpdateAsync(int eventId, UpdateEventDTO updateEventDTO);
-    public Task<Response> RemoveAsync(int eventId);
+    public Task<Result<EventModel>> AddAsync(EventDTO eventDTO);
+    public Task<Result<IEnumerable<EventModel>>> GetAsync(int classroomId);
+    public Task<Result<EventModel>> GetEventByIdAsync(int eventId);
+    public Task<Result> UpdateAsync(int eventId, UpdateEventDTO updateEventDTO);
+    public Task<Result> RemoveAsync(int eventId);
 }

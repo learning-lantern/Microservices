@@ -3,7 +3,7 @@ using AutoMapper;
 using LearningLantern.Calendar.Database;
 using LearningLantern.Calendar.Exceptions;
 using LearningLantern.Common.Models.CalendarModels;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Result;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.Calendar.Repositories;
@@ -19,7 +19,7 @@ public class CalendarRepository : ICalendarRepository
         _mapper = mapper;
     }
 
-    public async Task<Response<EventModel>> AddAsync(EventDTO eventDTO)
+    public async Task<Result<EventModel>> AddAsync(EventDTO eventDTO)
     {
         var tempEvent = _mapper.Map<EventModel>(eventDTO);
         var eventModel = await _context.Events.AddAsync(tempEvent);
@@ -28,25 +28,25 @@ public class CalendarRepository : ICalendarRepository
 
         if (result == 0) throw new CreateEventFailedException();
 
-        return ResponseFactory.Ok(eventModel.Entity);
+        return ResultFactory.Ok(eventModel.Entity);
     }
 
-    public async Task<Response<IEnumerable<EventModel>>> GetAsync(int classroomId)
+    public async Task<Result<IEnumerable<EventModel>>> GetAsync(int classroomId)
     {
         IEnumerable<EventModel> result = await GetEvents(eventModel => eventModel.ClassroomId == classroomId).ToListAsync();
-        return ResponseFactory.Ok(result);
+        return ResultFactory.Ok(result);
     }
 
-    public async Task<Response<EventModel>> GetEventByIdAsync(int eventId)
+    public async Task<Result<EventModel>> GetEventByIdAsync(int eventId)
     {
         var eventModel = await GetEvents(eventModel => eventModel.Id == eventId).FirstOrDefaultAsync();
 
         if (eventModel is null) throw new EventNotFoundException();
 
-        return ResponseFactory.Ok(eventModel);
+        return ResultFactory.Ok(eventModel);
     }
 
-    public async Task<Response> UpdateAsync(int eventId, UpdateEventDTO updateEventDTO)
+    public async Task<Result> UpdateAsync(int eventId, UpdateEventDTO updateEventDTO)
     {
         var eventModel = await GetEvents(eventModel => eventModel.Id == eventId).FirstOrDefaultAsync();
 
@@ -56,20 +56,20 @@ public class CalendarRepository : ICalendarRepository
         _context.Events.Update(eventModel);
 
         var result = await _context.SaveChangesAsync() != 0;
-        return result ? ResponseFactory.Ok() : ResponseFactory.Fail(default);
+        return result ? ResultFactory.Ok() : ResultFactory.Fail(default);
     }
 
-    public async Task<Response> RemoveAsync(int eventId)
+    public async Task<Result> RemoveAsync(int eventId)
     {
         var task = await _context.Events.Where(eventModel => eventModel.Id == eventId).FirstOrDefaultAsync();
 
-        if (task == null) return ResponseFactory.Ok();
+        if (task == null) return ResultFactory.Ok();
 
         _context.Events.Remove(task);
 
         var result = await _context.SaveChangesAsync() != 0;
 
-        return result ? ResponseFactory.Ok() : ResponseFactory.Fail(default);
+        return result ? ResultFactory.Ok() : ResultFactory.Fail(default);
     }
 
     private IQueryable<EventModel> GetEvents(Expression<Func<EventModel, bool>> filter) => _context.Events.Where(filter);

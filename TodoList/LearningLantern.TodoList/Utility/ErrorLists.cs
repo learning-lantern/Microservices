@@ -1,4 +1,4 @@
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Result;
 
 namespace LearningLantern.TodoList.Utility;
 
