@@ -3,7 +3,7 @@ using AutoMapper;
 using LearningLantern.Common.Response;
 using LearningLantern.TodoList.Data;
 using LearningLantern.TodoList.Data.Models;
-using LearningLantern.TodoList.Exceptions;
+using LearningLantern.TodoList.Utility;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.TodoList.Repositories;
@@ -19,74 +19,57 @@ public class TodoRepository : ITodoRepository
         _mapper = mapper;
     }
 
-    public async Task<Response<TaskModel>> AddAsync(TaskDTO taskDTO)
+
+    public async Task<Response<AddTaskResponse>> AddAsync(string userId, AddTaskDTO addTaskDTO)
     {
-        var tmpTask = _mapper.Map<TaskModel>(taskDTO);
+        var tmpTask = _mapper.Map<TaskModel>(addTaskDTO);
+        tmpTask.UserId = userId;
 
         var task = await _context.Tasks.AddAsync(tmpTask);
 
         var result = await _context.SaveChangesAsync();
 
-        if (result == 0) throw new CreateTaskFailedException();
-
-        return ResponseFactory.Ok(task.Entity);
+        return result == 0
+            ? ResponseFactory.Fail<AddTaskResponse>()
+            : ResponseFactory.Ok(new AddTaskResponse(task.Entity, addTaskDTO.TempId));
     }
 
     public async Task<Response<IEnumerable<TaskModel>>> GetAsync(string userId, string? list)
     {
-        IQueryable<TaskModel> query;
+        list = list?.ToLower();
 
-        switch (list)
+        var query = list switch
         {
-            case "myDay":
-                query = GetTasks(task => task.UserId == userId && task.MyDay);
-                break;
-            case "Completed":
-                query = GetTasks(task => task.UserId == userId && task.Completed);
-                break;
-            case "Important":
-                query = GetTasks(task => task.UserId == userId && task.Important);
-                break;
-            default:
-                query = GetTasks(task => task.UserId == userId);
-                break;
-        }
+            "myday" => GetTasks(task => task.UserId == userId && task.MyDay),
+            "completed" => GetTasks(task => task.UserId == userId && task.Completed),
+            "important" => GetTasks(task => task.UserId == userId && task.Important),
+            _ => GetTasks(task => task.UserId == userId)
+        };
 
-        IEnumerable<TaskModel> result = await query.ToListAsync();
-        return ResponseFactory.Ok(result);
-    }
-
-    public async Task<Response<TaskModel>> GetTaskByIdAsync(int taskId)
-    {
-        var task = await GetTasks(task => task.Id == taskId).FirstOrDefaultAsync();
-
-        if (task == null) throw new TaskNotFoundException();
-
-        return ResponseFactory.Ok(task);
-    }
-
-    public async Task<Response> UpdateAsync(int taskId, UpdateTaskDTO updateTaskDTO)
-    {
-        var task = await GetTasks(task => task.Id == taskId).FirstOrDefaultAsync();
-        if (task == null) throw new TaskNotFoundException();
-
-        task.Update(updateTaskDTO);
-        _context.Tasks.Update(task);
-
-        var result = await _context.SaveChangesAsync() != 0;
-        return result ? ResponseFactory.Ok() : ResponseFactory.Fail();
+        return ResponseFactory.Ok<IEnumerable<TaskModel>>(await query.ToListAsync());
     }
 
     public async Task<Response> RemoveAsync(int taskId)
     {
         var task = await GetTasks(task => task.Id == taskId).FirstOrDefaultAsync();
 
-        if (task == null) return ResponseFactory.Ok();
+        if (task == null) return ResponseFactory.Fail(ErrorsList.TaskNotFound(taskId));
 
         _context.Tasks.Remove(task);
 
-        var result = await _context.SaveChangesAsync() != 0;
-        return result ? ResponseFactory.Ok() : ResponseFactory.Fail();
+        return await _context.SaveChangesAsync() != 0 ? ResponseFactory.Ok() : ResponseFactory.Fail();
+    }
+
+    public async Task<Response> UpdateAsync(int taskId, TaskProperties taskProperties)
+    {
+        var task = await GetTasks(task => task.Id == taskId).FirstOrDefaultAsync();
+
+        if (task == null) return ResponseFactory.Fail(ErrorsList.TaskNotFound(taskId));
+
+        task.Update(taskProperties);
+        _context.Tasks.Update(task);
+
+        return await _context.SaveChangesAsync() != 0 ? ResponseFactory.Ok() : ResponseFactory.Fail();
     }
 
     private IQueryable<TaskModel> GetTasks(Expression<Func<TaskModel, bool>> filter) => _context.Tasks.Where(filter);

@@ -28,8 +28,7 @@ public class MappingTests
 
 
     [Theory]
-    [InlineData(typeof(TaskDTO), typeof(TaskModel))]
-    [InlineData(typeof(TaskModel), typeof(TaskDTO))]
+    [InlineData(typeof(AddTaskDTO), typeof(TaskModel))]
     public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
     {
         var instance = GetInstanceOf(source);
@@ -37,7 +36,7 @@ public class MappingTests
         _mapper.Map(instance, source, destination);
     }
 
-    private object GetInstanceOf(Type type)
+    private static object GetInstanceOf(Type type)
     {
         if (type.GetConstructor(Type.EmptyTypes) != null)
             return Activator.CreateInstance(type)!;

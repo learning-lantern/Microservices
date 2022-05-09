@@ -1,38 +1,34 @@
 using LearningLantern.Common;
 using LearningLantern.Common.Response;
 using LearningLantern.TodoList.Data.Models;
-using LearningLantern.TodoList.Exceptions;
 using LearningLantern.TodoList.Repositories;
-using LearningLantern.TodoList.Utility;
+using LearningLantern.TodoList.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearningLantern.TodoList.Controllers;
 
-[ApiController]
+[Authorize]
 [Route("/api/v1/[controller]")]
-public class TasksController : ControllerBase
+public class TasksController : ApiControllerBase
 {
+    private readonly ICurrentUserService _currentUserService;
     private readonly ITodoRepository _todoRepository;
 
-    public TasksController(ITodoRepository todoRepository)
+    public TasksController(ITodoRepository todoRepository, ICurrentUserService currentUserService)
     {
         _todoRepository = todoRepository;
+        _currentUserService = currentUserService;
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Response<TaskModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<AddTaskResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Add([FromBody] TaskDTO taskDTO)
+    public async Task<IActionResult> Add([FromBody] AddTaskDTO task)
     {
-        try
-        {
-            var task = await _todoRepository.AddAsync(taskDTO);
-            return Ok(task);
-        }
-        catch (Exception)
-        {
-            return BadRequest();
-        }
+        var userId = _currentUserService.UserId;
+        var response = await _todoRepository.AddAsync(userId, task);
+        return ResponseToIActionResult(response);
     }
 
     [HttpGet]
@@ -40,34 +36,16 @@ public class TasksController : ControllerBase
     public async Task<IActionResult> Get([FromQuery] string userId, [FromQuery] string? list)
     {
         var response = await _todoRepository.GetAsync(userId, list);
-        return Ok(response.ToJsonStringContent());
-    }
-
-    [HttpGet("{taskId:int}")]
-    [ProducesResponseType(typeof(Response<TaskModel>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<TaskModel>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetTask([FromRoute] int taskId)
-    {
-        try
-        {
-            var response = await _todoRepository.GetTaskByIdAsync(taskId);
-            return Ok(response.ToJsonStringContent());
-        }
-        catch (TaskNotFoundException)
-        {
-            var response = ResponseFactory.Fail(ErrorsList.TaskNotFound(taskId));
-            return NotFound(response.ToJsonStringContent());
-        }
+        return ResponseToIActionResult(response);
     }
 
     [HttpPut("{taskId:int}")]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update([FromRoute] int taskId, [FromBody] UpdateTaskDTO updateTaskDTO)
+    public async Task<IActionResult> Update([FromRoute] int taskId, [FromBody] TaskProperties taskProperties)
     {
-        var response = await _todoRepository.UpdateAsync(taskId, updateTaskDTO);
-        if (response.Succeeded) return Ok(response);
-        return NotFound(response.ToJsonStringContent());
+        var response = await _todoRepository.UpdateAsync(taskId, taskProperties);
+        return ResponseToIActionResult(response);
     }
 
     [HttpDelete("{taskId:int}")]
@@ -76,9 +54,6 @@ public class TasksController : ControllerBase
     public async Task<IActionResult> Remove([FromRoute] int taskId)
     {
         var response = await _todoRepository.RemoveAsync(taskId);
-
-        if (response.Succeeded) return Ok(response);
-
-        return BadRequest(response);
+        return ResponseToIActionResult(response);
     }
 }

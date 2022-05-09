@@ -17,9 +17,8 @@ public static class IdentityResultExtensions
         return new Response<T>(identityResult.Succeeded, default, errors);
     }
 
-    public static Response ToApplicationResponse(this SignInResult signInResult) =>
-        new Response(signInResult.Succeeded, default);
+    public static Response ToApplicationResponse(this SignInResult signInResult) => new(signInResult.Succeeded, default);
 
     public static Response<T> ToApplicationResponse<T>(this SignInResult signInResult, T? data = default) =>
-        new Response<T>(signInResult.Succeeded, default, default);
+        new(signInResult.Succeeded, default, default);
 }

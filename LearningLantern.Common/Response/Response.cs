@@ -6,11 +6,12 @@ public static class ResponseFactory
     public static Response Ok() => new(true, default);
 
 
-    public static Response<T> Fail<T>(Error error, T? data) => Fail(new[] {error}, data);
-    public static Response<T> Fail<T>(IEnumerable<Error> errors, T? data) => new(false, data, errors);
+    public static Response Fail() => new(false, default);
+    public static Response<T> Fail<T>() => new(false, default, default);
     public static Response Fail(Error error) => Fail(new[] {error});
     public static Response Fail(IEnumerable<Error>? errors) => new(false, errors);
-    public static Response Fail() => new(false, default);
+    public static Response<T> Fail<T>(Error error, T? data) => Fail(new[] {error}, data);
+    public static Response<T> Fail<T>(IEnumerable<Error> errors, T? data) => new(false, data, errors);
 }
 
 public class Response

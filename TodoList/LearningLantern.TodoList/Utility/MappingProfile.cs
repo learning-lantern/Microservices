@@ -7,7 +7,9 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<TaskDTO, TaskModel>().ForMember(
-            x => x.Id, opt => opt.Ignore());
+        CreateMap<AddTaskDTO, TaskModel>().ForMember(
+                x => x.Id, opt => opt.Ignore())
+            .ForMember(
+                x => x.UserId, opt => opt.Ignore());
     }
 }

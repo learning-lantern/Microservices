@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddAuthorizedSwaggerGen("Calendar.API", "v1");
+builder.Services.AddAuthorizedSwaggerGen("TodoList.API", "v1");
 
 builder.Services.AddApplication();
 
@@ -23,6 +23,10 @@ app.UseSerilogRequestLogging();
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.MapControllers();
 

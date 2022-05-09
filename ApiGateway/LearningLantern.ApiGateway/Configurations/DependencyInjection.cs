@@ -2,10 +2,9 @@ using LearningLantern.ApiGateway.Data;
 using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Repositories;
 using LearningLantern.ApiGateway.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using LearningLantern.Common.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using MMLib.SwaggerForOcelot.DependencyInjection;
 using Ocelot.DependencyInjection;
 using Ocelot.Provider.Polly;
@@ -47,40 +46,13 @@ public static class DependencyInjection
             var connectionString =
                 $"Server={myServerAddress};Database={myDatabase};User Id={myUsername};Password={password}";
             builder.UseSqlServer(connectionString);
-        });
-        services.AddIdentity<UserModel, IdentityRole>(setupAction =>
+        }).AddIdentity<UserModel, IdentityRole>(setupAction =>
         {
             setupAction.SignIn.RequireConfirmedAccount = true;
             setupAction.User.RequireUniqueEmail = true;
         }).AddEntityFrameworkStores<LearningLanternContext>().AddDefaultTokenProviders();
         return services;
     }
-
-    private static IServiceCollection AddAuthenticationConfigurations(this IServiceCollection services)
-    {
-        services.AddAuthentication(configureOptions =>
-        {
-            configureOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            configureOptions.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
-            configureOptions.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-            configureOptions.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-            configureOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            configureOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(configureOptions =>
-        {
-            configureOptions.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidIssuer = ConfigProvider.JWTValidIssuer,
-                ValidateAudience = true,
-                ValidAudience = ConfigProvider.JWTValidAudience,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = ConfigProvider.JWTIssuerSigningKey
-            };
-        });
-        return services;
-    }
-
 
     private static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {

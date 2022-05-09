@@ -1,11 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Web;
-using LearningLantern.ApiGateway.Configurations;
 using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Services;
 using LearningLantern.ApiGateway.Utility;
+using LearningLantern.Common.DependencyInjection;
 using LearningLantern.Common.Response;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -134,11 +134,11 @@ public class IdentityRepository : IIdentityRepository
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         var token = new JwtSecurityToken(
-            ConfigProvider.JWTValidIssuer,
-            ConfigProvider.JWTValidAudience,
+            JWT.ValidIssuer,
+            JWT.ValidAudience,
             claims,
             expires: DateTime.UtcNow.AddDays(30),
-            signingCredentials: new SigningCredentials(ConfigProvider.JWTIssuerSigningKey,
+            signingCredentials: new SigningCredentials(JWT.IssuerSigningKey,
                 SecurityAlgorithms.HmacSha256Signature)
         );
 

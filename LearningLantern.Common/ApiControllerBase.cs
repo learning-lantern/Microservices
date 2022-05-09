@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LearningLantern.Common;
 
 [ApiController]
-public class ApiControllerBase : ControllerBase
+public abstract class ApiControllerBase : ControllerBase
 {
     protected IActionResult ResponseToIActionResult(Response.Response response)
     {

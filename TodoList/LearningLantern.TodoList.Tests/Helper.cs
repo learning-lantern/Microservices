@@ -15,9 +15,14 @@ public static class Helper
         Faker.DefaultStrictMode = true;
     }
 
-    public static UpdateTaskDTO GenerateUpdateTaskDTO()
+    public static string GenerateRandomUserId()
     {
-        var task = new Faker<UpdateTaskDTO>()
+        return Guid.NewGuid().ToString();
+    }
+    
+    public static TaskProperties GenerateTaskProperties()
+    {
+        var task = new Faker<TaskProperties>()
             .RuleFor(t => t.Title, f => f.Random.String(1, 10))
             .RuleFor(t => t.Note, f => f.Random.String(1, 10))
             .RuleFor(t => t.DueDate, f => DateTime.UtcNow.OrNull(f))
@@ -28,34 +33,34 @@ public static class Helper
         return task;
     }
 
-    public static TaskDTO GenerateTaskDTO()
+
+    public static AddTaskDTO GenerateAddTaskDTO()
     {
-        var task = new Faker<TaskDTO>()
+        var task = new Faker<AddTaskDTO>()
             .RuleFor(t => t.Title, f => f.Random.String(1, 10))
             .RuleFor(t => t.Note, f => f.Random.String(1, 10))
             .RuleFor(t => t.DueDate, f => DateTime.UtcNow.OrNull(f))
             .RuleFor(t => t.MyDay, f => f.Random.Bool())
             .RuleFor(t => t.Completed, f => f.Random.Bool())
             .RuleFor(t => t.Important, f => f.Random.Bool())
-            .RuleFor(t => t.Repeated, f => f.Random.Number(1, 10))
-            .RuleFor(t => t.UserId, f => f.Random.String(1, 10));
+            .RuleFor(t => t.Repeated, f => f.Random.Number(1, 100))
+            .RuleFor(t => t.TempId, f => f.Random.String(1, 10));
         return task;
     }
+    
 
-    public static DbContextOptions UseInMemoryDatabaseOptions(string name)
+    public static TodoContextMock CreateTodoContextMock(string name)
     {
         var builder = new DbContextOptionsBuilder();
         builder.UseInMemoryDatabase(name);
-        return builder.Options;
+        return new TodoContextMock(builder.Options);
     }
-
-    public static TodoContextMock CreateTodoContextMock(string name) => new(UseInMemoryDatabaseOptions(name));
 
     public static IMapper CreateAutoMapper()
     {
         var configuration = new MapperConfiguration(config =>
             config.AddProfile<MappingProfile>());
-
+        configuration.AssertConfigurationIsValid();
         return configuration.CreateMapper();
     }
 }

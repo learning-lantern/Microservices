@@ -5,6 +5,6 @@ namespace LearningLantern.TodoList.Data;
 
 public interface ITodoContext
 {
-    public DbSet<TaskModel> Tasks { get; set; }
+    public DbSet<TaskModel> Tasks { get; }
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

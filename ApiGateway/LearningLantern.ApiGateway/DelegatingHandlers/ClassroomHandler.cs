@@ -3,7 +3,7 @@ using LearningLantern.ApiGateway.Repositories;
 using LearningLantern.ApiGateway.Services;
 using LearningLantern.Common;
 
-namespace LearningLantern.ApiGateway.Ocelot.DelegatingHandlers;
+namespace LearningLantern.ApiGateway.DelegatingHandlers;
 
 public class ClassroomHandler : DelegatingHandler
 {

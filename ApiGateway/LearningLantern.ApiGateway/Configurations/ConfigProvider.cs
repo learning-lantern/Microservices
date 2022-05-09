@@ -1,18 +1,8 @@
-﻿using System.Text;
-using Microsoft.IdentityModel.Tokens;
-
-namespace LearningLantern.ApiGateway.Configurations;
+﻿namespace LearningLantern.ApiGateway.Configurations;
 
 public static class ConfigProvider
 {
     public static IConfiguration Configuration = null!;
-
-    public static readonly string AuthenticationProviderKey = "JWTAuthentication";
-    public static string JWTValidAudience => Get("JWT:ValidAudience");
-    public static string JWTValidIssuer => Get("JWT:ValidIssuer");
-    public static string JWTSecret => Get("JWT:Secret");
-    public static SymmetricSecurityKey JWTIssuerSigningKey => new(Encoding.UTF8.GetBytes(JWTSecret));
-
 
     public static string MyEmail => Get("Email:Email", "");
     public static string MyPassword => Get("Email:Password", "");

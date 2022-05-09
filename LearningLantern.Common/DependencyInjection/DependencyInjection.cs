@@ -1,10 +1,37 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace LearningLantern.Common.DependencyInjection;
 
 public static class DependencyInjection
 {
+    public static IServiceCollection AddAuthenticationConfigurations(this IServiceCollection services)
+    {
+        services.AddAuthentication(configureOptions =>
+        {
+            configureOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            configureOptions.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
+            configureOptions.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            configureOptions.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+            configureOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            configureOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(configureOptions =>
+        {
+            configureOptions.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = JWT.ValidIssuer,
+                ValidateAudience = true,
+                ValidAudience = JWT.ValidAudience,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = JWT.IssuerSigningKey
+            };
+        });
+        return services;
+    }
+
     public static void AddAuthorizedSwaggerGen(this IServiceCollection services, string title, string version)
     {
         services.AddSwaggerGen(option =>
