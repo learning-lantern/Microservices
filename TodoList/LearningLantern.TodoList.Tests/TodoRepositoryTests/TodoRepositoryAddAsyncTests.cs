@@ -1,3 +1,4 @@
+using FluentAssertions;
 using LearningLantern.TodoList.Data.Models;
 using Xunit;
 
@@ -32,8 +33,9 @@ public class TodoRepositoryAddAsyncTests : TodoRepositoryTestSetup
         var response = await TodoRepository.AddAsync(_userId, _randomTask);
         //assert
         var taskModel = Assert.Single(Context.Tasks);
-        Assert.Equal(taskModel, response.Data!.Task);
-        Assert.True(taskModel.Equals(_randomTask));
+        taskModel.Should().BeEquivalentTo(response.Data!.Task);
+        taskModel.Should().BeEquivalentTo(_randomTask,
+            options => options.Excluding(x => x.TempId));
     }
 
     [Fact]

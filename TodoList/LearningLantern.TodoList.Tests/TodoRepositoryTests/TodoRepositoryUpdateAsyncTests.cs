@@ -1,3 +1,4 @@
+using FluentAssertions;
 using LearningLantern.TodoList.Data.Models;
 using Xunit;
 
@@ -34,6 +35,6 @@ public class TodoRepositoryUpdateAsyncTests : TodoRepositoryTestSetup
         var response = await TodoRepository.UpdateAsync(_taskModel.Id, randomTaskProperties);
         //assert
         Assert.True(response.Succeeded);
-        Assert.True(_taskModel.Equals(randomTaskProperties));
+        _taskModel.Should().BeEquivalentTo(randomTaskProperties);
     }
 }

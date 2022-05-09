@@ -1,3 +1,4 @@
+using FluentAssertions;
 using LearningLantern.TodoList.Data.Models;
 using Xunit;
 
@@ -14,6 +15,6 @@ public class TaskModelTests
         // act
         task.Update(taskProperties);
         // assert
-        Assert.True(task.Equals(taskProperties));
+        task.Should().BeEquivalentTo(taskProperties);
     }
 }

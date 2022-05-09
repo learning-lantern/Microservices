@@ -17,12 +17,4 @@ public class TaskModel : TaskProperties
         Important = taskProperties.Important;
         Repeated = taskProperties.Repeated;
     }
-
-    public override IEnumerable<object?> GetEqualityComponents()
-        => base.GetEqualityComponents().Append(Id).Append(UserId);
-
-    public bool Equals(TaskProperties other)
-    {
-        return base.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
-    }
 }
