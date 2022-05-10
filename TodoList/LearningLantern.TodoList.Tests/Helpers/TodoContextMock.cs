@@ -4,7 +4,7 @@ using LearningLantern.TodoList.Data;
 using LearningLantern.TodoList.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LearningLantern.TodoList.Tests;
+namespace LearningLantern.TodoList.Tests.Helpers;
 
 public class TodoContextMock : DbContext, ITodoContext
 {

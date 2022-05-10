@@ -1,18 +1,16 @@
 using LearningLantern.ApiGateway.Data.DTOs;
+using LearningLantern.Common.Response;
 
 namespace LearningLantern.ApiGateway.Repositories;
 
 public interface IClassroomRepository
 {
-    public Task<List<ClassroomDTO>> GetAsync(string userId);
+    public Task<Response<IEnumerable<ClassroomDTO>>> GetAllAsync();
+    public Task<Response<IEnumerable<ClassroomDTO>>> GetAsync(string userId);
+    public Task<Response<ClassroomDTO>> AddAsync(AddClassroomDTO addClassroomDTO);
+    public Task<Response> UpdateAsync(ClassroomDTO classroomDTO);
+    public Task<Response> RemoveAsync(int classroomId);
+    public Task<Response> AddUserAsync(int classroomId, string userId);
+    public Task<Response> RemoveUserAsync(int classroomId, string userId);
 
-    public Task<int?> AddAsync(AddClassroomDTO addClassroomDTO, string userId);
-
-    public Task<bool?> AddUserAsync(int classroomId, string requestUserId, string userId);
-
-    public Task<bool?> UpdateAsync(ClassroomDTO classroomDTO, string userId);
-
-    public Task<bool?> RemoveUserAsync(int classroomId, string requestUserId, string userId);
-
-    public Task<bool?> RemoveAsync(int classroomId, string userId);
 }

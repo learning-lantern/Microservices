@@ -37,7 +37,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddDatabaseConfiguration(this IServiceCollection services)
     {
-        services.AddDbContext<LearningLanternContext>(builder =>
+        services.AddDbContext<ILearningLanternContext, LearningLanternContext>(builder =>
         {
             var myServerAddress = "learning-lantern.database.windows.net";
             var myDatabase = "ApiGateway";

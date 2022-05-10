@@ -4,18 +4,5 @@ namespace LearningLantern.ApiGateway.Data.DTOs;
 
 public class ClassroomDTO : AddClassroomDTO
 {
-    public ClassroomDTO()
-    {
-    }
-
-    public ClassroomDTO(AddClassroomDTO addTaskDTO) : base(addTaskDTO)
-    {
-    }
-
-    public ClassroomDTO(ClassroomDTO classroomDTO) : base(classroomDTO)
-    {
-        Id = classroomDTO.Id;
-    }
-
-    [Required] [Key] public int Id { get; set; }
+    [Key] [Required] public int Id { get; set; }
 }

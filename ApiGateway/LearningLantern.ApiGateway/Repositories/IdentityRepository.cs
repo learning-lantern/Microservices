@@ -52,7 +52,7 @@ public class IdentityRepository : IIdentityRepository
         {
             var user = await _userManager.FindByEmailAsync(userEmail);
 
-            if (user == null) return ResponseFactory.Fail(ErrorsList.UserEmailNotFound());
+            if (user == null) return ResponseFactory.Fail(ErrorsList.UserEmailNotFound(userEmail));
 
             var token = HttpUtility.UrlEncode(await _userManager.GenerateEmailConfirmationTokenAsync(user));
 
@@ -75,19 +75,19 @@ public class IdentityRepository : IIdentityRepository
     public async Task<Response<SignInResponseDTO>> SignInAsync(SignInDTO signInDTO)
     {
         var validateResult = Validator.ValidateSignInDTO(signInDTO);
-        if (validateResult.Count > 0) return ResponseFactory.Fail<SignInResponseDTO>(validateResult, null);
+        if (validateResult.Count > 0) return ResponseFactory.Fail<SignInResponseDTO>(validateResult);
 
         if ((await FindByEmailAsync(signInDTO.Email)).Succeeded == false)
-            return ResponseFactory.Fail<SignInResponseDTO>(ErrorsList.UserEmailNotFound(), null);
+            return ResponseFactory.Fail<SignInResponseDTO>(ErrorsList.UserEmailNotFound(signInDTO.Email));
 
         var passwordSignInAsyncResult = await _signInManager.PasswordSignInAsync(
             signInDTO.Email, signInDTO.Password,
             true, false);
 
         if (passwordSignInAsyncResult.IsNotAllowed)
-            return ResponseFactory.Fail<SignInResponseDTO>(ErrorsList.SignInNotAllowed(), null);
+            return ResponseFactory.Fail<SignInResponseDTO>(ErrorsList.SignInNotAllowed());
         if (passwordSignInAsyncResult.Succeeded == false)
-            return ResponseFactory.Fail<SignInResponseDTO>(ErrorsList.SignInFailed(), null);
+            return ResponseFactory.Fail<SignInResponseDTO>(ErrorsList.SignInFailed());
 
 
         var user = await _userManager.FindByEmailAsync(signInDTO.Email);
@@ -103,7 +103,7 @@ public class IdentityRepository : IIdentityRepository
     {
         var user = await _userManager.FindByIdAsync(userId);
 
-        if (user is null) return ResponseFactory.Fail(ErrorsList.UserIdNotFound());
+        if (user is null) return ResponseFactory.Fail(ErrorsList.UserIdNotFound(userId));
 
         var result = await _userManager.ConfirmEmailAsync(user, token);
 
@@ -117,7 +117,7 @@ public class IdentityRepository : IIdentityRepository
         var user = await _userManager.FindByEmailAsync(userEmail);
 
         if (user is null || user.EmailConfirmed == false)
-            return ResponseFactory.Fail<UserDTO>(ErrorsList.UserEmailNotFound(), default);
+            return ResponseFactory.Fail<UserDTO>(ErrorsList.UserEmailNotFound(userEmail));
         return ResponseFactory.Ok(new UserDTO(user));
     }
 

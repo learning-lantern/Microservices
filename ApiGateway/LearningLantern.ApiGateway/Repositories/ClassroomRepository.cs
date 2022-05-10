@@ -1,94 +1,106 @@
+using AutoMapper;
 using LearningLantern.ApiGateway.Data;
 using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.ApiGateway.Data.Models;
+using LearningLantern.ApiGateway.Utility;
+using LearningLantern.Common.Response;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.ApiGateway.Repositories;
 
 public class ClassroomRepository : IClassroomRepository
 {
+    private readonly ILearningLanternContext _context;
     private readonly IIdentityRepository _identityRepository;
-    private readonly LearningLanternContext _learningLanternContext;
+    private readonly IMapper _mapper;
 
-    public ClassroomRepository(IIdentityRepository identityRepository, LearningLanternContext learningLanternContext)
+    public ClassroomRepository(
+        ILearningLanternContext context, IMapper mapper, IIdentityRepository identityRepository)
     {
+        _context = context;
+        _mapper = mapper;
         _identityRepository = identityRepository;
-        _learningLanternContext = learningLanternContext;
     }
 
-    public async Task<List<ClassroomDTO>> GetAsync(string userId) => await _learningLanternContext.ClassroomUsers
-        .Where(classroomUser => classroomUser.UserId == userId)
-        .Select(classroomUser => new ClassroomDTO(classroomUser.Classroom)).ToListAsync();
+    public async Task<Response<IEnumerable<ClassroomDTO>>> GetAsync(string userId)
+    {
+        var result = await _context.ClassroomUsers
+            .Where(classroomUser => classroomUser.UserId == userId)
+            .Select(classroomUser => _mapper.Map<ClassroomDTO>(classroomUser.Classroom)).ToListAsync();
+        return ResponseFactory.Ok<IEnumerable<ClassroomDTO>>(result);
+    }
 
-    public async Task<int?> AddAsync(AddClassroomDTO addClassroomDTO, string userId)
+    public async Task<Response<IEnumerable<ClassroomDTO>>> GetAllAsync()
+    {
+        var result = await _context.Classrooms
+            .Select(classroom => _mapper.Map<ClassroomDTO>(classroom)).ToListAsync();
+        return ResponseFactory.Ok<IEnumerable<ClassroomDTO>>(result);
+    }
+
+    public async Task<Response<ClassroomDTO>> AddAsync(AddClassroomDTO addClassroomDTO)
+    {
+        var tmpClassroom = _mapper.Map<ClassroomModel>(addClassroomDTO);
+        var classroom = await _context.Classrooms.AddAsync(tmpClassroom);
+
+        return await _context.SaveChangesAsync() != 0
+            ? ResponseFactory.Ok(_mapper.Map<ClassroomDTO>(classroom.Entity))
+            : ResponseFactory.Fail<ClassroomDTO>();
+    }
+
+    public async Task<Response> AddUserAsync(int classroomId, string userId)
     {
         var user = await _identityRepository.FindUserByIdAsync(userId);
+        var classroom = await GetClassroomById(classroomId);
 
-        if (user == null) return null;
+        if (user is not null && classroom is not null)
+        {
+            await _context.ClassroomUsers.AddAsync(new ClassroomUserModel(classroomId, userId));
+            var result = await _context.SaveChangesAsync();
+            if (result != 0) return ResponseFactory.Ok();
+        }
 
-        var classroom = await _learningLanternContext.Classrooms.AddAsync(new ClassroomModel(addClassroomDTO));
+        var errors = new List<Error>();
+        if (user is null) errors.Add(ErrorsList.UserIdNotFound(userId));
+        if (classroom is null) errors.Add(ErrorsList.ClassroomIdNotFound(classroomId));
 
-        if (classroom == null || await _learningLanternContext.SaveChangesAsync() == 0) return 0;
-
-        var classroomUser =
-            await _learningLanternContext.ClassroomUsers.AddAsync(new ClassroomUserModel(classroom.Entity.Id, userId));
-
-        return classroomUser != null && await _learningLanternContext.SaveChangesAsync() != 0 ? classroom.Entity.Id : 0;
+        return ResponseFactory.Fail(errors);
     }
 
-    public async Task<bool?> AddUserAsync(int classroomId, string requestUserId, string userId)
+    public async Task<Response> UpdateAsync(ClassroomDTO classroomDTO)
     {
-        var classroomUser = await _learningLanternContext.ClassroomUsers.Where(classroomUser =>
-            classroomUser.ClassroomId == classroomId && classroomUser.UserId == requestUserId).FirstOrDefaultAsync();
+        var classroom = await GetClassroomById(classroomDTO.Id);
 
-        if (classroomUser == null) return null;
+        if (classroom == null) return ResponseFactory.Fail(ErrorsList.ClassroomIdNotFound(classroomDTO.Id));
 
-        var addAsyncResult =
-            await _learningLanternContext.ClassroomUsers.AddAsync(new ClassroomUserModel(classroomId, userId));
+        classroom.Update(classroomDTO);
+        _context.Classrooms.Update(classroom);
 
-        return addAsyncResult != null && await _learningLanternContext.SaveChangesAsync() != 0;
+        return await _context.SaveChangesAsync() != 0 ? ResponseFactory.Ok() : ResponseFactory.Fail();
     }
 
-    public async Task<bool?> UpdateAsync(ClassroomDTO classroomDTO, string userId)
+    public async Task<Response> RemoveUserAsync(int classroomId, string userId)
     {
-        var classroomUser = await _learningLanternContext.ClassroomUsers
-            .Where(classroomUser => classroomUser.ClassroomId == classroomDTO.Id && classroomUser.UserId == userId)
-            .FirstOrDefaultAsync();
+        var classroomUser = await _context.ClassroomUsers
+            .FirstOrDefaultAsync(
+                classroomUser => classroomUser.UserId == userId && classroomUser.ClassroomId == classroomId);
 
-        if (classroomUser == null) return null;
+        if (classroomUser is null) return ResponseFactory.Ok();
 
-        var classroom = _learningLanternContext.Classrooms.Update(new ClassroomModel(classroomDTO));
+        _context.ClassroomUsers.Remove(classroomUser);
 
-        return classroom != null && await _learningLanternContext.SaveChangesAsync() != 0;
+        return await _context.SaveChangesAsync() != 0 ? ResponseFactory.Ok() : ResponseFactory.Fail();
     }
 
-    public async Task<bool?> RemoveUserAsync(int classroomId, string requestUserId, string userId)
+    public async Task<Response> RemoveAsync(int classroomId)
     {
-        var requestUser = await _identityRepository.FindUserByIdAsync(requestUserId);
+        var classroom = await GetClassroomById(classroomId);
 
-        if (requestUser == null) return null;
+        if (classroom is null) return ResponseFactory.Fail(ErrorsList.ClassroomIdNotFound(classroomId));
 
-        var classroomUser = await _learningLanternContext.ClassroomUsers
-            .Where(classroomUser => classroomUser.UserId == userId && classroomUser.ClassroomId == classroomId)
-            .FirstOrDefaultAsync();
-
-        if (classroomUser == null) return null;
-
-        classroomUser = _learningLanternContext.ClassroomUsers.Remove(classroomUser).Entity;
-
-        return classroomUser != null && await _learningLanternContext.SaveChangesAsync() != 0;
+        _context.Classrooms.Remove(classroom);
+        return await _context.SaveChangesAsync() != 0 ? ResponseFactory.Ok() : ResponseFactory.Fail();
     }
 
-    public async Task<bool?> RemoveAsync(int classroomId, string userId)
-    {
-        var classroomUser = await _learningLanternContext.ClassroomUsers
-            .Where(classroomUser => classroomUser.ClassroomId == classroomId && classroomUser.UserId == userId)
-            .FirstOrDefaultAsync();
-
-        if (classroomUser == null) return null;
-
-        var classroom = _learningLanternContext.Classrooms.Remove(classroomUser.Classroom).Entity;
-
-        return classroom != null && await _learningLanternContext.SaveChangesAsync() != 0;
-    }
+    public Task<ClassroomModel?> GetClassroomById(int classroomId)
+        => _context.Classrooms.FirstOrDefaultAsync(classroom => classroom.Id == classroomId);
 }

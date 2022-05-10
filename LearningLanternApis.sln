@@ -23,6 +23,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningLantern.ApiGateway", "ApiGateway\LearningLantern.ApiGateway\LearningLantern.ApiGateway.csproj", "{B0C26116-8A91-4625-9C95-B4D35A75DA6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningLantern.ApiGateway.Tests", "ApiGateway\LearningLantern.ApiGateway.Tests\LearningLantern.ApiGateway.Tests.csproj", "{133B8134-4756-4B74-A6C3-00CC83453075}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{B0C26116-8A91-4625-9C95-B4D35A75DA6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0C26116-8A91-4625-9C95-B4D35A75DA6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0C26116-8A91-4625-9C95-B4D35A75DA6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{133B8134-4756-4B74-A6C3-00CC83453075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{133B8134-4756-4B74-A6C3-00CC83453075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{133B8134-4756-4B74-A6C3-00CC83453075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{133B8134-4756-4B74-A6C3-00CC83453075}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{AA1FD330-D003-46F4-82FD-D33BFA2960AB} = {135CF086-C105-4619-8ADF-A781FFF65DBA}
 		{D8446349-E4F5-49C8-997D-7EC48DA51B12} = {135CF086-C105-4619-8ADF-A781FFF65DBA}
 		{B0C26116-8A91-4625-9C95-B4D35A75DA6C} = {F2F40C5B-1854-415C-B0EF-12DF198D4047}
+		{133B8134-4756-4B74-A6C3-00CC83453075} = {F2F40C5B-1854-415C-B0EF-12DF198D4047}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {147AED9E-4B93-411E-8F46-7ABDA73A783C}

@@ -5,7 +5,7 @@ using LearningLantern.TodoList.Data.Models;
 using LearningLantern.TodoList.Utility;
 using Microsoft.EntityFrameworkCore;
 
-namespace LearningLantern.TodoList.Tests;
+namespace LearningLantern.TodoList.Tests.Helpers;
 
 public static class Helper
 {
@@ -15,11 +15,8 @@ public static class Helper
         Faker.DefaultStrictMode = true;
     }
 
-    public static string GenerateRandomUserId()
-    {
-        return Guid.NewGuid().ToString();
-    }
-    
+    public static string GenerateRandomUserId() => Guid.NewGuid().ToString();
+
     public static TaskProperties GenerateTaskProperties()
     {
         var task = new Faker<TaskProperties>()
@@ -47,7 +44,7 @@ public static class Helper
             .RuleFor(t => t.TempId, f => f.Random.String(1, 10));
         return task;
     }
-    
+
 
     public static TodoContextMock CreateTodoContextMock(string name)
     {

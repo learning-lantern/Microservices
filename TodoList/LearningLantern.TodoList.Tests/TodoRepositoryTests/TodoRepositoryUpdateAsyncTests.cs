@@ -1,5 +1,6 @@
 using FluentAssertions;
 using LearningLantern.TodoList.Data.Models;
+using LearningLantern.TodoList.Tests.Helpers;
 using Xunit;
 
 namespace LearningLantern.TodoList.Tests.TodoRepositoryTests;
@@ -7,14 +8,16 @@ namespace LearningLantern.TodoList.Tests.TodoRepositoryTests;
 public class TodoRepositoryUpdateAsyncTests : TodoRepositoryTestSetup
 {
     private readonly TaskModel _taskModel;
-    public TodoRepositoryUpdateAsyncTests() : base()
+
+    public TodoRepositoryUpdateAsyncTests()
     {
         var userId = Helper.GenerateRandomUserId();
         var randomTask = Helper.GenerateAddTaskDTO();
-        var response = (TodoRepository.AddAsync(userId, randomTask)).Result;
+        var response = TodoRepository.AddAsync(userId, randomTask).Result;
         _taskModel = response.Data!.Task;
         Context.CountCalls = 0;
     }
+
     [Fact]
     public async void ShouldCallSaveChangesOnlyOne()
     {

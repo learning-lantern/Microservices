@@ -6,7 +6,7 @@ public class TaskModel : TaskProperties
 {
     [Required] [Key] public int Id { get; set; }
     [Required] public string UserId { get; set; }
-    
+
     public void Update(TaskProperties taskProperties)
     {
         Title = taskProperties.Title;

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using LearningLantern.Common;
 
 namespace LearningLantern.TodoList.Data.Models;
 

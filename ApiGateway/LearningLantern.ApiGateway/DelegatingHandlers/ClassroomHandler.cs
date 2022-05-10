@@ -29,8 +29,8 @@ public class ClassroomHandler : DelegatingHandler
         HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var classroomId = int.Parse(request.GetQueryString("classroomId") ?? "0");
-        var userId = _currentUserService.UserId ?? "";
-        var classroom = (await _classroomRepository.GetAsync(userId)).FirstOrDefault(dto => dto.Id == classroomId);
+        var userId = _currentUserService.UserId ?? string.Empty;
+        var classroom = (await _classroomRepository.GetAsync(userId)).Data!.FirstOrDefault(dto => dto.Id == classroomId);
 
         if (classroom is not null) return await base.SendAsync(request, cancellationToken);
 

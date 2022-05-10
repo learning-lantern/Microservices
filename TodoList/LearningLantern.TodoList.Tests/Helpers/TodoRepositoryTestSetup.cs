@@ -1,7 +1,7 @@
 using System;
 using LearningLantern.TodoList.Repositories;
 
-namespace LearningLantern.TodoList.Tests.TodoRepositoryTests;
+namespace LearningLantern.TodoList.Tests.Helpers;
 
 public abstract class TodoRepositoryTestSetup : IDisposable
 {

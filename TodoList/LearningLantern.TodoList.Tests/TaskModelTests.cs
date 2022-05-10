@@ -1,5 +1,6 @@
 using FluentAssertions;
 using LearningLantern.TodoList.Data.Models;
+using LearningLantern.TodoList.Tests.Helpers;
 using Xunit;
 
 namespace LearningLantern.TodoList.Tests;

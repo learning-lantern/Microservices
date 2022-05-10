@@ -1,20 +1,27 @@
-﻿using LearningLantern.ApiGateway.Data.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
+using LearningLantern.ApiGateway.Data;
+using LearningLantern.ApiGateway.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LearningLantern.ApiGateway.Data;
+namespace LearningLantern.ApiGateway.Tests.Helpers;
 
-/// <summary>
-///     User data context class for Entity Framework Core.
-/// </summary>
-public class LearningLanternContext : IdentityDbContext<UserModel>, ILearningLanternContext
+public class LearningLanternContextMock : DbContext, ILearningLanternContext
 {
-    public LearningLanternContext(DbContextOptions option) : base(option)
+    public LearningLanternContextMock(DbContextOptions option) : base(option)
     {
     }
 
-    public DbSet<ClassroomModel> Classrooms { get; set; } = null!;
-    public DbSet<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
+    public int CountCalls { get; internal set; }
+
+    public DbSet<ClassroomModel> Classrooms { get; set; }
+    public DbSet<ClassroomUserModel> ClassroomUsers { get; set; }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        CountCalls++;
+        return base.SaveChangesAsync(cancellationToken);
+    }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -4,17 +4,11 @@ namespace LearningLantern.ApiGateway.Data.Models;
 
 public class ClassroomModel : ClassroomDTO
 {
-    public ClassroomModel()
-    {
-    }
-
-    public ClassroomModel(ClassroomDTO classroomDTO) : base(classroomDTO)
-    {
-    }
-
-    public ClassroomModel(AddClassroomDTO addClassroomDTO) : base(addClassroomDTO)
-    {
-    }
-
     public ICollection<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
+
+    public void Update(AddClassroomDTO addClassroomDTO)
+    {
+        Name = addClassroomDTO.Name;
+        Description = addClassroomDTO.Description;
+    }
 }

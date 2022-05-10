@@ -1,109 +1,103 @@
-﻿using System.Security.Claims;
-using LearningLantern.ApiGateway.Data.DTOs;
-using LearningLantern.ApiGateway.Helpers;
+﻿using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.ApiGateway.Repositories;
+using LearningLantern.ApiGateway.Services;
+using LearningLantern.ApiGateway.Utility;
+using LearningLantern.Common;
+using LearningLantern.Common.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace LearningLantern.ApiGateway.Controllers;
 
 [Route("api/[controller]/[action]")]
-[ApiController]
 [Authorize]
-public class ClassroomController : ControllerBase
+public class ClassroomController : ApiControllerBase
 {
     private readonly IClassroomRepository _classroomRepository;
+    private readonly ICurrentUserService _currentUserService;
 
-    public ClassroomController(IClassroomRepository classroomRepository)
+    public ClassroomController(IClassroomRepository classroomRepository, ICurrentUserService currentUserService)
     {
         _classroomRepository = classroomRepository;
+        _currentUserService = currentUserService;
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(Response<IEnumerable<ClassroomDTO>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        var userId = _currentUserService.UserId ?? string.Empty;
 
-        var classrooms = await _classroomRepository.GetAsync(userId);
+        var response = await _classroomRepository.GetAsync(userId);
 
-        return Ok(JsonConvert.SerializeObject(classrooms));
+        return ResponseToIActionResult(response);
+    }
+
+    [HttpGet]
+    [Authorize(Roles = Role.UniversityAdmin)]
+    [ProducesResponseType(typeof(Response<IEnumerable<ClassroomDTO>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAll()
+    {
+        var response = await _classroomRepository.GetAllAsync();
+
+        return ResponseToIActionResult(response);
     }
 
     [HttpPost]
     [Authorize(Roles = Role.UniversityAdmin)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] AddClassroomDTO addClassroomDTO)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        var response = await _classroomRepository.AddAsync(addClassroomDTO);
 
-        var addAsyncResult = await _classroomRepository.AddAsync(addClassroomDTO, userId);
-
-        if (addAsyncResult == null) return NotFound(JsonConvert.SerializeObject(Message.UserIdNotFound));
-
-        if (addAsyncResult.Value > 0)
-            return Ok(JsonConvert.SerializeObject(new ClassroomDTO(addClassroomDTO) {Id = addAsyncResult.Value}));
-
-        return BadRequest();
+        return ResponseToIActionResult(response);
     }
 
     [HttpPost]
     [Authorize(Roles = Role.UniversityAdmin)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddUser([FromQuery] int classroomId, [FromQuery] string userId)
     {
-        var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-
-        var addUserAsyncResult = await _classroomRepository.AddUserAsync(classroomId, requestUserId, userId);
-
-        if (addUserAsyncResult == null) return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
-
-        if (addUserAsyncResult.Value) return Ok(JsonConvert.SerializeObject(Message.AddClassroomUser(userId, classroomId)));
-
-        return BadRequest();
+        var response = await _classroomRepository.AddUserAsync(classroomId, userId);
+        return ResponseToIActionResult(response);
     }
 
     [HttpPut]
     [Authorize(Roles = Role.UniversityAdmin)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update([FromBody] ClassroomDTO classroomDTO)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        var response = await _classroomRepository.UpdateAsync(classroomDTO);
 
-        var updateAsyncResult = await _classroomRepository.UpdateAsync(classroomDTO, userId);
-
-        if (updateAsyncResult == null) return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
-
-        if (updateAsyncResult.Value) return Ok(JsonConvert.SerializeObject(classroomDTO));
-
-        return BadRequest();
+        return ResponseToIActionResult(response);
     }
 
     [HttpDelete]
     [Authorize(Roles = Role.UniversityAdmin)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RemoveUser([FromQuery] int classroomId, [FromQuery] string userId)
     {
-        var requestUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        var response = await _classroomRepository.RemoveUserAsync(classroomId, userId);
 
-        var removeUserAsyncResult = await _classroomRepository.RemoveUserAsync(classroomId, requestUserId, userId);
-
-        if (removeUserAsyncResult == null) return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
-
-        if (removeUserAsyncResult.Value)
-            return Ok(JsonConvert.SerializeObject(Message.RemoveClassroomUser(userId, classroomId)));
-
-        return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
+        return ResponseToIActionResult(response);
     }
 
     [HttpDelete]
     [Authorize(Roles = Role.UniversityAdmin)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Remove([FromQuery] int classroomId)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        var response = await _classroomRepository.RemoveAsync(classroomId);
 
-        var removeAsyncResult = await _classroomRepository.RemoveAsync(classroomId, userId);
-
-        if (removeAsyncResult == null) return NotFound(JsonConvert.SerializeObject(Message.ClassroomNotFound));
-
-        if (removeAsyncResult.Value) return Ok(JsonConvert.SerializeObject(Message.ClassroomRemoved));
-
-        return BadRequest();
+        return ResponseToIActionResult(response);
     }
 }

@@ -1,18 +1,27 @@
+using System.Threading.Tasks;
+using LearningLantern.TodoList.Tests.Helpers;
+using LearningLantern.TodoList.Utility;
 using Xunit;
 
 namespace LearningLantern.TodoList.Tests.TodoRepositoryTests;
 
 public class TodoRepositoryRemoveAsyncTests : TodoRepositoryTestSetup
 {
-    [Fact]
-    public async void ShouldCallSaveChangesOnlyOneWhenFound()
+    async private Task<int> AddTaskToRepository()
     {
-        //arrange
         var userId = Helper.GenerateRandomUserId();
         var randomTask = Helper.GenerateAddTaskDTO();
         var response = await TodoRepository.AddAsync(userId, randomTask);
         var id = response.Data!.Task.Id;
         Context.CountCalls = 0;
+        return id;
+    }
+
+    [Fact]
+    public async void ShouldCallSaveChangesOnlyOneWhenFound()
+    {
+        //arrange
+        var id = await AddTaskToRepository();
         //act
         await TodoRepository.RemoveAsync(id);
         //assert
@@ -20,7 +29,7 @@ public class TodoRepositoryRemoveAsyncTests : TodoRepositoryTestSetup
     }
 
     [Fact]
-    public async void ShouldCallSaveChangesOnlyZeroWhenNotFound()
+    public async void ShouldCallSaveChangesZeroTimesWhenNotFound()
     {
         //arrange
         //act
@@ -31,18 +40,26 @@ public class TodoRepositoryRemoveAsyncTests : TodoRepositoryTestSetup
     }
 
     [Fact]
-    public async void TestRemoveTask()
+    public async void TestRemoveTaskWhenFound()
     {
         //arrange
-        var userId = Helper.GenerateRandomUserId();
-        var randomTask = Helper.GenerateAddTaskDTO();
-        var result = await TodoRepository.AddAsync(userId, randomTask);
-        var id = result.Data!.Task.Id;
-        Context.CountCalls = 0;
+        var id = await AddTaskToRepository();
         //act
         var response = await TodoRepository.RemoveAsync(id);
         //assert
         Assert.True(response.Succeeded);
         Assert.Empty(Context.Tasks);
+    }
+
+    [Fact]
+    public async void TestRemoveTaskWhenNotFound()
+    {
+        //arrange
+        //act
+        var response = await TodoRepository.RemoveAsync(123);
+        //assert
+        Assert.False(response.Succeeded);
+        Assert.NotNull(response.Errors);
+        Assert.Contains(response.Errors!, e => e.ErrorCode == nameof(ErrorsList.TaskNotFound));
     }
 }
