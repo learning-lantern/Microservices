@@ -23,7 +23,7 @@ variables:
   containerRegistry: 'learninglantern.azurecr.io'
   azureSubscription: 'Azure for Students(29888e76-9801-45fc-8a98-c46b410b0743)'
   azureContainerRegistry: '{"loginServer":"learninglantern.azurecr.io", "id" : "/subscriptions/29888e76-9801-45fc-8a98-c46b410b0743/resourceGroups/learning-lantern/providers/Microsoft.ContainerRegistry/registries/learninglantern"}'
-  azureAppName : 'learing-lantern-api'
+  azureAppName : 'learning-lantern'
 
 stages:
   - stage: Docker
