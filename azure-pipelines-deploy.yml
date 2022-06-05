@@ -47,6 +47,7 @@ stages:
               azureSubscription: $(azureSubscription)
               azureContainerRegistry: $(azureContainerRegistry)
               dockerComposeFile: '**/docker-compose.yml'
+
           - task: AzureWebAppContainer@1
             inputs:
               azureSubscription: $(azureSubscription)
