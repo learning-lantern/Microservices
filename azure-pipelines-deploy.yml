@@ -21,9 +21,9 @@ variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'b5be6472-cd28-4b34-929d-1b4fc56d54e6'
   containerRegistry: 'learninglantern.azurecr.io'
-  azureSubscription: 'Azure for Students(29888e76-9801-45fc-8a98-c46b410b0743)'
+  azureSubscription: 'Learning Lantern Group'
   azureContainerRegistry: '{"loginServer":"learninglantern.azurecr.io", "id" : "/subscriptions/29888e76-9801-45fc-8a98-c46b410b0743/resourceGroups/learning-lantern/providers/Microsoft.ContainerRegistry/registries/learninglantern"}'
-  azureAppName : 'learning-lantern'
+  dockerComposeFile: '**/docker-compose.yml'
 
 stages:
   - stage: Docker
@@ -39,18 +39,18 @@ stages:
               action: 'Build services'
               azureSubscription: $(azureSubscription)
               azureContainerRegistry: $(azureContainerRegistry)
-              dockerComposeFile: '**/docker-compose.yml'
+              dockerComposeFile: $(dockerComposeFile)
           - task: DockerCompose@0
             displayName: Push services
             inputs:
               action: 'Push services'
               azureSubscription: $(azureSubscription)
               azureContainerRegistry: $(azureContainerRegistry)
-              dockerComposeFile: '**/docker-compose.yml'
+              dockerComposeFile: $(dockerComposeFile)
 
           - task: AzureWebAppContainer@1
             inputs:
               azureSubscription: $(azureSubscription)
-              appName: $(azureAppName)
-              multicontainerConfigFile: '**/docker-compose.yml'
+              appName: 'learning-lantern'
+              multicontainerConfigFile: $(dockerComposeFile)
 
