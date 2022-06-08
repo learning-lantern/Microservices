@@ -15,7 +15,7 @@ public abstract class MappingTestsSetup
 
         _mapper = _configuration.CreateMapper();
     }
-    
+
     [Theory]
     public virtual void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
     {
@@ -23,13 +23,13 @@ public abstract class MappingTestsSetup
 
         _mapper.Map(instance, source, destination);
     }
-    
+
     [Fact]
     public void ShouldHaveValidConfiguration()
     {
         _configuration.AssertConfigurationIsValid();
     }
-    
+
     private static object GetInstanceOf(Type type)
     {
         if (type.GetConstructor(Type.EmptyTypes) != null)
@@ -38,4 +38,3 @@ public abstract class MappingTestsSetup
         return FormatterServices.GetUninitializedObject(type);
     }
 }
-

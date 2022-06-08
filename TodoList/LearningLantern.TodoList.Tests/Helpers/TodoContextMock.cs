@@ -13,7 +13,6 @@ public class TodoContextMock : DbContext, ITodoContext
     }
 
     public int CountCalls { get; internal set; }
-
     public DbSet<TaskModel> Tasks { get; set; }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
