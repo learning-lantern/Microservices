@@ -49,6 +49,6 @@ stages:
           - task: AzureWebAppContainer@1
             inputs:
               azureSubscription: $(azureSubscription)
-              appName: 'learninglanternapi'
+              appName: 'learning-lantern'
               multicontainerConfigFile: '**/docker-compose.yml'
 
