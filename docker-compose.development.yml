@@ -1,6 +1,13 @@
 version: '3.4'
 
 services:
+  Seq:
+    image: datalust/seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "6001:80"
+
   TodoList:
     image: learninglantern.todolist
     build:
@@ -37,10 +44,3 @@ services:
       - TodoList
       - Calendar
       - Seq
-
-  Seq:
-    image: datalust/seq
-    environment:
-      - ACCEPT_EULA=Y
-    ports:
-      - "6001:80"

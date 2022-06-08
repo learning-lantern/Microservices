@@ -14,10 +14,6 @@
         "Post",
         "Get"
       ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "JWTAuthentication",
-        "AllowedScopes": []
-      },
       "Priority": 1
     },
     {
@@ -33,10 +29,6 @@
       "UpstreamHttpMethod": [
         "Get"
       ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "JWTAuthentication",
-        "AllowedScopes": []
-      },
       "Priority": 1
     },
     {
@@ -54,10 +46,6 @@
         "Put",
         "Delete"
       ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "JWTAuthentication",
-        "AllowedScopes": []
-      },
       "Priority": 1
     }
   ]

@@ -12,5 +12,4 @@ public interface IClassroomRepository
     public Task<Response> RemoveAsync(int classroomId);
     public Task<Response> AddUserAsync(int classroomId, string userId);
     public Task<Response> RemoveUserAsync(int classroomId, string userId);
-
 }

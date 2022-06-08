@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearningLantern.TodoList.Migrations
 {
     [DbContext(typeof(TodoContext))]
-    [Migration("20220509130707_Initial")]
+    [Migration("20220608172323_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

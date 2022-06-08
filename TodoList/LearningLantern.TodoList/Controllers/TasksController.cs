@@ -33,8 +33,9 @@ public class TasksController : ApiControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(Response<IEnumerable<TaskModel>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get([FromQuery] string userId, [FromQuery] string? list)
+    public async Task<IActionResult> Get([FromQuery] string? list)
     {
+        var userId = _currentUserService.UserId;
         var response = await _todoRepository.GetAsync(userId, list);
         return ResponseToIActionResult(response);
     }

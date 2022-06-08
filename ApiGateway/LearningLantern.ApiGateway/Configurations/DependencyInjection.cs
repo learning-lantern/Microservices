@@ -2,6 +2,7 @@ using LearningLantern.ApiGateway.Data;
 using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Repositories;
 using LearningLantern.ApiGateway.Services;
+using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ public static class DependencyInjection
     {
         services.AddDatabaseConfiguration();
         services.AddAuthenticationConfigurations();
+        services.AddAutoMapper(typeof(MappingProfile));
         services.AddInfrastructure();
         services.AddCorsForAngular();
         return services;
@@ -40,9 +42,9 @@ public static class DependencyInjection
         services.AddDbContext<ILearningLanternContext, LearningLanternContext>(builder =>
         {
             var myServerAddress = "learning-lantern.database.windows.net";
+            var myUsername = "LearningLanternAdmin";
+            var password = "TwajbuxAReMej9";
             var myDatabase = "ApiGateway";
-            var myUsername = "learinglanternadmin";
-            var password = "z8ZkHzdWw8a79B";
             var connectionString =
                 $"Server={myServerAddress};Database={myDatabase};User Id={myUsername};Password={password}";
             builder.UseSqlServer(connectionString);

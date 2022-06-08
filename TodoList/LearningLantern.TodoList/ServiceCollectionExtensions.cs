@@ -26,9 +26,9 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<ITodoContext, TodoContext>(builder =>
         {
             var myServerAddress = "learning-lantern.database.windows.net";
+            var myUsername = "LearningLanternAdmin";
+            var password = "TwajbuxAReMej9";
             var myDatabase = "TodoList";
-            var myUsername = "learinglanternadmin";
-            var password = "z8ZkHzdWw8a79B";
             var connectionString =
                 $"Server={myServerAddress};Database={myDatabase};User Id={myUsername};Password={password}";
             builder.UseSqlServer(connectionString);

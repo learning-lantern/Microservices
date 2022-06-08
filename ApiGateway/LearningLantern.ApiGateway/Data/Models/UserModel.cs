@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using LearningLantern.ApiGateway.Data.DTOs;
 using Microsoft.AspNetCore.Identity;
 
 namespace LearningLantern.ApiGateway.Data.Models;
@@ -14,8 +13,4 @@ public class UserModel : IdentityUser
     [StringLength(30)] public string LastName { get; set; } = null!;
 
     public ICollection<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
-
-    public void Update(UserDTO userDTO)
-    {
-    }
 }

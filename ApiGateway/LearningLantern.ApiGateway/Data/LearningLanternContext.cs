@@ -18,6 +18,8 @@ public class LearningLanternContext : IdentityDbContext<UserModel>, ILearningLan
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        base.OnModelCreating(builder);
+
         builder.Entity<ClassroomUserModel>()
             .HasKey(classroomUserModel => new {classroomUserModel.ClassroomId, classroomUserModel.UserId});
 
@@ -32,7 +34,5 @@ public class LearningLanternContext : IdentityDbContext<UserModel>, ILearningLan
             .WithMany(classroomModel => classroomModel.ClassroomUsers)
             .HasForeignKey(classroomUserModel => classroomUserModel.ClassroomId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        base.OnModelCreating(builder);
     }
 }
