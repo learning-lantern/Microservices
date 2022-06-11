@@ -1,1 +1,1 @@
-# LearningLanternApis
+# Learning Lantern Microservices Architecture
