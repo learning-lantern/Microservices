@@ -1,7 +1,10 @@
+using LearningLantern.Common.EventBus;
+using LearningLantern.Common.EventBus.RabbitMQConnection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using RabbitMQ.Client;
 
 namespace LearningLantern.Common.DependencyInjection;
 
@@ -62,5 +65,15 @@ public static class DependencyInjection
                 }
             });
         });
+    }
+
+    public static IServiceCollection AddRabbitMQ(this IServiceCollection services)
+    {
+        IConnectionFactory connectionFactory = new ConnectionFactory {HostName = "rabbitmq"};
+        services.AddSingleton<IRabbitMQConnection, RabbitMQConnection>(
+            op => new RabbitMQConnection(connectionFactory)
+        );
+        services.AddSingleton<IEventBus, RabbitMQBus>();
+        return services;
     }
 }

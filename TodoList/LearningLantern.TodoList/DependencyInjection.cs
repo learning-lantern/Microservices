@@ -1,28 +1,34 @@
-using LearningLantern.Calendar.Data;
-using LearningLantern.Calendar.Repositories;
-using LearningLantern.Calendar.Utility;
+using LearningLantern.Common.DependencyInjection;
+using LearningLantern.TodoList.Data;
+using LearningLantern.TodoList.Repositories;
+using LearningLantern.TodoList.Services;
+using LearningLantern.TodoList.Utility;
 using Microsoft.EntityFrameworkCore;
 
-namespace LearningLantern.Calendar;
+namespace LearningLantern.TodoList;
 
-public static class ServiceCollectionExtensions
+public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddDatabase();
+        services.AddAuthenticationConfigurations();
+
         services.AddAutoMapper(typeof(MappingProfile));
-        services.AddTransient<ICalendarRepository, CalendarRepository>();
+        services.AddTransient<ITodoRepository, TodoRepository>();
+        services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        services.AddHttpContextAccessor();
         return services;
     }
 
     public static IServiceCollection AddDatabase(this IServiceCollection services)
     {
-        services.AddDbContext<ICalendarContext, CalendarContext>(builder =>
+        services.AddDbContext<ITodoContext, TodoContext>(builder =>
         {
             var myServerAddress = "learning-lantern.database.windows.net";
             var myUsername = "LearningLanternAdmin";
             var password = "TwajbuxAReMej9";
-            var myDatabase = "Calendar";
+            var myDatabase = "TodoList";
             var connectionString =
                 $"Server={myServerAddress};Database={myDatabase};User Id={myUsername};Password={password}";
             builder.UseSqlServer(connectionString);

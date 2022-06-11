@@ -1,9 +1,12 @@
 using LearningLantern.ApiGateway.Data;
 using LearningLantern.ApiGateway.Data.Models;
+using LearningLantern.ApiGateway.Events;
 using LearningLantern.ApiGateway.Repositories;
 using LearningLantern.ApiGateway.Services;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.DependencyInjection;
+using LearningLantern.Common.EventBus;
+using LearningLantern.Common.EventBus.EventProcessor;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MMLib.SwaggerForOcelot.DependencyInjection;
@@ -37,6 +40,13 @@ public static class DependencyInjection
         return services;
     }
 
+    public static IApplicationBuilder AddSubscriptionsConfiguration(this IApplicationBuilder app)
+    {
+        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+        //eventBus.Subscribe<UpdateEvent>("Update");
+        return app;
+    }
+
     private static IServiceCollection AddDatabaseConfiguration(this IServiceCollection services)
     {
         services.AddDbContext<ILearningLanternContext, LearningLanternContext>(builder =>
@@ -65,8 +75,7 @@ public static class DependencyInjection
             op => new EmailSender(ConfigProvider.MyEmail, ConfigProvider.MyPassword, ConfigProvider.SmtpServerAddress,
                 ConfigProvider.MailPort)
         );
-
-        // TODO: Rethink about each service life time (Singleton, Scoped, or Transient).
+        services.AddSingleton<IEventProcessor, EventProcessor>();
         services.AddTransient<IIdentityRepository, IdentityRepository>();
         services.AddTransient<IClassroomRepository, ClassroomRepository>();
         return services;

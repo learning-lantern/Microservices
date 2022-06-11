@@ -7,14 +7,12 @@ var builder = WebApplication.CreateBuilder(args).AddSerilog();
 
 // Add services to the container.
 
+builder.Services.AddApplication();
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAuthorizedSwaggerGen("TodoList.API", "v1");
-
-builder.Services.AddApplication();
-
 
 var app = builder.Build();
 
