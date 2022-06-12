@@ -9,7 +9,7 @@ services:
       - "15672:15672"
 
   TodoList:
-    image: learninglantern.azurecr.io/learninglantern.todolist
+    image: ahmedezzatg/learninglantern.todolist
     build:
       context: .
       dockerfile: TodoList/LearningLantern.TodoList/Dockerfile
@@ -17,7 +17,7 @@ services:
       - ASPNETCORE_URLS=http://+:80
 
   Calendar:
-    image: learninglantern.azurecr.io/learninglantern.calendar
+    image: ahmedezzatg/learninglantern.calendar
     build:
       context: .
       dockerfile: Calendar/LearningLantern.Calendar/Dockerfile
@@ -25,7 +25,7 @@ services:
       - ASPNETCORE_URLS=http://+:80
 
   ApiGateway:
-    image: learninglantern.azurecr.io/learninglantern.apigateway
+    image: ahmedezzatg/learninglantern.apigateway
     build:
       context: .
       dockerfile: ApiGateway/LearningLantern.ApiGateway/Dockerfile
