@@ -20,9 +20,7 @@ variables:
   buildConfiguration: 'Release'
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'b5be6472-cd28-4b34-929d-1b4fc56d54e6'
-  containerRegistry: 'learninglantern.azurecr.io'
   azureSubscription: 'Learning Lantern Group'
-  azureContainerRegistry: '{"loginServer":"learninglantern.azurecr.io", "id" : "/subscriptions/29888e76-9801-45fc-8a98-c46b410b0743/resourceGroups/learning-lantern/providers/Microsoft.ContainerRegistry/registries/learninglantern"}'
   dockerComposeFile: '**/docker-compose.yml'
 
 stages:
@@ -34,20 +32,17 @@ stages:
           vmImage: 'ubuntu-latest'
         steps:
           - task: DockerCompose@0
-            displayName: Build Services
             inputs:
+              containerregistrytype: 'Container Registry'
+              dockerRegistryEndpoint: 'Docker Hub'
+              dockerComposeFile: $(dockerComposeFile)
               action: 'Build services'
-              azureSubscription: $(azureSubscription)
-              azureContainerRegistry: $(azureContainerRegistry)
-              dockerComposeFile: $(dockerComposeFile)
           - task: DockerCompose@0
-            displayName: Push services
             inputs:
-              action: 'Push services'
-              azureSubscription: $(azureSubscription)
-              azureContainerRegistry: $(azureContainerRegistry)
+              containerregistrytype: 'Container Registry'
+              dockerRegistryEndpoint: 'Docker Hub'
               dockerComposeFile: $(dockerComposeFile)
-
+              action: 'Push services'
           - task: AzureWebAppContainer@1
             inputs:
               azureSubscription: $(azureSubscription)
