@@ -1,4 +1,4 @@
-﻿namespace LearningLantern.ApiGateway.Utility;
+﻿namespace LearningLantern.Common;
 
 public static class Role
 {

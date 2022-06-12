@@ -36,14 +36,6 @@ public static class ErrorsList
             Description = "SignIn not Failed"
         };
 
-    public static Error UniversityNotFound() =>
-        new()
-        {
-            StatusCode = StatusCodes.Status404NotFound,
-            ErrorCode = nameof(UniversityNotFound),
-            Description = "There is no University in our database with this name."
-        };
-
     public static Error NameNotValid() => new()
     {
         StatusCode = StatusCodes.Status400BadRequest,

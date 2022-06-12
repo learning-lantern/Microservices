@@ -1,6 +1,7 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
-namespace LearningLantern.TodoList.Services;
+namespace LearningLantern.Common.Services;
 
 public class CurrentUserService : ICurrentUserService
 {

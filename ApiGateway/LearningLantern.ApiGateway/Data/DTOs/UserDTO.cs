@@ -19,7 +19,6 @@ public class UserDTO
         Email = userDTO.Email;
         FirstName = userDTO.FirstName;
         LastName = userDTO.LastName;
-        University = userDTO.University;
     }
 
     public UserDTO(UserModel userModel)
@@ -28,7 +27,6 @@ public class UserDTO
         Email = userModel.Email;
         FirstName = userModel.FirstName;
         LastName = userModel.LastName;
-        University = "Assiut University";
     }
 
     [Required] public string Id { get; set; } = null!;
@@ -40,6 +38,4 @@ public class UserDTO
 
     [Required] [StringLength(30)] [RegularExpression(Pattern.Name)]
     public string LastName { get; set; } = null!;
-
-    [Required] public string University { get; set; } = null!;
 }

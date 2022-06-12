@@ -16,6 +16,4 @@ public class SignInDTO
     /// </summary>
     [Required] [RegularExpression(Pattern.Password)]
     public string Password { get; set; } = null!;
-
-    [Required] public string University { get; set; } = null!;
 }

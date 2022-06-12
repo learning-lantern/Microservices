@@ -1,4 +1,4 @@
-namespace LearningLantern.ApiGateway.Services;
+namespace LearningLantern.Common.Services;
 
 public interface ICurrentUserService
 {

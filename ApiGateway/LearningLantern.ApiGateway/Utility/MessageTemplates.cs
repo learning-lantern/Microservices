@@ -2,9 +2,11 @@ namespace LearningLantern.ApiGateway.Utility;
 
 public static class MessageTemplates
 {
-    public static Message ConfirmationEmail(string userId, string token)
+    public static Message ConfirmationEmail(string? endPointUrl, string userId, string token)
     {
-        var confirmEmailRoute = $"http://localhost:5001/api/Auth/ConfirmEmail?userId={userId}&token={token}";
+        if (endPointUrl == null) throw new ArgumentNullException(nameof(endPointUrl));
+
+        var confirmEmailRoute = $"{endPointUrl}?userId={userId}&token={token}";
 
         var emailBody = "<h1>Welcome To Learning Lantern</h1><br>" +
                         "<p> Thanks for registering at learning lantern please click " +

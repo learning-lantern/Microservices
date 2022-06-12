@@ -1,8 +1,8 @@
 using LearningLantern.Common;
 using LearningLantern.Common.Response;
+using LearningLantern.Common.Services;
 using LearningLantern.TodoList.Data.Models;
 using LearningLantern.TodoList.Repositories;
-using LearningLantern.TodoList.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

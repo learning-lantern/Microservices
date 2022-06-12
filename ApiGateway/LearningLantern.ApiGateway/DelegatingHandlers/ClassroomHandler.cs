@@ -1,7 +1,7 @@
 using System.Net;
 using LearningLantern.ApiGateway.Repositories;
-using LearningLantern.ApiGateway.Services;
 using LearningLantern.Common;
+using LearningLantern.Common.Services;
 
 namespace LearningLantern.ApiGateway.DelegatingHandlers;
 

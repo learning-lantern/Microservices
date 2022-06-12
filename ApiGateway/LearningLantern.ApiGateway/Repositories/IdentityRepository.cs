@@ -28,7 +28,7 @@ public class IdentityRepository : IIdentityRepository
 
     public async Task<Response> SignUpAsync(SignUpDTO signUpDTO)
     {
-        var result = Validator.ValidateSignUpDTO(signUpDTO);
+        var result = Validator.Validate(signUpDTO);
         if (result.Count > 0) return ResponseFactory.Fail(result);
 
         var user = new UserModel
@@ -41,42 +41,11 @@ public class IdentityRepository : IIdentityRepository
 
         var createAsyncResult = await _userManager.CreateAsync(user, signUpDTO.Password);
 
-        if (createAsyncResult.Succeeded) return await SendConfirmationEmailAsync(user.Email);
-
         return createAsyncResult.ToApplicationResponse();
-    }
-
-    public async Task<Response> SendConfirmationEmailAsync(string userEmail)
-    {
-        try
-        {
-            var user = await _userManager.FindByEmailAsync(userEmail);
-
-            if (user == null) return ResponseFactory.Fail(ErrorsList.UserEmailNotFound(userEmail));
-
-            var token = HttpUtility.UrlEncode(await _userManager.GenerateEmailConfirmationTokenAsync(user));
-
-            var mailMessage = MessageTemplates.ConfirmationEmail(user.Id, token);
-
-            await _emailSender.Send(userEmail, mailMessage);
-
-            return ResponseFactory.Ok();
-        }
-        catch (Exception ex)
-        {
-            return ResponseFactory.Fail(new Error
-            {
-                ErrorCode = "ConfirmationFailure",
-                Description = ex.Message
-            });
-        }
     }
 
     public async Task<Response<SignInResponseDTO>> SignInAsync(SignInDTO signInDTO)
     {
-        var validateResult = Validator.ValidateSignInDTO(signInDTO);
-        if (validateResult.Count > 0) return ResponseFactory.Fail<SignInResponseDTO>(validateResult);
-
         if ((await FindByEmailAsync(signInDTO.Email)).Succeeded == false)
             return ResponseFactory.Fail<SignInResponseDTO>(ErrorsList.UserEmailNotFound(signInDTO.Email));
 
@@ -111,6 +80,32 @@ public class IdentityRepository : IIdentityRepository
     }
 
     public async Task<UserModel?> FindUserByIdAsync(string userId) => await _userManager.FindByIdAsync(userId);
+
+    public async Task<Response> SendConfirmationEmailAsync(string userEmail, string? endPointUrl)
+    {
+        try
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+
+            if (user == null) return ResponseFactory.Fail(ErrorsList.UserEmailNotFound(userEmail));
+
+            var token = HttpUtility.UrlEncode(await _userManager.GenerateEmailConfirmationTokenAsync(user));
+
+            var mailMessage = MessageTemplates.ConfirmationEmail(endPointUrl, user.Id, token);
+
+            await _emailSender.Send(userEmail, mailMessage);
+
+            return ResponseFactory.Ok();
+        }
+        catch (Exception ex)
+        {
+            return ResponseFactory.Fail(new Error
+            {
+                ErrorCode = "ConfirmationFailure",
+                Description = ex.Message
+            });
+        }
+    }
 
     async private Task<Response<UserDTO>> FindByEmailAsync(string userEmail)
     {

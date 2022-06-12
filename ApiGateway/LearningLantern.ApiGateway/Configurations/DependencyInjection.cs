@@ -7,6 +7,7 @@ using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.DependencyInjection;
 using LearningLantern.Common.EventBus;
 using LearningLantern.Common.EventBus.EventProcessor;
+using LearningLantern.Common.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MMLib.SwaggerForOcelot.DependencyInjection;
@@ -68,8 +69,8 @@ public static class DependencyInjection
 
     private static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        services.AddSingleton<ICurrentUserService, CurrentUserService>();
         services.AddHttpContextAccessor();
+        services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
         services.AddSingleton<IEmailSender, EmailSender>(
             op => new EmailSender(ConfigProvider.MyEmail, ConfigProvider.MyPassword, ConfigProvider.SmtpServerAddress,

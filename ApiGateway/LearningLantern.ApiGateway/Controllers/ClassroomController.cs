@@ -1,9 +1,8 @@
 ﻿using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.ApiGateway.Repositories;
-using LearningLantern.ApiGateway.Services;
-using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common;
 using LearningLantern.Common.Response;
+using LearningLantern.Common.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
