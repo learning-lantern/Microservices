@@ -6,9 +6,9 @@ namespace LearningLantern.ApiGateway.User.DTOs;
 
 public class UpdateEmailDTO
 {
-    [Required] [EmailAddress] [JsonPropertyName("userEmail")]
+    [Required] [EmailAddress]
     public string Email { get; set; } = null!;
 
-    [Required] [RegularExpression(Pattern.Password)] [JsonPropertyName("userPassword")]
+    [Required] [RegularExpression(Pattern.Password)]
     public string Password { get; set; } = null!;
 }

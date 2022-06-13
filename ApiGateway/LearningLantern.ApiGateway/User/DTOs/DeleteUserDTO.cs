@@ -6,6 +6,6 @@ namespace LearningLantern.ApiGateway.User.DTOs;
 
 public class DeleteUserDTO
 {
-    [Required] [RegularExpression(Pattern.Password)] [JsonPropertyName("userPassword")]
+    [Required] [RegularExpression(Pattern.Password)]
     public string Password { get; set; } = null!;
 }
