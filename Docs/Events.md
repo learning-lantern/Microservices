@@ -43,47 +43,39 @@
   <tr>
     <td>CreateUserEvent</td>
     <td>
-````
-```
-        {<br/>
+        {<br>
         EventId : string<br/>
-        CreationDate : DataTime<br/>
-        Id : string<br/>
-        Email : string<br/>
-        FirstName : string<br/>
-        LastName : string<br/>
-        }
-```
-````
+        CreationDate : DataTime<br>
+        Id : string<br>
+        Email : string<br>
+        FirstName : string<br>
+        LastName : string<br>
+        }<br>
     </td>
     <td>CreateUserEvent</td>
   </tr>
   <tr>
     <td>UpdateUserEvent</td>
     <td>
-      <code>
-        {<br/>
-        EventId : string<br/>
-        CreationDate : DataTime<br/>
-        Id : string<br/>
-        Email : string<br/>
-        FirstName : string<br/>
-        LastName : string<br/>
-        }
-      </code>
+        {<br>
+        EventId : string<br>
+        CreationDate : DataTime<br>
+        Id : string<br>
+        Email : string<br>
+        FirstName : string<br>
+        LastName : string<br>
+        }<br>
     </td>
     <td>UpdateUserEvent</td>
   </tr>
   <tr>
     <td>DeleteUserEvent</td>
     <td>
-      <code>
         {<br>
-        EventId : string<br/>
-        CreationDate : DataTime<br/>
-        Id : string<br/>
-        }
-      </code>
+        EventId : string<br>
+        CreationDate : DataTime<br>
+        Id : string<br>
+        }<br>
     </td>
     <td>DeleteUserEvent</td>
   </tr>
