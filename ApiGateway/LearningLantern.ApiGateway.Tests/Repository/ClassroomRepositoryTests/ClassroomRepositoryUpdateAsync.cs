@@ -1,5 +1,5 @@
 using FluentAssertions;
-using LearningLantern.ApiGateway.Data.DTOs;
+using LearningLantern.ApiGateway.Classroom.DTOs;
 using LearningLantern.ApiGateway.Tests.Helpers;
 using Xunit;
 

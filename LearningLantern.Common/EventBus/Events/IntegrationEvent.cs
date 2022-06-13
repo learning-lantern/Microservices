@@ -6,18 +6,18 @@ public class IntegrationEvent
 {
     public IntegrationEvent()
     {
-        Id = Guid.NewGuid();
+        EventId = Guid.NewGuid();
         CreationDate = DateTime.UtcNow;
     }
 
     [JsonConstructor]
-    public IntegrationEvent(Guid id, DateTime createDate)
+    public IntegrationEvent(Guid eventId, DateTime createDate)
     {
-        Id = id;
+        EventId = eventId;
         CreationDate = createDate;
     }
 
-    [JsonProperty] public Guid Id { get; private set; }
+    [JsonProperty] public Guid EventId { get; private set; }
 
     [JsonProperty] public DateTime CreationDate { get; private set; }
 }

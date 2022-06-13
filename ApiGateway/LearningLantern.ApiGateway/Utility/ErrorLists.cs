@@ -20,6 +20,14 @@ public static class ErrorsList
             Description = $"There is no user in this University with this Id {userId}."
         };
 
+    public static Error IncorrectPassword(string userId) =>
+        new()
+        {
+            StatusCode = StatusCodes.Status403Forbidden,
+            ErrorCode = nameof(IncorrectPassword),
+            Description = $"this is incorrect password for this user {userId}"
+        };
+
     public static Error SignInNotAllowed() =>
         new()
         {

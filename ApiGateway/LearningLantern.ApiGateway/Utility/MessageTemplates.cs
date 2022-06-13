@@ -1,33 +1,29 @@
+using LearningLantern.Common;
+
 namespace LearningLantern.ApiGateway.Utility;
 
 public static class MessageTemplates
 {
     public static Message ConfirmationEmail(string? endPointUrl, string userId, string token)
     {
-        if (endPointUrl == null) throw new ArgumentNullException(nameof(endPointUrl));
-
         var confirmEmailRoute = $"{endPointUrl}?userId={userId}&token={token}";
 
         var emailBody = "<h1>Welcome To Learning Lantern</h1><br>" +
                         "<p> Thanks for registering at learning lantern please click " +
                         $"<strong><a href=\"{confirmEmailRoute}\" target=\"_blank\">here</a></strong>" +
-                        " to activate your account</p>";
+                        " to confirmation your email</p>";
 
         return new Message("Confirmation Email", emailBody, true);
     }
-}
 
-public class Message
-{
-    public Message(string emailSubject, string emailBody, bool isBodyHtml)
+    public static Message ChangeEmail(string? endPointUrl, string userId, string newEmail, string token)
     {
-        EmailSubject = emailSubject;
-        EmailBody = emailBody;
-        IsBodyHtml = isBodyHtml;
+        var confirmEmailRoute = $"{endPointUrl}?userId={userId}&newEmail={newEmail}&token={token}";
+
+        var emailBody =
+            $"<p> please click <strong><a href=\"{confirmEmailRoute}\" target=\"_blank\">here</a></strong>" +
+            " to confirmation your new email for your <strong>Learning Lantern</strong> Account</p>";
+
+        return new Message("Confirmation The new Email", emailBody, true);
     }
-
-    public string EmailSubject { get; }
-    public string EmailBody { get; }
-
-    public bool IsBodyHtml { get; }
 }

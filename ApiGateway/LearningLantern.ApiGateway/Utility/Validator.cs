@@ -1,21 +1,32 @@
 using System.Text.RegularExpressions;
-using LearningLantern.ApiGateway.Configurations;
-using LearningLantern.ApiGateway.Data.DTOs;
+using LearningLantern.ApiGateway.User.DTOs;
 using LearningLantern.Common.Response;
 
 namespace LearningLantern.ApiGateway.Utility;
 
 public static class Validator
 {
-    public static List<Error> Validate(SignUpDTO signUpDTO)
+    public static List<Error> Validate(SignupDTO signupDTO)
     {
         var errors = new List<Error>();
 
-        if (IsValidName(signUpDTO.FirstName) == false || IsValidName(signUpDTO.LastName) == false)
+        if (IsValidName(signupDTO.FirstName) == false || IsValidName(signupDTO.LastName) == false)
             errors.Add(ErrorsList.NameNotValid());
 
         return errors;
     }
 
     private static bool IsValidName(string name) => new Regex(Pattern.Name).IsMatch(name.Replace(" ", ""));
+}
+
+public static class Pattern
+{
+    public const string Name = "^((?![0-9!\"#$%&'()*+,-./\\:;<=>?@[" + @"\]" + "^_`{|}~]).){2,30}$";
+
+    /// <summary>
+    ///     Password property that its pattern must consist of a minimum 6 characters, at least one uppercase letter, one
+    ///     lowercase letter, one special character, and one number.
+    /// </summary>
+    public const string Password = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ !\"#$%&'()*+,-./\\:;<=>?@[" + @"\]" +
+                                   "^_`{|}~])[a-zA-Z0-9 !\"#$%&'()*+,-./\\:;<=>?@[" + @"\]" + "^_`{|}~]{6,}$";
 }

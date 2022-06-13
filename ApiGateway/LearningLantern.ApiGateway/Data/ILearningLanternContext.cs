@@ -1,4 +1,4 @@
-using LearningLantern.ApiGateway.Data.Models;
+using LearningLantern.ApiGateway.Classroom.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.ApiGateway.Data;

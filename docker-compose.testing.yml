@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  Seq:
+    image: datalust/seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "6001:80"
+  
+  RabbitMQ:
+    image: rabbitmq:3.10-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  ApiGateway:
+    image: learninglantern.apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/LearningLantern.ApiGateway/Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - Seq
+      - RabbitMQ

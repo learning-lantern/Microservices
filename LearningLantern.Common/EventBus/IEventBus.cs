@@ -6,6 +6,8 @@ public interface IEventBus
 {
     void Publish(IntegrationEvent @event);
 
-    public void Subscribe<T>(string queueName)
+    public void AddEvent<T>(string queueName)
         where T : IntegrationEvent;
+
+    public void Subscribe(string queueName);
 }

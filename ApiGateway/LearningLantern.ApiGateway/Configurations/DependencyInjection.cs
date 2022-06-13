@@ -1,8 +1,9 @@
+using LearningLantern.ApiGateway.Classroom.Repositories;
 using LearningLantern.ApiGateway.Data;
-using LearningLantern.ApiGateway.Data.Models;
-using LearningLantern.ApiGateway.Events;
-using LearningLantern.ApiGateway.Repositories;
-using LearningLantern.ApiGateway.Services;
+using LearningLantern.ApiGateway.User;
+using LearningLantern.ApiGateway.User.Events;
+using LearningLantern.ApiGateway.User.Models;
+using LearningLantern.ApiGateway.User.Repository;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.DependencyInjection;
 using LearningLantern.Common.EventBus;
@@ -41,10 +42,12 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IApplicationBuilder AddSubscriptionsConfiguration(this IApplicationBuilder app)
+    public static IApplicationBuilder AddRabbitMQConfiguration(this IApplicationBuilder app)
     {
         var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-        //eventBus.Subscribe<UpdateEvent>("Update");
+        eventBus.AddEvent<UpdateUserEvent>("Users");
+        eventBus.AddEvent<CreateUserEvent>("Users");
+        eventBus.AddEvent<DeleteUserEvent>("Users");
         return app;
     }
 
@@ -77,7 +80,7 @@ public static class DependencyInjection
                 ConfigProvider.MailPort)
         );
         services.AddSingleton<IEventProcessor, EventProcessor>();
-        services.AddTransient<IIdentityRepository, IdentityRepository>();
+        services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IClassroomRepository, ClassroomRepository>();
         return services;
     }

@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
+using LearningLantern.ApiGateway.Classroom.Models;
 using LearningLantern.ApiGateway.Data;
-using LearningLantern.ApiGateway.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.ApiGateway.Tests.Helpers;

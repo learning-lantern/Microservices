@@ -10,7 +10,7 @@ namespace LearningLantern.Common.EventBus;
 
 public class RabbitMQBus : IEventBus
 {
-    private const string ExchangeName = "Learning Lantern Event Bus";
+    private const string ExchangeName = "LearningLantern.EventBus";
     private readonly IModel _channel;
     private readonly IRabbitMQConnection _connection;
     private readonly IEventProcessor _eventProcessor;
@@ -33,16 +33,15 @@ public class RabbitMQBus : IEventBus
         _channel.BasicPublish(ExchangeName, @event.GetType().Name, properties, body);
     }
 
-    public void Subscribe<T>(string queueName)
+    public void AddEvent<T>(string queueName)
         where T : IntegrationEvent
     {
         var eventName = typeof(T).Name;
         _channel.QueueDeclare(queueName, true, false, false);
         _channel.QueueBind(queueName, ExchangeName, eventName);
-        StartBasicConsume(queueName);
     }
 
-    private void StartBasicConsume(string queueName)
+    public void Subscribe(string queueName)
     {
         var consumer = new EventingBasicConsumer(_channel);
         consumer.Received += async (s, eventArgs) =>

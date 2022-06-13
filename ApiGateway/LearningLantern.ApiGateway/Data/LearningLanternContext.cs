@@ -1,4 +1,6 @@
-﻿using LearningLantern.ApiGateway.Data.Models;
+﻿using LearningLantern.ApiGateway.Classroom.Models;
+using LearningLantern.ApiGateway.User;
+using LearningLantern.ApiGateway.User.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

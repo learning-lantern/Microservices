@@ -1,7 +1,7 @@
 using System;
 using AutoMapper;
 using Bogus;
-using LearningLantern.ApiGateway.Data.DTOs;
+using LearningLantern.ApiGateway.Classroom.DTOs;
 using LearningLantern.ApiGateway.Utility;
 using Microsoft.EntityFrameworkCore;
 
