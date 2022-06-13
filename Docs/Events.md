@@ -43,7 +43,8 @@
   <tr>
     <td>CreateUserEvent</td>
     <td>
-      <code>
+````
+```
         {<br/>
         EventId : string<br/>
         CreationDate : DataTime<br/>
@@ -52,7 +53,8 @@
         FirstName : string<br/>
         LastName : string<br/>
         }
-      </code>
+```
+````
     </td>
     <td>CreateUserEvent</td>
   </tr>
