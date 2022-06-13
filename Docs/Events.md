@@ -44,14 +44,14 @@
     <td>CreateUserEvent</td>
     <td>
       <code>
-        {<br>
-        EventId : string<br>
-        CreationDate : DataTime<br>
-        Id : string<br>
-        Email : string<br>
-        FirstName : string<br>
-        LastName : string<br>
-        }<br>
+        {<br/>
+        EventId : string<br/>
+        CreationDate : DataTime<br/>
+        Id : string<br/>
+        Email : string<br/>
+        FirstName : string<br/>
+        LastName : string<br/>
+        }
       </code>
     </td>
     <td>CreateUserEvent</td>
@@ -60,14 +60,14 @@
     <td>UpdateUserEvent</td>
     <td>
       <code>
-        {<br>
-        EventId : string<br>
-        CreationDate : DataTime<br>
-        Id : string<br>
-        Email : string<br>
-        FirstName : string<br>
-        LastName : string<br>
-        }<br>
+        {<br/>
+        EventId : string<br/>
+        CreationDate : DataTime<br/>
+        Id : string<br/>
+        Email : string<br/>
+        FirstName : string<br/>
+        LastName : string<br/>
+        }
       </code>
     </td>
     <td>UpdateUserEvent</td>
@@ -77,10 +77,10 @@
     <td>
       <code>
         {<br>
-        EventId : string<br>
-        CreationDate : DataTime<br>
-        Id : string<br>
-        }<br>
+        EventId : string<br/>
+        CreationDate : DataTime<br/>
+        Id : string<br/>
+        }
       </code>
     </td>
     <td>DeleteUserEvent</td>
