@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
-namespace LearningLantern.Common.Logging;
+namespace LearningLantern.Common.Logs;
 
 public static class SerilogMethods
 {
@@ -31,6 +31,8 @@ public static class SerilogMethods
             .Enrich.WithThreadId();
 
         if (context.HostingEnvironment.IsDevelopment())
+        {
             loggerConfiguration.MinimumLevel.Override("LearningLantern", LogEventLevel.Debug);
+        }
     }
 }

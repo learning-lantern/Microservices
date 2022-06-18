@@ -1,5 +1,5 @@
 using FluentValidation.Results;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Responses;
 
 namespace LearningLantern.Common.Extensions;
 

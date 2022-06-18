@@ -1,4 +1,4 @@
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +7,7 @@ namespace LearningLantern.Common;
 [ApiController]
 public abstract class ApiControllerBase : ControllerBase
 {
-    protected IActionResult ResponseToIActionResult(Response.Response response)
+    protected IActionResult ResponseToIActionResult(Response response)
     {
         if (response.Succeeded) return Ok(response.ToJsonStringContent());
 

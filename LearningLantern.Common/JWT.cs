@@ -1,7 +1,7 @@
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace LearningLantern.Common.DependencyInjection;
+namespace LearningLantern.Common;
 
 public static class JWT
 {

@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 
-namespace LearningLantern.Common.DependencyInjection;
+namespace LearningLantern.Common;
 
 public static class DependencyInjection
 {

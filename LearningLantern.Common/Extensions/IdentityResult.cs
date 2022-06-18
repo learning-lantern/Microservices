@@ -1,11 +1,11 @@
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Responses;
 using Microsoft.AspNetCore.Identity;
 
 namespace LearningLantern.Common.Extensions;
 
 public static class IdentityResultExtensions
 {
-    public static Response.Response ToApplicationResponse(this IdentityResult identityResult)
+    public static Response ToApplicationResponse(this IdentityResult identityResult)
     {
         var errors = identityResult.Errors.Select(e => new Error { ErrorCode = e.Code, Description = e.Description });
         return new(identityResult.Succeeded, errors);
@@ -17,7 +17,7 @@ public static class IdentityResultExtensions
         return new(identityResult.Succeeded, data, errors);
     }
 
-    public static Response.Response ToApplicationResponse(this SignInResult signInResult) => new(signInResult.Succeeded, default);
+    public static Response ToApplicationResponse(this SignInResult signInResult) => new(signInResult.Succeeded, default);
 
     public static Response<T> ToApplicationResponse<T>(this SignInResult signInResult, T? data = default) => new(signInResult.Succeeded, data, default);
 }

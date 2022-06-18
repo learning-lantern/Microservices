@@ -1,4 +1,4 @@
-namespace LearningLantern.Common.Response;
+namespace LearningLantern.Common.Responses;
 
 public static class PaginatedList
 {

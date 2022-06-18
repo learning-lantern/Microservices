@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace LearningLantern.Common.Response;
+namespace LearningLantern.Common.Responses;
 
 public abstract class ErrorBase
 {
