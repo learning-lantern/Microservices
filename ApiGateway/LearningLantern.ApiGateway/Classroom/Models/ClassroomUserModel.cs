@@ -1,4 +1,4 @@
-﻿using LearningLantern.ApiGateway.User.Models;
+﻿using LearningLantern.ApiGateway.Users.Models;
 
 namespace LearningLantern.ApiGateway.Classroom.Models;
 

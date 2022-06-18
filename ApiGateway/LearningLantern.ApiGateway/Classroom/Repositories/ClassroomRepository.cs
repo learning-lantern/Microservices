@@ -2,9 +2,10 @@ using AutoMapper;
 using LearningLantern.ApiGateway.Classroom.DTOs;
 using LearningLantern.ApiGateway.Classroom.Models;
 using LearningLantern.ApiGateway.Data;
-using LearningLantern.ApiGateway.User.Repository;
+using LearningLantern.ApiGateway.Users.Queries;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.Response;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.ApiGateway.Classroom.Repositories;
@@ -13,14 +14,13 @@ public class ClassroomRepository : IClassroomRepository
 {
     private readonly ILearningLanternContext _context;
     private readonly IMapper _mapper;
-    private readonly IUserRepository _userRepository;
+    private readonly IMediator _mediator;
 
-    public ClassroomRepository(
-        ILearningLanternContext context, IMapper mapper, IUserRepository userRepository)
+    public ClassroomRepository(ILearningLanternContext context, IMapper mapper, IMediator mediator)
     {
         _context = context;
         _mapper = mapper;
-        _userRepository = userRepository;
+        _mediator = mediator;
     }
 
     public async Task<Response<IEnumerable<ClassroomDTO>>> GetAsync(string userId)
@@ -50,7 +50,7 @@ public class ClassroomRepository : IClassroomRepository
 
     public async Task<Response> AddUserAsync(int classroomId, string userId)
     {
-        var user = await _userRepository.FindUserByIdAsync(userId);
+        var user = (await _mediator.Send(new GetUserByIdQuery {UserId = userId})).Data;
         var classroom = await GetClassroomById(classroomId);
 
         if (user is not null && classroom is not null)

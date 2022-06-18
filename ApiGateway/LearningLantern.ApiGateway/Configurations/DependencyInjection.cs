@@ -1,14 +1,16 @@
+using System.Reflection;
+using FluentValidation.AspNetCore;
 using LearningLantern.ApiGateway.Classroom.Repositories;
 using LearningLantern.ApiGateway.Data;
-using LearningLantern.ApiGateway.User;
-using LearningLantern.ApiGateway.User.Events;
-using LearningLantern.ApiGateway.User.Models;
-using LearningLantern.ApiGateway.User.Repository;
+using LearningLantern.ApiGateway.PipelineBehaviors;
+using LearningLantern.ApiGateway.Users.Events;
+using LearningLantern.ApiGateway.Users.Models;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.DependencyInjection;
 using LearningLantern.Common.EventBus;
 using LearningLantern.Common.EventBus.EventProcessor;
 using LearningLantern.Common.Services;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MMLib.SwaggerForOcelot.DependencyInjection;
@@ -32,13 +34,33 @@ public static class DependencyInjection
         return builder;
     }
 
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplicationConfiguration(this IServiceCollection services)
     {
         services.AddDatabaseConfiguration();
         services.AddAuthenticationConfigurations();
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddInfrastructure();
         services.AddCorsForAngular();
+        services.AddRabbitMQ();
+        services.AddValidations();
+        services.AddMediatRConfiguration();
+        return services;
+    }
+
+    private static IServiceCollection AddMediatRConfiguration(this IServiceCollection services)
+    {
+        services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizedBehavior<,>));
+        return services;
+    }
+
+
+    private static IServiceCollection AddValidations(this IServiceCollection services)
+    {
+        services.AddFluentValidation(
+            fv => { fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()); }
+        );
         return services;
     }
 
@@ -53,6 +75,14 @@ public static class DependencyInjection
 
     private static IServiceCollection AddDatabaseConfiguration(this IServiceCollection services)
     {
+        services.AddDbContext<ILearningLanternContext, LearningLanternContext>(builder =>
+                builder.UseInMemoryDatabase("test"))
+            .AddIdentity<UserModel, IdentityRole>(setupAction =>
+            {
+                setupAction.SignIn.RequireConfirmedAccount = true;
+                setupAction.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<LearningLanternContext>().AddDefaultTokenProviders();
+        return services;
         services.AddDbContext<ILearningLanternContext, LearningLanternContext>(builder =>
         {
             var myServerAddress = "learning-lantern.database.windows.net";
@@ -80,7 +110,6 @@ public static class DependencyInjection
                 ConfigProvider.MailPort)
         );
         services.AddSingleton<IEventProcessor, EventProcessor>();
-        services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IClassroomRepository, ClassroomRepository>();
         return services;
     }

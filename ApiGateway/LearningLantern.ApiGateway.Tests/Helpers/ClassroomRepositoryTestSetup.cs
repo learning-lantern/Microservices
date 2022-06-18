@@ -1,7 +1,6 @@
 using System;
 using LearningLantern.ApiGateway.Classroom.Repositories;
-using LearningLantern.ApiGateway.User;
-using LearningLantern.ApiGateway.User.Repository;
+using MediatR;
 using Moq;
 
 namespace LearningLantern.ApiGateway.Tests.Helpers;
@@ -15,8 +14,8 @@ public abstract class ClassroomRepositoryTestSetup : IDisposable
     {
         var mapper = Helper.CreateAutoMapper();
         Context = Helper.LearningLanternContextMock(Guid.NewGuid().ToString());
-        var identity = new Mock<IUserRepository>();
-        ClassroomRepository = new ClassroomRepository(Context, mapper, identity.Object);
+        var mediator = new Mock<IMediator>();
+        ClassroomRepository = new ClassroomRepository(Context, mapper, mediator.Object);
     }
 
     public void Dispose()

@@ -1,8 +1,6 @@
 using System;
 using LearningLantern.ApiGateway.Classroom.DTOs;
 using LearningLantern.ApiGateway.Classroom.Models;
-using LearningLantern.ApiGateway.User.DTOs;
-using LearningLantern.ApiGateway.User.Models;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.Tests;
 using Xunit;
@@ -17,8 +15,6 @@ public class MappingTests : MappingTestsSetup
     }
 
     [Theory]
-    [InlineData(typeof(SignupDTO), typeof(UserModel))]
-    [InlineData(typeof(UserModel), typeof(UserDTO))]
     [InlineData(typeof(ClassroomModel), typeof(ClassroomDTO))]
     [InlineData(typeof(ClassroomDTO), typeof(ClassroomModel))]
     [InlineData(typeof(ClassroomModel), typeof(AddClassroomDTO))]

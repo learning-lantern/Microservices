@@ -2,7 +2,7 @@
 using LearningLantern.ApiGateway.Classroom.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace LearningLantern.ApiGateway.User.Models;
+namespace LearningLantern.ApiGateway.Users.Models;
 
 /// <summary>
 ///     User data model class, inherits from "IdentityUser" class.

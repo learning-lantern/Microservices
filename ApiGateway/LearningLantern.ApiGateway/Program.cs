@@ -1,7 +1,6 @@
 using LearningLantern.ApiGateway.Configurations;
 using LearningLantern.Common.DependencyInjection;
 using LearningLantern.Common.Logging;
-using Ocelot.Middleware;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args).AddSerilog();
@@ -9,10 +8,9 @@ var builder = WebApplication.CreateBuilder(args).AddSerilog();
 ConfigProvider.Configuration = builder.Configuration;
 
 // Add services to the container.
-builder.Services.AddApplication();
-builder.Services.AddRabbitMQ();
 builder.Services.AddControllers();
-builder.AddOcelotConfiguration();
+builder.Services.AddApplicationConfiguration();
+//builder.AddOcelotConfiguration();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -35,9 +33,9 @@ app.UseEndpoints(endpoints =>
 
 
 app.UseSwagger();
-app.UseSwaggerForOcelotUI(options => { options.PathToSwaggerGenerator = "/swagger/docs"; }).UseOcelot().Wait();
+//app.UseSwaggerForOcelotUI(options => { options.PathToSwaggerGenerator = "/swagger/docs"; }).UseOcelot().Wait();
 app.UseSwaggerUI();
 
-app.AddRabbitMQConfiguration();
+//app.AddRabbitMQConfiguration();
 
 app.Run();

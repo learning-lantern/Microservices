@@ -1,6 +1,6 @@
 using LearningLantern.Common.EventBus.Events;
 
-namespace LearningLantern.ApiGateway.User.Events;
+namespace LearningLantern.ApiGateway.Users.Events;
 
 public class DeleteUserEvent : IntegrationEvent
 {

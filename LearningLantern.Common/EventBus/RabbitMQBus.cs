@@ -19,6 +19,9 @@ public class RabbitMQBus : IEventBus
     {
         _connection = connection;
         _eventProcessor = eventProcessor;
+
+        if (!_connection.IsConnected) return;
+        
         _channel = connection.CreateModel();
         _channel.ExchangeDeclare(ExchangeName, ExchangeType.Direct);
         _channel.BasicQos(0, 1, false);
@@ -26,6 +29,8 @@ public class RabbitMQBus : IEventBus
 
     public void Publish(IntegrationEvent @event)
     {
+        if (!_connection.IsConnected) return;
+        
         var message = JsonConvert.SerializeObject(@event);
         var properties = _channel.CreateBasicProperties();
         properties.Persistent = true;
@@ -36,6 +41,8 @@ public class RabbitMQBus : IEventBus
     public void AddEvent<T>(string queueName)
         where T : IntegrationEvent
     {
+        if (!_connection.IsConnected) return;
+        
         var eventName = typeof(T).Name;
         _channel.QueueDeclare(queueName, true, false, false);
         _channel.QueueBind(queueName, ExchangeName, eventName);
@@ -43,6 +50,8 @@ public class RabbitMQBus : IEventBus
 
     public void Subscribe(string queueName)
     {
+        if (!_connection.IsConnected) return;
+        
         var consumer = new EventingBasicConsumer(_channel);
         consumer.Received += async (s, eventArgs) =>
         {

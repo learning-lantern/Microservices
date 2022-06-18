@@ -1,25 +1,24 @@
 using System.ComponentModel.DataAnnotations;
-using LearningLantern.ApiGateway.User.DTOs;
-using LearningLantern.ApiGateway.User.Repository;
+using LearningLantern.ApiGateway.Users.Commands;
+using LearningLantern.ApiGateway.Users.Models;
+using LearningLantern.ApiGateway.Users.Queries;
 using LearningLantern.Common;
 using LearningLantern.Common.Response;
-using LearningLantern.Common.Services;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LearningLantern.ApiGateway.User.Controllers;
+namespace LearningLantern.ApiGateway.Users.Controllers;
 
 [Authorize]
 [Route("api/user")]
 public class UserController : ApiControllerBase
 {
-    private readonly IUserRepository _userRepository;
-    private readonly ICurrentUserService _userService;
+    private readonly IMediator _mediator;
 
-    public UserController(IUserRepository userRepository, ICurrentUserService userService)
+    public UserController(IMediator mediator)
     {
-        _userRepository = userRepository;
-        _userService = userService;
+        _mediator = mediator;
     }
 
     [AllowAnonymous]
@@ -27,12 +26,7 @@ public class UserController : ApiControllerBase
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     public async Task<IActionResult> Signup([FromBody] SignupDTO signupDTO)
     {
-        var signupResult = await _userRepository.Signup(signupDTO);
-
-        if (signupResult.Succeeded)
-            signupResult =
-                await _userRepository.SendConfirmationEmail(signupDTO.Email, Url.ActionLink(nameof(ConfirmEmail)));
-
+        var signupResult = await _mediator.Send(new SignupCommand(signupDTO));
         return ResponseToIActionResult(signupResult);
     }
 
@@ -41,17 +35,16 @@ public class UserController : ApiControllerBase
     [ProducesResponseType(typeof(Response<SignInResponseDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
     {
-        var signInResponse = await _userRepository.Login(loginDTO);
-        return ResponseToIActionResult(signInResponse);
+        var loginResponse = await _mediator.Send(new LoginCommand(loginDTO));
+        return ResponseToIActionResult(loginResponse);
     }
 
     [AllowAnonymous]
     [HttpGet("validate-email")]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string token)
+    public async Task<IActionResult> ConfirmEmail([FromQuery] [Required] string userId, [FromQuery] [Required] string token)
     {
-        var response = await _userRepository.ConfirmEmail(userId, token);
-
+        var response = await _mediator.Send(new ConfirmEmailCommand {UserId = userId, Token = token});
         return ResponseToIActionResult(response);
     }
 
@@ -61,17 +54,16 @@ public class UserController : ApiControllerBase
     public async Task<IActionResult> ConfirmUpdateEmail(
         [FromQuery] [Required] string userId, [FromQuery] [Required] string newEmail, [FromQuery] [Required] string token)
     {
-        var response = await _userRepository.ConfirmUpdateEmail(userId, newEmail, token);
+        var response = await _mediator.Send(
+            new ConfirmNewEmailCommand {UserId = userId, Email = newEmail, Token = token});
         return ResponseToIActionResult(response);
     }
 
     [HttpGet("resend-validation")]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ResendConfirmationEmail([FromQuery] string userEmail)
+    public async Task<IActionResult> ResendConfirmationEmail()
     {
-        var response =
-            await _userRepository.SendConfirmationEmail(userEmail, Url.ActionLink(nameof(ConfirmEmail)));
-
+        var response = await _mediator.Send(new SendConfirmationEmailCommand());
         return ResponseToIActionResult(response);
     }
 
@@ -79,7 +71,7 @@ public class UserController : ApiControllerBase
     [ProducesResponseType(typeof(Response<IEnumerable<UserDTO>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllUsers([FromQuery] [Required] int page, [FromQuery] [Required] int limit)
     {
-        var response = await _userRepository.GetAllUsers(page, limit);
+        var response = await _mediator.Send(new GetAllUsersQuery {PageNumber = page, PageSize = limit});
         return ResponseToIActionResult(response);
     }
 
@@ -87,7 +79,7 @@ public class UserController : ApiControllerBase
     [ProducesResponseType(typeof(Response<UserDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUser([FromRoute] string userId)
     {
-        var response = await _userRepository.GetById(userId);
+        var response = await _mediator.Send(new GetUserByIdQuery {UserId = userId});
         return ResponseToIActionResult(response);
     }
 
@@ -95,8 +87,7 @@ public class UserController : ApiControllerBase
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateName([FromBody] UpdateNameDTO updateNameDTO)
     {
-        var userId = _userService.UserId;
-        var response = await _userRepository.UpdateName(userId!, updateNameDTO);
+        var response = await _mediator.Send(new UpdateNameCommand(updateNameDTO));
         return ResponseToIActionResult(response);
     }
 
@@ -104,8 +95,7 @@ public class UserController : ApiControllerBase
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordDTO updatePasswordDTO)
     {
-        var userId = _userService.UserId;
-        var response = await _userRepository.UpdatePassword(userId!, updatePasswordDTO);
+        var response = await _mediator.Send(new UpdatePasswordCommand(updatePasswordDTO));
         return ResponseToIActionResult(response);
     }
 
@@ -113,9 +103,7 @@ public class UserController : ApiControllerBase
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateEmail([FromBody] UpdateEmailDTO updateEmailDTO)
     {
-        var userId = _userService.UserId;
-        var response =
-            await _userRepository.UpdateEmail(userId!, updateEmailDTO, Url.ActionLink(nameof(ConfirmUpdateEmail)));
+        var response = await _mediator.Send(new UpdateEmailCommand(updateEmailDTO));
         return ResponseToIActionResult(response);
     }
 
@@ -123,8 +111,7 @@ public class UserController : ApiControllerBase
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     public async Task<IActionResult> DeleteUser([FromBody] DeleteUserDTO deleteUserDTO)
     {
-        var userId = _userService.UserId;
-        var response = await _userRepository.DeleteUser(userId!, deleteUserDTO);
+        var response = await _mediator.Send(new DeleteUserCommand(deleteUserDTO));
         return ResponseToIActionResult(response);
     }
 }

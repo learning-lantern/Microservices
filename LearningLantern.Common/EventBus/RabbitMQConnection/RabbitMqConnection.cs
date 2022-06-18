@@ -16,7 +16,7 @@ public class RabbitMQConnection : IRabbitMQConnection
     public RabbitMQConnection(IConnectionFactory connectionFactory)
     {
         _connectionFactory = connectionFactory;
-        TryConnect();
+        //Task.Run(TryConnect);
     }
 
     public void Dispose()
@@ -42,12 +42,11 @@ public class RabbitMQConnection : IRabbitMQConnection
         {
             var policy = Policy.Handle<SocketException>()
                 .Or<BrokerUnreachableException>()
+                .Or<InvalidOperationException>()
                 .WaitAndRetry(RetryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
                 );
             policy.Execute(() => { _connection = _connectionFactory.CreateConnection(); });
         }
-
-        if (!IsConnected) _connection = _connectionFactory.CreateConnection();
 
         return IsConnected;
     }

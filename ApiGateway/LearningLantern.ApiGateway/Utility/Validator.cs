@@ -1,12 +1,12 @@
 using System.Text.RegularExpressions;
-using LearningLantern.ApiGateway.User.DTOs;
+using LearningLantern.ApiGateway.Users.Commands;
 using LearningLantern.Common.Response;
 
 namespace LearningLantern.ApiGateway.Utility;
 
 public static class Validator
 {
-    public static List<Error> Validate(SignupDTO signupDTO)
+    public static List<Error> Validate(SignupCommand signupDTO)
     {
         var errors = new List<Error>();
 

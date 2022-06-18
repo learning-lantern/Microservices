@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using LearningLantern.ApiGateway.Tests.Helpers;
 using LearningLantern.ApiGateway.Utility;
+using LearningLantern.Common.Response;
 using Xunit;
 
 namespace LearningLantern.ApiGateway.Tests.Repository.ClassroomRepositoryTests;
@@ -49,7 +50,7 @@ public class ClassroomRepositoryRemoveAsync : ClassroomRepositoryTestSetup
         //assert
         Assert.False(response.Succeeded);
         Assert.NotNull(response.Errors);
-        Assert.Contains(response.Errors!, e => e.ErrorCode == nameof(ErrorsList.ClassroomIdNotFound));
+        Assert.Contains(response.Errors!, e => e is Error {ErrorCode: nameof(ErrorsList.ClassroomIdNotFound)});
     }
 
     async private Task<int> AddClassroomToRepository()

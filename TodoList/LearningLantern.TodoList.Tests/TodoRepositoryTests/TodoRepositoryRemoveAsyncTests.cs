@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using LearningLantern.Common.Response;
 using LearningLantern.TodoList.Tests.Helpers;
 using LearningLantern.TodoList.Utility;
 using Xunit;
@@ -60,6 +61,6 @@ public class TodoRepositoryRemoveAsyncTests : TodoRepositoryTestSetup
         //assert
         Assert.False(response.Succeeded);
         Assert.NotNull(response.Errors);
-        Assert.Contains(response.Errors!, e => e.ErrorCode == nameof(ErrorsList.TaskNotFound));
+        Assert.Contains(response.Errors!, e => e is Error {ErrorCode: nameof(ErrorsList.TaskNotFound)});
     }
 }
