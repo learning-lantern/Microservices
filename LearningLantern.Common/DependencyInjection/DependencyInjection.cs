@@ -32,6 +32,7 @@ public static class DependencyInjection
                 IssuerSigningKey = JWT.IssuerSigningKey
             };
         });
+
         return services;
     }
 
@@ -39,7 +40,8 @@ public static class DependencyInjection
     {
         services.AddSwaggerGen(option =>
         {
-            option.SwaggerDoc(version, new OpenApiInfo {Title = title, Version = version});
+            option.SwaggerDoc(version, new OpenApiInfo { Title = title, Version = version });
+
             option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
@@ -50,6 +52,7 @@ public static class DependencyInjection
                 BearerFormat = "JWT",
                 Scheme = "Bearer"
             });
+
             option.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
@@ -69,11 +72,12 @@ public static class DependencyInjection
 
     public static IServiceCollection AddRabbitMQ(this IServiceCollection services)
     {
-        IConnectionFactory connectionFactory = new ConnectionFactory {HostName = "rabbitmq"};
-        services.AddSingleton<IRabbitMQConnection, RabbitMQConnection>(
-            op => new RabbitMQConnection(connectionFactory)
-        );
+        IConnectionFactory connectionFactory = new ConnectionFactory { HostName = "rabbitmq" };
+
+        services.AddSingleton<IRabbitMQConnection, RabbitMQConnection>(op => new RabbitMQConnection(connectionFactory));
+
         services.AddSingleton<IEventBus, RabbitMQBus>();
+        
         return services;
     }
 }
