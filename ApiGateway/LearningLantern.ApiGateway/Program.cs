@@ -1,6 +1,6 @@
 using LearningLantern.ApiGateway.Configurations;
-using LearningLantern.Common.DependencyInjection;
-using LearningLantern.Common.Logging;
+using LearningLantern.Common;
+using LearningLantern.Common.Logs;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args).AddSerilog();
