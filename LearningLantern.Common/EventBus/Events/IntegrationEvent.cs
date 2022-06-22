@@ -17,7 +17,9 @@ public class IntegrationEvent
         CreationDate = createDate;
     }
 
-    [JsonProperty] public Guid EventId { get; private set; }
+    [JsonProperty]
+    public Guid EventId { get; }
 
-    [JsonProperty] public DateTime CreationDate { get; private set; }
+    [JsonProperty]
+    public DateTime CreationDate { get; }
 }
