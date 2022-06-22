@@ -1,4 +1,4 @@
-using LearningLantern.Common.DependencyInjection;
+using LearningLantern.Common;
 using LearningLantern.Common.Services;
 using LearningLantern.TodoList.Data;
 using LearningLantern.TodoList.Repositories;

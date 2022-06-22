@@ -1,5 +1,5 @@
-using LearningLantern.Common.DependencyInjection;
-using LearningLantern.Common.Logging;
+using LearningLantern.Common;
+using LearningLantern.Common.Logs;
 using LearningLantern.TodoList;
 using Serilog;
 
