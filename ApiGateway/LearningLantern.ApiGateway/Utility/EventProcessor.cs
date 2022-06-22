@@ -1,16 +1,16 @@
+using System.Text.Json;
 using LearningLantern.Common.EventBus.EventProcessor;
 using LearningLantern.Common.EventBus.Events;
-using Newtonsoft.Json;
 
 namespace LearningLantern.ApiGateway.Utility;
 
 public class EventProcessor : IEventProcessor
 {
-    private readonly IServiceScopeFactory _scopeFactory;
+    private readonly IServiceScopeFactory scopeFactory;
 
     public EventProcessor(IServiceScopeFactory scopeFactory)
     {
-        _scopeFactory = scopeFactory;
+        this.scopeFactory = scopeFactory;
     }
 
     public Task ProcessEvent(string eventName, string message)
@@ -21,12 +21,11 @@ public class EventProcessor : IEventProcessor
         };
     }
 
-    private Task ProcessEvent<T>(string message)
-        where T : IntegrationEvent
+    private Task ProcessEvent<T>(string message) where T : IntegrationEvent
     {
-        using var scope = _scopeFactory.CreateScope();
+        using var scope = scopeFactory.CreateScope();
         var handler = scope.ServiceProvider.GetRequiredService<IIntegrationEventHandler<T>>();
-        var @event = JsonConvert.DeserializeObject<T>(message);
+        var @event = JsonSerializer.Deserialize<T>(message);
         return @event is not null ? handler.Handle(@event) : Task.CompletedTask;
     }
 }
