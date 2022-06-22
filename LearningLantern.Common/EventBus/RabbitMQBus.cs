@@ -2,7 +2,7 @@ using System.Text;
 using LearningLantern.Common.EventBus.EventProcessor;
 using LearningLantern.Common.EventBus.Events;
 using LearningLantern.Common.EventBus.RabbitMQConnection;
-using Newtonsoft.Json;
+using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -31,7 +31,7 @@ public class RabbitMQBus : IEventBus
     {
         if (!_connection.IsConnected) return;
         
-        var message = JsonConvert.SerializeObject(@event);
+        var message = JsonSerializer.Serialize(@event);
         var properties = _channel.CreateBasicProperties();
         properties.Persistent = true;
         var body = Encoding.UTF8.GetBytes(message);
