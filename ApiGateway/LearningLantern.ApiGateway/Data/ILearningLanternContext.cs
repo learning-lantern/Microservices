@@ -5,8 +5,8 @@ namespace LearningLantern.ApiGateway.Data;
 
 public interface ILearningLanternContext
 {
-    public DbSet<ClassroomModel> Classrooms { get; set; }
-    public DbSet<ClassroomUserModel> ClassroomUsers { get; set; }
+    DbSet<ClassroomModel> Classrooms { get; set; }
+    DbSet<ClassroomUserModel> ClassroomUsers { get; set; }
 
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
