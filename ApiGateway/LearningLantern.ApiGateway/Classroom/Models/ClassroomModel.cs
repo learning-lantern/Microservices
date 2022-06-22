@@ -1,10 +1,11 @@
 using LearningLantern.ApiGateway.Classroom.DTOs;
+using LearningLantern.ApiGateway.Users.Models;
 
 namespace LearningLantern.ApiGateway.Classroom.Models;
 
 public class ClassroomModel : ClassroomDTO
 {
-    public ICollection<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
+    public ICollection<UserModel> Users { get; set; } = null!;
 
     public void Update(AddClassroomDTO addClassroomDTO)
     {
