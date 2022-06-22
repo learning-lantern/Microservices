@@ -1,5 +1,5 @@
 using LearningLantern.Common;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Responses;
 using LearningLantern.Common.Services;
 using LearningLantern.TodoList.Data.Models;
 using LearningLantern.TodoList.Repositories;
@@ -22,7 +22,7 @@ public class TasksController : ApiControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Response<AddTaskResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<TaskModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] AddTaskDTO task)
     {
@@ -40,12 +40,12 @@ public class TasksController : ApiControllerBase
         return ResponseToIActionResult(response);
     }
 
-    [HttpPut("{taskId:int}")]
+    [HttpPut]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update([FromRoute] int taskId, [FromBody] TaskProperties taskProperties)
+    public async Task<IActionResult> Update([FromBody] TaskModel taskModel)
     {
-        var response = await _todoRepository.UpdateAsync(taskId, taskProperties);
+        var response = await _todoRepository.UpdateAsync(taskModel);
         return ResponseToIActionResult(response);
     }
 

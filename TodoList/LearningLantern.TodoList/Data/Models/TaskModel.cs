@@ -2,12 +2,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LearningLantern.TodoList.Data.Models;
 
-public class TaskModel : TaskProperties
+public class TaskModel : AddTaskDTO
 {
-    [Required] [Key] public int Id { get; set; }
-    [Required] public string UserId { get; set; }
+    [Key]
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public string UserId { get; set; } = null!;
 
-    public void Update(TaskProperties taskProperties)
+    public void Update(AddTaskDTO taskProperties)
     {
         Title = taskProperties.Title;
         DueDate = taskProperties.DueDate;

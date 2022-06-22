@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Responses;
 using LearningLantern.TodoList.Data;
 using LearningLantern.TodoList.Data.Models;
 using LearningLantern.TodoList.Utility;
@@ -20,7 +20,7 @@ public class TodoRepository : ITodoRepository
     }
 
 
-    public async Task<Response<AddTaskResponse>> AddAsync(string userId, AddTaskDTO addTaskDTO)
+    public async Task<Response<TaskModel>> AddAsync(string userId, AddTaskDTO addTaskDTO)
     {
         var tmpTask = _mapper.Map<TaskModel>(addTaskDTO);
         tmpTask.UserId = userId;
@@ -30,8 +30,8 @@ public class TodoRepository : ITodoRepository
         var result = await _context.SaveChangesAsync();
 
         return result == 0
-            ? ResponseFactory.Fail<AddTaskResponse>()
-            : ResponseFactory.Ok(new AddTaskResponse(task.Entity, addTaskDTO.TempId));
+            ? ResponseFactory.Fail<TaskModel>()
+            : ResponseFactory.Ok(task.Entity);
     }
 
     public async Task<Response<IEnumerable<TaskModel>>> GetAsync(string userId, string? list)
@@ -60,14 +60,9 @@ public class TodoRepository : ITodoRepository
         return await _context.SaveChangesAsync() != 0 ? ResponseFactory.Ok() : ResponseFactory.Fail();
     }
 
-    public async Task<Response> UpdateAsync(int taskId, TaskProperties taskProperties)
+    public async Task<Response> UpdateAsync(TaskModel taskModel)
     {
-        var task = await GetTasks(task => task.Id == taskId).FirstOrDefaultAsync();
-
-        if (task == null) return ResponseFactory.Fail(ErrorsList.TaskNotFound(taskId));
-
-        task.Update(taskProperties);
-        _context.Tasks.Update(task);
+        _context.Tasks.Update(taskModel);
 
         return await _context.SaveChangesAsync() != 0 ? ResponseFactory.Ok() : ResponseFactory.Fail();
     }
