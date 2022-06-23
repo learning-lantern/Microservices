@@ -1,7 +1,7 @@
 using AutoMapper;
 using LearningLantern.ApiGateway.Users.Models;
 using LearningLantern.ApiGateway.Utility;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 

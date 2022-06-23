@@ -3,7 +3,7 @@ using LearningLantern.ApiGateway.Users.Commands;
 using LearningLantern.ApiGateway.Users.Models;
 using LearningLantern.ApiGateway.Users.Queries;
 using LearningLantern.Common;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

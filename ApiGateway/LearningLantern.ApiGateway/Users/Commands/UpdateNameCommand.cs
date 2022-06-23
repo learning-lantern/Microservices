@@ -4,7 +4,8 @@ using LearningLantern.ApiGateway.Users.BuildingBlocks;
 using LearningLantern.ApiGateway.Users.Events;
 using LearningLantern.ApiGateway.Users.Models;
 using LearningLantern.Common.EventBus;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Extensions;
+using LearningLantern.Common.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 

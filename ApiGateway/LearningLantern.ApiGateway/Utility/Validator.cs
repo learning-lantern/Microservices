@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 using LearningLantern.ApiGateway.Users.Commands;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Responses;
 
 namespace LearningLantern.ApiGateway.Utility;
 
