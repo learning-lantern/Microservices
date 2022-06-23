@@ -1,7 +1,7 @@
 using LearningLantern.ApiGateway.Users.BuildingBlocks;
 using LearningLantern.ApiGateway.Users.Models;
 using LearningLantern.ApiGateway.Utility;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Responses;
 using LearningLantern.Common.Services;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

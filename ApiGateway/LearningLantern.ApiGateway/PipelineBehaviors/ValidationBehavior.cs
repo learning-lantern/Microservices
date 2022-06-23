@@ -1,5 +1,6 @@
 using FluentValidation;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Extensions;
+using LearningLantern.Common.Responses;
 using MediatR;
 
 namespace LearningLantern.ApiGateway.PipelineBehaviors;

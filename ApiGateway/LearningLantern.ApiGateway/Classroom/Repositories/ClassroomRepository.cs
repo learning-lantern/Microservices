@@ -4,7 +4,7 @@ using LearningLantern.ApiGateway.Classroom.Models;
 using LearningLantern.ApiGateway.Data;
 using LearningLantern.ApiGateway.Users.Queries;
 using LearningLantern.ApiGateway.Utility;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

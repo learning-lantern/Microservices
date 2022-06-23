@@ -1,5 +1,5 @@
 using LearningLantern.ApiGateway.Classroom.DTOs;
-using LearningLantern.Common.Response;
+using LearningLantern.Common.Responses;
 
 namespace LearningLantern.ApiGateway.Classroom.Repositories;
 

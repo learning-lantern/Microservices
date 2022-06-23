@@ -6,7 +6,7 @@ using LearningLantern.ApiGateway.PipelineBehaviors;
 using LearningLantern.ApiGateway.Users.Events;
 using LearningLantern.ApiGateway.Users.Models;
 using LearningLantern.ApiGateway.Utility;
-using LearningLantern.Common.DependencyInjection;
+using LearningLantern.Common;
 using LearningLantern.Common.EventBus;
 using LearningLantern.Common.EventBus.EventProcessor;
 using LearningLantern.Common.Services;
