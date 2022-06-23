@@ -14,20 +14,20 @@ public class GetAllUsersQuery : IRequest<Response<IEnumerable<UserDTO>>>
 
 public class GetAllUsersHandler : IRequestHandler<GetAllUsersQuery, Response<IEnumerable<UserDTO>>>
 {
-    private readonly IMapper _mapper;
-    private readonly UserManager<UserModel> _userManager;
+    private readonly IMapper mapper;
+    private readonly UserManager<UserModel> userManager;
 
     public GetAllUsersHandler(IMapper mapper, UserManager<UserModel> userManager)
     {
-        _mapper = mapper;
-        _userManager = userManager;
+        this.mapper = mapper;
+        this.userManager = userManager;
     }
 
     public Task<Response<IEnumerable<UserDTO>>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
-        var users = _userManager.Users.Select(x => _mapper.Map<UserDTO>(x))
+        var users = userManager.Users.Select(user => mapper.Map<UserDTO>(user))
             .ToPaginatedList(request.PageNumber, request.PageSize);
-        var response = ResponseFactory.Ok<IEnumerable<UserDTO>>(users);
-        return Task.FromResult(response);
+        
+        return Task.FromResult(ResponseFactory.Ok<IEnumerable<UserDTO>>(users));
     }
 }
