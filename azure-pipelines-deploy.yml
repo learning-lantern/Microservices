@@ -33,10 +33,10 @@ stages:
         steps:
           - task: DockerCompose@0
             inputs:
-              containerregistrytype: 'Container Registry'
-              dockerRegistryEndpoint: 'Docker Hub'
-              dockerComposeFile: $(dockerComposeFile)
-              action: 'Build services'
+               containerregistrytype: 'Container Registry'
+               dockerRegistryEndpoint: 'Docker Hub'
+               dockerComposeFile: $(dockerComposeFile)
+               action: 'Build services'
           - task: DockerCompose@0
             inputs:
               containerregistrytype: 'Container Registry'
