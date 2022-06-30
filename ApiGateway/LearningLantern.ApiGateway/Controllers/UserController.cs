@@ -23,8 +23,8 @@ public class UserController : ApiControllerBase
 
     [AllowAnonymous]
     [HttpPost("signup")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<Error>),StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(TokenResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Signup([FromBody] SignupDTO signupDTO)
     {
         var signupResult = await _mediator.Send(new SignupCommand(signupDTO));
@@ -33,7 +33,9 @@ public class UserController : ApiControllerBase
 
     [AllowAnonymous]
     [HttpPost("login")]
-    [ProducesResponseType(typeof(Response<SignInResponseDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(TokenResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
     {
         var loginResponse = await _mediator.Send(new LoginCommand(loginDTO));

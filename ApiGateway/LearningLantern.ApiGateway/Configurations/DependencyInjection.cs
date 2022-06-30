@@ -87,6 +87,7 @@ public static class DependencyInjection
     {
         services.AddHttpContextAccessor();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        services.AddTransient<JWTGenerator>();
 
         services.AddSingleton<IEmailSender, EmailSender>(
             op => new EmailSender(ConfigProvider.MyEmail, ConfigProvider.MyPassword,

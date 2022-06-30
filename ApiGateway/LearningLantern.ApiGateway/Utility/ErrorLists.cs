@@ -41,7 +41,7 @@ public static class ErrorsList
         {
             StatusCode = StatusCodes.Status400BadRequest,
             ErrorCode = nameof(SignInFailed),
-            Description = "SignIn not Failed"
+            Description = "SignIn Failed, Wrong username or password."
         };
 
     public static Error NameNotValid() => new()

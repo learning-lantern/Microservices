@@ -5,4 +5,5 @@ public static class LearningLanternRoles
     public const string Admin = "Admin";
     public const string Instructor = "Instructor";
     public const string UniversityAdmin = "UniversityAdmin";
+    public const string Student = "Student";
 }
