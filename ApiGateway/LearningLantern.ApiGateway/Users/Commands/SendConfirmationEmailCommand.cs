@@ -27,7 +27,7 @@ public class SendConfirmationEmailCommandHandler : IRequestHandler<SendConfirmat
 
     public async Task<Response> Handle(SendConfirmationEmailCommand request, CancellationToken cancellationToken)
     {
-        var token = HttpUtility.UrlEncode(await _userManager.GenerateEmailConfirmationTokenAsync(request.User));
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(request.User);
 
         var mailMessage = MessageTemplates.ConfirmationEmail(request.User.Id, token);
 

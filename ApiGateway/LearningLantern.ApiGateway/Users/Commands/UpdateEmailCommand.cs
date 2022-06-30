@@ -50,7 +50,7 @@ public class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCommand, Res
 
     public async Task<Response> Handle(UpdateEmailCommand request, CancellationToken cancellationToken)
     {
-        var token = HttpUtility.UrlEncode(await _userManager.GenerateChangeEmailTokenAsync(request.User, request.Email));
+        var token = await _userManager.GenerateChangeEmailTokenAsync(request.User, request.Email);
 
         var mailMessage = MessageTemplates.ChangeEmail(request.User.Id, request.Email, token);
 
