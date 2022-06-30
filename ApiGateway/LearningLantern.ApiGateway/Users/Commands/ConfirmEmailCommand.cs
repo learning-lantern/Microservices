@@ -41,7 +41,7 @@ public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand, Response
         _logger.LogInformation($"requst token = {request.Token}");
         _logger.LogInformation($"token = {token}");
 
-        var result = await _userManager.ConfirmEmailAsync(user, token);
+        var result = await _userManager.ConfirmEmailAsync(user, request.Token);
 
         if (result.Succeeded) _eventBus.Publish(_mapper.Map<UpdateUserEvent>(user));
 
