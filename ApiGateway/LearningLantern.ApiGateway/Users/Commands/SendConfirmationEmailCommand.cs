@@ -1,3 +1,4 @@
+using System.Web;
 using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Users.BuildingBlocks;
 using LearningLantern.ApiGateway.Utility;
@@ -29,9 +30,10 @@ public class SendConfirmationEmailCommandHandler : IRequestHandler<SendConfirmat
     public async Task<Response> Handle(SendConfirmationEmailCommand request, CancellationToken cancellationToken)
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(request.User);
-
+        var encodingToken = HttpUtility.UrlEncode(token);
         _logger.LogInformation($"confirm Email token {token}");
-        var mailMessage = MessageTemplates.ConfirmationEmail(request.User.Id, token);
+        _logger.LogInformation($"confirm Email encodingToken {encodingToken}");
+        var mailMessage = MessageTemplates.ConfirmationEmail(request.User.Id, encodingToken);
 
         return await _emailSender.Send(request.User.Email, mailMessage);
     }

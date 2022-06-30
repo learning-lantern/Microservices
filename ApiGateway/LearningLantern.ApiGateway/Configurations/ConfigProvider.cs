@@ -4,6 +4,7 @@ public static class ConfigProvider
 {
     public static IConfiguration Configuration = null!;
 
+    public static string ConfirmationEmailEndpoint => Get("ConfirmationEmailEndpoint");
     //Database
     public static string DefaultConnectionString => Get("ConnectionStrings:Default");
 

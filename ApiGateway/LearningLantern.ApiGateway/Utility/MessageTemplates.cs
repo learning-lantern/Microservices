@@ -1,14 +1,13 @@
+using LearningLantern.ApiGateway.Configurations;
 using LearningLantern.Common;
 
 namespace LearningLantern.ApiGateway.Utility;
 
 public static class MessageTemplates
 {
-    private const string ConfirmationEmailEndpoint = "http://localhost:4200/auth/validate-email";
-
     public static Message ConfirmationEmail(string userId, string token)
     {
-        var confirmEmailRoute = $"{ConfirmationEmailEndpoint}?userId={userId}&token={token}";
+        var confirmEmailRoute = $"{ConfigProvider.ConfirmationEmailEndpoint}?userId={userId}&token={token}";
 
         var emailBody = "<h1>Welcome To Learning Lantern</h1><br>" +
                         "<p> Thanks for registering at learning lantern please click " +
@@ -20,7 +19,8 @@ public static class MessageTemplates
 
     public static Message ChangeEmail(string userId, string newEmail, string token)
     {
-        var confirmEmailRoute = $"{ConfirmationEmailEndpoint}?userId={userId}&newEmail={newEmail}&token={token}";
+        var confirmEmailRoute =
+            $"{ConfigProvider.ConfirmationEmailEndpoint}?userId={userId}&newEmail={newEmail}&token={token}";
 
         var emailBody =
             $"<p> please click <strong><a href=\"{confirmEmailRoute}\" target=\"_blank\">here</a></strong>" +
