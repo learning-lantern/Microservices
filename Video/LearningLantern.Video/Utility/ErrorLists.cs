@@ -1,14 +1,14 @@
-using LearningLantern.Common.Response;
+// using LearningLantern.Common.Response;
 
-namespace LearningLantern.TodoList.Utility;
+// namespace LearningLantern.Video.Utility;
 
-public static class ErrorsList
-{
-    public static Error TaskNotFound(int taskId) =>
-        new()
-        {
-            StatusCode = StatusCodes.Status404NotFound,
-            ErrorCode = nameof(TaskNotFound),
-            Description = $"Task {taskId} is not Found"
-        };
-}
+// public static class ErrorsList
+// {
+//     public static Error VideoNotFound(int videoId) =>
+//         new()
+//         {
+//             StatusCode = StatusCodes.Status404NotFound,
+//             ErrorCode = nameof(VideoNotFound),
+//             Description = $"Task {videoId} is not Found"
+//         };
+// }

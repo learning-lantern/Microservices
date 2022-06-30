@@ -3,14 +3,18 @@ using LearningLantern.Video.Data.Models;
 
 public class VideoModel : VideoProperties
 {
-    [Required] public string InstructorId { get; set; }
-    [Required] public string ClassRoomId { get; set; }
+    [Key]
+    [Required]
+    public int Id { get; set; }
 
-    public void Update(VideoProperties videoProperties)
+    [Required]
+    public string UserId { get; set; } = null!;
+
+    public VideoModel() { }
+    public VideoModel(string userId, AddVideoDTO video)
     {
-        Path = videoProperties.Path;
-        Name = videoProperties.Name;
-        Type = videoProperties.Type;
-        Discription = videoProperties.Discription;
+        UserId = userId;
+        Name = video.Name;
+        ClassroomId = video.ClassroomId;
     }
 }

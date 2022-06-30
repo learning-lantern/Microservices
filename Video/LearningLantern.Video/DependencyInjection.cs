@@ -1,11 +1,11 @@
 using LearningLantern.Common.DependencyInjection;
 using LearningLantern.Common.Services;
-using LearningLantern.TodoList.Data;
-using LearningLantern.TodoList.Repositories;
-using LearningLantern.TodoList.Utility;
+using LearningLantern.Video.Data;
+using LearningLantern.Video.Repositories;
+using LearningLantern.Video.Utility;
 using Microsoft.EntityFrameworkCore;
 
-namespace LearningLantern.TodoList;
+namespace LearningLantern.Video;
 
 public static class DependencyInjection
 {
@@ -14,8 +14,8 @@ public static class DependencyInjection
         services.AddDatabase();
         services.AddAuthenticationConfigurations();
 
-        services.AddAutoMapper(typeof(MappingProfile));
-        services.AddTransient<ITodoRepository, TodoRepository>();
+        //services.AddAutoMapper(typeof(MappingProfile));
+        services.AddTransient<IVideoRepository, VideoRepository>();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
         services.AddHttpContextAccessor();
         return services;
@@ -23,12 +23,12 @@ public static class DependencyInjection
 
     public static IServiceCollection AddDatabase(this IServiceCollection services)
     {
-        services.AddDbContext<ITodoContext, TodoContext>(builder =>
+        services.AddDbContext<IVideoContext, VideoContext>(builder =>
         {
             var myServerAddress = "learning-lantern.database.windows.net";
             var myUsername = "LearningLanternAdmin";
             var password = "TwajbuxAReMej9";
-            var myDatabase = "TodoList";
+            var myDatabase = "Videos";
             var connectionString =
                 $"Server={myServerAddress};Database={myDatabase};User Id={myUsername};Password={password}";
             builder.UseSqlServer(connectionString);
