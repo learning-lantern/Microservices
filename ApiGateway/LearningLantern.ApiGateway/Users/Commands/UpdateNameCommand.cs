@@ -60,7 +60,7 @@ public class UpdateNameCommandHandler : IRequestHandler<UpdateNameCommand, Respo
 
         var updateAsyncResult = await _userManager.UpdateAsync(request.User);
 
-        if (updateAsyncResult.Succeeded) _eventBus.Publish(_mapper.Map<UpdateUserEvent>(request.User));
+        if (updateAsyncResult.Succeeded) _eventBus.Publish(_mapper.Map<UserEvent>(request.User));
 
         return updateAsyncResult.ToApplicationResponse();
     }

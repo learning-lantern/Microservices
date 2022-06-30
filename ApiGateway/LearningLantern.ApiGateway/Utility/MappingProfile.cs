@@ -13,8 +13,7 @@ public class MappingProfile : Profile
         CreateMap<SignupCommand, UserModel>().ForMember(
             x => x.UserName,
             opt => opt.MapFrom(x => x.Email));
-        CreateMap<UserModel, CreateUserEvent>();
-        CreateMap<UserModel, UpdateUserEvent>();
+        CreateMap<UserModel, UserEvent>();
         CreateMap<UserModel, UserDTO>().ReverseMap();
         CreateMap<ClassroomModel, AddClassroomDTO>().ReverseMap();
         CreateMap<ClassroomModel, ClassroomDTO>().ReverseMap();

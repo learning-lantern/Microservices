@@ -1,7 +1,9 @@
-using Newtonsoft.Json;
-
 namespace LearningLantern.Common.EventBus.Events;
 
+public class IntegrationEvent
+{
+}
+/*
 public class IntegrationEvent
 {
     public IntegrationEvent()
@@ -21,3 +23,4 @@ public class IntegrationEvent
 
     [JsonProperty] public DateTime CreationDate { get; private set; }
 }
+*/

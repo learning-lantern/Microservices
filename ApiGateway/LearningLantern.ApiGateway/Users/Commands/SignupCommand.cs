@@ -72,7 +72,7 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, Response<Toke
 
         if (createAsyncResult.Succeeded == false) return createAsyncResult.ToApplicationResponse<TokenResponseDTO>();
 
-        _eventBus.Publish(_mapper.Map<CreateUserEvent>(user));
+        _eventBus.Publish(_mapper.Map<UserEvent>(user));
 
         var result = await _jwtGenerator.GenerateJwtSecurityToken(user);
 

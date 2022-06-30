@@ -2,11 +2,9 @@ using LearningLantern.Common.EventBus.Events;
 
 namespace LearningLantern.ApiGateway.Users.Events;
 
-public class CreateUserEvent : IntegrationEvent
+public class UserEvent : IntegrationEvent
 {
     public string Id { get; set; } = null!;
-
-    public string Email { get; set; } = null!;
 
     public string FirstName { get; set; } = null!;
 

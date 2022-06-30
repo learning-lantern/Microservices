@@ -36,8 +36,6 @@ public class ConfirmNewEmailCommandHandler : IRequestHandler<ConfirmNewEmailComm
 
         var result = await _userManager.ChangeEmailAsync(user, request.Email, request.Token);
 
-        if (result.Succeeded) _eventBus.Publish(_mapper.Map<UpdateUserEvent>(user));
-
         return result.ToApplicationResponse();
     }
 }

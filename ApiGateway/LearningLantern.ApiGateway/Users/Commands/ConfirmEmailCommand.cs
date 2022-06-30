@@ -2,7 +2,6 @@ using System.Web;
 using AutoMapper;
 using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.ApiGateway.Data.Models;
-using LearningLantern.ApiGateway.Users.Events;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.EventBus;
 using LearningLantern.Common.Response;
@@ -48,8 +47,8 @@ public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand, Response
 
         var result = await _userManager.ConfirmEmailAsync(user, request.Token);
 
-        if (result.Succeeded == false) return result.ToApplicationResponse<TokenResponseDTO>();
-        _eventBus.Publish(_mapper.Map<UpdateUserEvent>(user));
-        return ResponseFactory.Ok(await _jwtGenerator.GenerateJwtSecurityToken(user));
+        return result.Succeeded == false
+            ? result.ToApplicationResponse<TokenResponseDTO>()
+            : ResponseFactory.Ok(await _jwtGenerator.GenerateJwtSecurityToken(user));
     }
 }

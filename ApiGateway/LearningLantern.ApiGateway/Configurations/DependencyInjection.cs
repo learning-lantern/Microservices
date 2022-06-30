@@ -101,9 +101,8 @@ public static class DependencyInjection
     public static IApplicationBuilder AddRabbitMQConfiguration(this IApplicationBuilder app)
     {
         var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-        eventBus.AddEvent<UpdateUserEvent>("Users");
-        eventBus.AddEvent<CreateUserEvent>("Users");
-        eventBus.AddEvent<DeleteUserEvent>("Users");
+        eventBus.AddEvent<UserEvent>("auth");
+        eventBus.AddEvent<DeleteUserEvent>("auth");
         return app;
     }
 
@@ -111,8 +110,7 @@ public static class DependencyInjection
     {
         IConnectionFactory connectionFactory = new ConnectionFactory
         {
-            HostName = ConfigProvider.RabbitMQHost,
-            Port = ConfigProvider.RabbitMQPortNumber
+            HostName = ConfigProvider.RabbitMQHost
         };
         services.AddRabbitMQ(connectionFactory);
         return services;
