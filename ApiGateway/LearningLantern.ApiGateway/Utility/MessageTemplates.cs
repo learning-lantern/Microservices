@@ -4,7 +4,7 @@ namespace LearningLantern.ApiGateway.Utility;
 
 public static class MessageTemplates
 {
-    private const string ConfirmationEmailEndpoint = "";
+    private const string ConfirmationEmailEndpoint = "https://learning-lantern.web.app/auth/validate-email";
 
     public static Message ConfirmationEmail(string userId, string token)
     {
