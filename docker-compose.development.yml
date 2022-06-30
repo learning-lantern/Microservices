@@ -7,13 +7,6 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "6001:80"
-  
-  RabbitMQ:
-    image: rabbitmq:3.10-management
-    hostname: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
 
   TodoList:
     image: learninglantern.todolist

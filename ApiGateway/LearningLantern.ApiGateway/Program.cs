@@ -1,5 +1,7 @@
 using LearningLantern.ApiGateway.Configurations;
+using LearningLantern.ApiGateway.Users.Events;
 using LearningLantern.Common.DependencyInjection;
+using LearningLantern.Common.EventBus;
 using LearningLantern.Common.Logging;
 using Ocelot.Middleware;
 using Serilog;
@@ -37,11 +39,22 @@ app.UseSwagger();
 app.UseSwaggerForOcelotUI(options => { options.PathToSwaggerGenerator = "/swagger/docs"; }).UseOcelot().Wait();
 app.UseSwaggerUI();
 
-app.AddRabbitMQConfiguration();
+using (var scope = app.Services.CreateScope())
+{
+    var eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
+    Task.Run(() =>
+    {
+        if (!eventBus.SetupConfiguration()) return;
+        eventBus.AddEvent<UserEvent>("auth");
+        eventBus.AddEvent<DeleteUserEvent>("auth");
+    });
+}
 
 app.Run();
 
 namespace LearningLantern.ApiGateway
 {
-    public partial class Program { }
+    public class Program
+    {
+    }
 }

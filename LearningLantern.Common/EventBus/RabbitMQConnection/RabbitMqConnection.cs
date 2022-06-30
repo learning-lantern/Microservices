@@ -2,12 +2,13 @@ using System.Net.Sockets;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
+using Serilog;
 
 namespace LearningLantern.Common.EventBus.RabbitMQConnection;
 
 public class RabbitMQConnection : IRabbitMQConnection
 {
-    private const int RetryCount = 5;
+    private const int RetryCount = 3;
     private readonly IConnectionFactory _connectionFactory;
     private readonly object sync_object = new();
     private IConnection _connection;
@@ -16,7 +17,6 @@ public class RabbitMQConnection : IRabbitMQConnection
     public RabbitMQConnection(IConnectionFactory connectionFactory)
     {
         _connectionFactory = connectionFactory;
-        //Task.Run(TryConnect);
     }
 
     public void Dispose()
@@ -38,6 +38,10 @@ public class RabbitMQConnection : IRabbitMQConnection
 
     public bool TryConnect()
     {
+        if (IsConnected)
+            return true;
+
+
         lock (sync_object)
         {
             var policy = Policy.Handle<SocketException>()
@@ -45,7 +49,15 @@ public class RabbitMQConnection : IRabbitMQConnection
                 .Or<InvalidOperationException>()
                 .WaitAndRetry(RetryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
                 );
-            policy.Execute(() => { _connection = _connectionFactory.CreateConnection(); });
+            policy.Execute(() =>
+            {
+                if (IsConnected) return;
+
+                Log.Logger.Information("Try to connect to RabbitMQ");
+                _connection = _connectionFactory.CreateConnection();
+                if (_connection is {IsOpen: true})
+                    Log.Logger.Information("Connection done");
+            });
         }
 
         return IsConnected;

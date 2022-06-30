@@ -5,6 +5,7 @@ public static class ConfigProvider
     public static IConfiguration Configuration = null!;
 
     public static string ConfirmationEmailEndpoint => Get("ConfirmationEmailEndpoint");
+
     //Database
     public static string DefaultConnectionString => Get("ConnectionStrings:Default");
 
@@ -15,8 +16,7 @@ public static class ConfigProvider
     public static int MailPort => Convert.ToInt32(Get("Email:MailPort", "587"));
 
     //RabbitMQ
-    public static string RabbitMQHost => Get("RabbitMQ:Host");
-    public static int RabbitMQPortNumber => Convert.ToInt32(Get("RabbitMQ:Port", "5672"));
+    public static Uri RabbitMQUri => new(Get("RabbitMQ:Uri"));
 
 
     //helpers

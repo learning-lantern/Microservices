@@ -5,27 +5,45 @@ using LearningLantern.Common.EventBus.RabbitMQConnection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Serilog;
 
 namespace LearningLantern.Common.EventBus;
 
 public class RabbitMQBus : IEventBus
 {
-    private const string ExchangeName = "";
-    private readonly IModel _channel;
+    private const string ExchangeName = "LearningLantern";
     private readonly IRabbitMQConnection _connection;
     private readonly IEventProcessor _eventProcessor;
+    private IModel _channel;
 
     public RabbitMQBus(IRabbitMQConnection connection, IEventProcessor eventProcessor)
     {
         _connection = connection;
         _eventProcessor = eventProcessor;
-
-        if (!_connection.IsConnected) return;
-
-        _channel = connection.CreateModel();
-        if (ExchangeName.Length > 0) _channel.ExchangeDeclare(ExchangeName, ExchangeType.Direct);
-        _channel.BasicQos(0, 1, false);
     }
+
+    public bool SetupConfiguration()
+    {
+        _connection.TryConnect();
+
+        if (_connection.IsConnected == false)
+            return false;
+
+        try
+        {
+            _channel = _connection.CreateModel();
+            if (ExchangeName.Length > 0) _channel.ExchangeDeclare(ExchangeName, ExchangeType.Direct);
+            _channel.BasicQos(0, 1, false);
+        }
+        catch (Exception ex)
+        {
+            Log.Logger.Debug(ex.Message);
+            return false;
+        }
+
+        return true;
+    }
+
 
     public void Publish(IntegrationEvent @event)
     {
@@ -42,7 +60,7 @@ public class RabbitMQBus : IEventBus
         where T : IntegrationEvent
     {
         if (!_connection.IsConnected) return;
-        
+
         _channel.QueueDeclare(queueName, true, false, false);
         _channel.QueueBind(queueName, ExchangeName, typeof(T).Name);
     }

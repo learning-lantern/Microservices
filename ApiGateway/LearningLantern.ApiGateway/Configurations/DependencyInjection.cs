@@ -98,19 +98,11 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IApplicationBuilder AddRabbitMQConfiguration(this IApplicationBuilder app)
-    {
-        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-        eventBus.AddEvent<UserEvent>("auth");
-        eventBus.AddEvent<DeleteUserEvent>("auth");
-        return app;
-    }
-
     private static IServiceCollection AddRabbitMQConfiguration(this IServiceCollection services)
     {
         IConnectionFactory connectionFactory = new ConnectionFactory
         {
-            HostName = ConfigProvider.RabbitMQHost
+            Uri = ConfigProvider.RabbitMQUri
         };
         services.AddRabbitMQ(connectionFactory);
         return services;
