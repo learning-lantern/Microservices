@@ -4,37 +4,23 @@ using Newtonsoft.Json;
 
 namespace LearningLantern.Common.Response;
 
-public abstract class ErrorBase
+public class Error
 {
     [JsonIgnore] public int StatusCode { get; init; }
-}
-
-public class Error : ErrorBase
-{
-    public string Description { get; init; }
     public string ErrorCode { get; init; }
-}
-
-public class ValidationError : ErrorBase
-{
-    public ValidationError()
-    {
-        StatusCode = StatusCodes.Status400BadRequest;
-    }
-
-    public string PropertyName { get; init; }
-    public List<string> ErrorMessages { get; init; }
+    public string Description { get; init; }
 }
 
 public static class ValidationFailureExtensions
 {
-    public static IEnumerable<ValidationError> ToApplicationValidationError(this IEnumerable<ValidationFailure> failure)
+    public static IEnumerable<Error> ToApplicationValidationError(this IEnumerable<ValidationFailure> failure)
     {
-        return failure.GroupBy(x => x.ErrorCode, x => x.ErrorMessage).Select(x =>
-            new ValidationError
+        return failure.Select(x =>
+            new Error
             {
-                PropertyName = x.Key,
-                ErrorMessages = x.ToList()
+                StatusCode = StatusCodes.Status400BadRequest,
+                ErrorCode = x.PropertyName + "NotValid",
+                Description = x.ErrorMessage
             }
         );
     }

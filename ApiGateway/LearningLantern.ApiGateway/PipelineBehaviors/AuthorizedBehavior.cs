@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 namespace LearningLantern.ApiGateway.PipelineBehaviors;
 
 public class AuthorizedBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : AuthorizedRequest<TResponse>
+    where TRequest : IRequest<TResponse>
     where TResponse : Response
 {
     private readonly ICurrentUserService _currentUserService;
@@ -24,16 +24,18 @@ public class AuthorizedBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
     public async Task<TResponse> Handle(
         TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
     {
+        if (request is not AuthorizedRequest<TResponse> authorizedRequest) return await next();
+
         var userId = _currentUserService.UserId!;
         var user = await _userManager.FindByIdAsync(userId);
 
-        var failures = new List<ErrorBase>();
+        var failures = new List<Error>();
 
         if (user is null)
         {
             failures.Add(ErrorsList.UserIdNotFound(userId));
         }
-        else if (request is AuthorizedWithPasswordRequest<TResponse> passwordRequest)
+        else if (authorizedRequest is AuthorizedWithPasswordRequest<TResponse> passwordRequest)
         {
             var password = passwordRequest.Password;
             if (await _userManager.CheckPasswordAsync(user, password) == false)
@@ -42,7 +44,8 @@ public class AuthorizedBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
         if (failures.Any()) return ResponseFactory.CreateFailObject<TResponse>(failures)!;
 
-        request.User = user!;
+        authorizedRequest.User = user!;
+
         return await next();
     }
 }

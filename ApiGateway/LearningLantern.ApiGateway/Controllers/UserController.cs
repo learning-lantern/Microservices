@@ -23,7 +23,8 @@ public class UserController : ApiControllerBase
 
     [AllowAnonymous]
     [HttpPost("signup")]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Error>),StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Signup([FromBody] SignupDTO signupDTO)
     {
         var signupResult = await _mediator.Send(new SignupCommand(signupDTO));

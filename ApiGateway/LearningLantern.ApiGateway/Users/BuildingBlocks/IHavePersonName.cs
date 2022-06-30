@@ -14,10 +14,10 @@ public class PersonNameValidator : AbstractValidator<IHavePersonName>
     public PersonNameValidator()
     {
         RuleFor(x => x.FirstName).NotNull().Matches(Pattern.Name).WithMessage(
-            "The field {PropertyName} must match the regular expression {expression}."
+            "The field {PropertyName} must match the regular expression \'" + Pattern.Name + "\'."
         );
         RuleFor(x => x.LastName).NotNull().Matches(Pattern.Name).WithMessage(
-            "The field {PropertyName} must match the regular expression \'" + Pattern.Name + "\'"
+            "The field {PropertyName} must match the regular expression \'" + Pattern.Name + "\'."
         );
     }
 }

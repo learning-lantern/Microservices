@@ -16,6 +16,7 @@ public class PasswordValidator : AbstractValidator<IHavePassword>
 {
     public PasswordValidator()
     {
-        RuleFor(x => x.Password).NotNull().Matches(Pattern.Password);
+        RuleFor(x => x.Password).NotNull().Matches(Pattern.Password)
+            .WithMessage("The field {PropertyName} must match the regular expression \'" + Pattern.Password + "\'.");
     }
 }
