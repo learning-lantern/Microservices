@@ -33,7 +33,7 @@ public class SendConfirmationEmailCommandHandler : IRequestHandler<SendConfirmat
         var encodingToken = HttpUtility.UrlEncode(token);
         _logger.LogInformation($"confirm Email token {token}");
         _logger.LogInformation($"confirm Email encodingToken {encodingToken}");
-        var mailMessage = MessageTemplates.ConfirmationEmail(request.User.Id, token);
+        var mailMessage = MessageTemplates.ConfirmationEmail(request.User.Id, encodingToken);
 
         return await _emailSender.Send(request.User.Email, mailMessage);
     }
