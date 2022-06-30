@@ -7,7 +7,7 @@
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/docker-compose?view=azure-devops
 
 trigger:
-  - Deploy
+  - main
 
 resources:
   - repo: self
