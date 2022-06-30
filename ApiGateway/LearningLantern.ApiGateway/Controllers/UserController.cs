@@ -44,7 +44,9 @@ public class UserController : ApiControllerBase
 
     [AllowAnonymous]
     [HttpPost("validate-email")]
-    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(TokenResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailCommand confirmEmailCommand)
     {
         var response = await _mediator.Send(confirmEmailCommand);
