@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LearningLantern.ApiGateway.Users.Commands;
 
-public class SendConfirmationEmailCommand : AuthorizedRequest<Response<TokenResponseDTO>>
+public class SendConfirmationEmailCommand : AuthorizedRequest<Response>
 {
 }
 

@@ -28,6 +28,7 @@ public class UserController : ApiControllerBase
     public async Task<IActionResult> Signup([FromBody] SignupDTO signupDTO)
     {
         var signupResult = await _mediator.Send(new SignupCommand(signupDTO));
+        await _mediator.Send(new SendConfirmationEmailCommand());
         return ResponseToIActionResult(signupResult);
     }
 
