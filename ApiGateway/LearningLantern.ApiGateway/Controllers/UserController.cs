@@ -43,22 +43,20 @@ public class UserController : ApiControllerBase
     }
 
     [AllowAnonymous]
-    [HttpGet("validate-email")]
+    [HttpPost("validate-email")]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ConfirmEmail([FromQuery] [Required] string userId, [FromQuery] [Required] string token)
+    public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailCommand confirmEmailCommand)
     {
-        var response = await _mediator.Send(new ConfirmEmailCommand {UserId = userId, Token = token});
+        var response = await _mediator.Send(confirmEmailCommand);
         return ResponseToIActionResult(response);
     }
 
     [AllowAnonymous]
-    [HttpGet("confirm-change-email")]
+    [HttpPost("confirm-change-email")]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ConfirmUpdateEmail(
-        [FromQuery] [Required] string userId, [FromQuery] [Required] string newEmail, [FromQuery] [Required] string token)
+    public async Task<IActionResult> ConfirmUpdateEmail([FromBody] ConfirmNewEmailCommand commandNewEmailCommand)
     {
-        var response = await _mediator.Send(
-            new ConfirmNewEmailCommand {UserId = userId, Email = newEmail, Token = token});
+        var response = await _mediator.Send(commandNewEmailCommand);
         return ResponseToIActionResult(response);
     }
 
