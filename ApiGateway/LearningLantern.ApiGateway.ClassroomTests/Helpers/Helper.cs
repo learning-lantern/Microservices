@@ -1,11 +1,11 @@
 using System;
 using AutoMapper;
 using Bogus;
-using LearningLantern.ApiGateway.Classroom.DTOs;
+using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.ApiGateway.Utility;
 using Microsoft.EntityFrameworkCore;
 
-namespace LearningLantern.ApiGateway.Tests.Helpers;
+namespace LearningLantern.ApiGateway.ClassroomTests.Helpers;
 
 public static class Helper
 {

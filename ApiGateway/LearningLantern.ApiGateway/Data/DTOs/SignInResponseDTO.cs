@@ -1,4 +1,4 @@
-﻿namespace LearningLantern.ApiGateway.Users.Models;
+﻿namespace LearningLantern.ApiGateway.Data.DTOs;
 
 /// <summary>
 ///     Sign in response data transfer object class.

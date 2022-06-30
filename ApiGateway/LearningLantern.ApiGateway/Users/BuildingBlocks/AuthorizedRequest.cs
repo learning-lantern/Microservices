@@ -1,4 +1,4 @@
-using LearningLantern.ApiGateway.Users.Models;
+using LearningLantern.ApiGateway.Data.Models;
 using MediatR;
 
 namespace LearningLantern.ApiGateway.Users.BuildingBlocks;

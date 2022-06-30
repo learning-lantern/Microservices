@@ -1,11 +1,11 @@
 using System;
-using LearningLantern.ApiGateway.Classroom.DTOs;
-using LearningLantern.ApiGateway.Classroom.Models;
+using LearningLantern.ApiGateway.Data.DTOs;
+using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.Tests;
 using Xunit;
 
-namespace LearningLantern.ApiGateway.Tests;
+namespace LearningLantern.ApiGateway.ClassroomTests;
 
 public class MappingTests : MappingTestsSetup
 {

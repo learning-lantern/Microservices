@@ -3,7 +3,7 @@ using LearningLantern.ApiGateway.Classroom.Repositories;
 using MediatR;
 using Moq;
 
-namespace LearningLantern.ApiGateway.Tests.Helpers;
+namespace LearningLantern.ApiGateway.ClassroomTests.Helpers;
 
 public abstract class ClassroomRepositoryTestSetup : IDisposable
 {

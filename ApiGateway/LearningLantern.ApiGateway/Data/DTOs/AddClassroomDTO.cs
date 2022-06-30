@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LearningLantern.ApiGateway.Classroom.DTOs;
+namespace LearningLantern.ApiGateway.Data.DTOs;
 
 public class AddClassroomDTO
 {

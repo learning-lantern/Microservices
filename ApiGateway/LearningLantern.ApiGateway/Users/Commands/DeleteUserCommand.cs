@@ -1,7 +1,7 @@
 using FluentValidation;
+using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Users.BuildingBlocks;
 using LearningLantern.ApiGateway.Users.Events;
-using LearningLantern.ApiGateway.Users.Models;
 using LearningLantern.Common.EventBus;
 using LearningLantern.Common.Response;
 using MediatR;

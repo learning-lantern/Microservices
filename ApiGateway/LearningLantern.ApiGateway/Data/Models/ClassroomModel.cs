@@ -1,6 +1,6 @@
-using LearningLantern.ApiGateway.Classroom.DTOs;
+using LearningLantern.ApiGateway.Data.DTOs;
 
-namespace LearningLantern.ApiGateway.Classroom.Models;
+namespace LearningLantern.ApiGateway.Data.Models;
 
 public class ClassroomModel : ClassroomDTO
 {

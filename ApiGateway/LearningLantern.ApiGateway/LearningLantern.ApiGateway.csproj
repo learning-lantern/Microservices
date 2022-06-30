@@ -27,4 +27,8 @@
         <ProjectReference Include="..\..\LearningLantern.Common\LearningLantern.Common.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="LearningLantern.ApiGateway.Tests" />
+    </ItemGroup>
+
 </Project>

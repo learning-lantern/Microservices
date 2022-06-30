@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.ApiGateway.Users.Commands;
-using LearningLantern.ApiGateway.Users.Models;
 using LearningLantern.ApiGateway.Users.Queries;
 using LearningLantern.Common;
 using LearningLantern.Common.Response;
@@ -8,7 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LearningLantern.ApiGateway.Users.Controllers;
+namespace LearningLantern.ApiGateway.Controllers;
 
 [Authorize]
 [Route("api/user")]

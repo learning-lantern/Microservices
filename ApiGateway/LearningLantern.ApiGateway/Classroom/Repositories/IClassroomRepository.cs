@@ -1,4 +1,4 @@
-using LearningLantern.ApiGateway.Classroom.DTOs;
+using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.Common.Response;
 
 namespace LearningLantern.ApiGateway.Classroom.Repositories;

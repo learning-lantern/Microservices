@@ -39,3 +39,8 @@ app.UseSwaggerUI();
 //app.AddRabbitMQConfiguration();
 
 app.Run();
+
+namespace LearningLantern.ApiGateway
+{
+    public partial class Program { }
+}

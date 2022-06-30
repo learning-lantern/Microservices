@@ -1,7 +1,7 @@
 using AutoMapper;
-using LearningLantern.ApiGateway.Classroom.DTOs;
-using LearningLantern.ApiGateway.Classroom.Models;
 using LearningLantern.ApiGateway.Data;
+using LearningLantern.ApiGateway.Data.DTOs;
+using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Users.Queries;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.Response;

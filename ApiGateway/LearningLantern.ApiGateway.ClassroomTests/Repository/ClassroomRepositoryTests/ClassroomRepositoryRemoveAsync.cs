@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using LearningLantern.ApiGateway.Tests.Helpers;
+using LearningLantern.ApiGateway.ClassroomTests.Helpers;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.Response;
 using Xunit;
 
-namespace LearningLantern.ApiGateway.Tests.Repository.ClassroomRepositoryTests;
+namespace LearningLantern.ApiGateway.ClassroomTests.Repository.ClassroomRepositoryTests;
 
 public class ClassroomRepositoryRemoveAsync : ClassroomRepositoryTestSetup
 {

@@ -1,12 +1,12 @@
-﻿using LearningLantern.ApiGateway.Classroom.DTOs;
-using LearningLantern.ApiGateway.Classroom.Repositories;
+﻿using LearningLantern.ApiGateway.Classroom.Repositories;
+using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.Common;
 using LearningLantern.Common.Response;
 using LearningLantern.Common.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LearningLantern.ApiGateway.Classroom.Controllers;
+namespace LearningLantern.ApiGateway.Controllers;
 
 [Route("api/[controller]/[action]")]
 [Authorize]

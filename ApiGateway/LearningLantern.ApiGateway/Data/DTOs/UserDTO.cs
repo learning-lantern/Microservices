@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using LearningLantern.ApiGateway.Utility;
 
-namespace LearningLantern.ApiGateway.Users.Models;
+namespace LearningLantern.ApiGateway.Data.DTOs;
 
 /// <summary>
 ///     User data transfer object class.

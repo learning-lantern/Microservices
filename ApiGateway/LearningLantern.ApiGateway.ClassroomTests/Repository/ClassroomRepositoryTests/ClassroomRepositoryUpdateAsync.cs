@@ -1,9 +1,9 @@
 using FluentAssertions;
-using LearningLantern.ApiGateway.Classroom.DTOs;
-using LearningLantern.ApiGateway.Tests.Helpers;
+using LearningLantern.ApiGateway.ClassroomTests.Helpers;
+using LearningLantern.ApiGateway.Data.DTOs;
 using Xunit;
 
-namespace LearningLantern.ApiGateway.Tests.Repository.ClassroomRepositoryTests;
+namespace LearningLantern.ApiGateway.ClassroomTests.Repository.ClassroomRepositoryTests;
 
 public class ClassroomRepositoryUpdateAsync : ClassroomRepositoryTestSetup
 {

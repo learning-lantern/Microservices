@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using LearningLantern.ApiGateway.Classroom.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace LearningLantern.ApiGateway.Users.Models;
+namespace LearningLantern.ApiGateway.Data.Models;
 
 /// <summary>
 ///     User data model class, inherits from "IdentityUser" class.

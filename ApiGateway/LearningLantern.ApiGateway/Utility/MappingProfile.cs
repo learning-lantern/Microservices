@@ -1,9 +1,8 @@
 using AutoMapper;
-using LearningLantern.ApiGateway.Classroom.DTOs;
-using LearningLantern.ApiGateway.Classroom.Models;
+using LearningLantern.ApiGateway.Data.DTOs;
+using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Users.Commands;
 using LearningLantern.ApiGateway.Users.Events;
-using LearningLantern.ApiGateway.Users.Models;
 
 namespace LearningLantern.ApiGateway.Utility;
 

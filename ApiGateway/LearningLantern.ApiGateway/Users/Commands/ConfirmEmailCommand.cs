@@ -1,6 +1,6 @@
 using AutoMapper;
+using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Users.Events;
-using LearningLantern.ApiGateway.Users.Models;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.EventBus;
 using LearningLantern.Common.Response;

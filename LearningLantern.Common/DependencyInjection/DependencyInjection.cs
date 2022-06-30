@@ -67,13 +67,10 @@ public static class DependencyInjection
         });
     }
 
-    public static IServiceCollection AddRabbitMQ(this IServiceCollection services)
+    public static IServiceCollection AddRabbitMQ(this IServiceCollection services, IConnectionFactory connectionFactory)
     {
-        IConnectionFactory connectionFactory = new ConnectionFactory {HostName = "rabbitmq"};
-        services.AddSingleton<IRabbitMQConnection, RabbitMQConnection>(
+        return services.AddSingleton<IRabbitMQConnection, RabbitMQConnection>(
             op => new RabbitMQConnection(connectionFactory)
-        );
-        services.AddSingleton<IEventBus, RabbitMQBus>();
-        return services;
+        ).AddSingleton<IEventBus, RabbitMQBus>();
     }
 }
