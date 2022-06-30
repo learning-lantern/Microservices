@@ -21,11 +21,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", 
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{05F4F613-94A7-4767-8D2E-0279ABE86777}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningLantern.ApiGateway", "ApiGateway\LearningLantern.ApiGateway\LearningLantern.ApiGateway.csproj", "{B0C26116-8A91-4625-9C95-B4D35A75DA6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningLantern.ApiGateway", "ApiGateway\LearningLantern.ApiGateway\LearningLantern.ApiGateway.csproj", "{B0C26116-8A91-4625-9C95-B4D35A75DA6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningLantern.ApiGateway.ClassroomTests", "ApiGateway\LearningLantern.ApiGateway.ClassroomTests\LearningLantern.ApiGateway.ClassroomTests.csproj", "{133B8134-4756-4B74-A6C3-00CC83453075}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningLantern.ApiGateway.ClassroomTests", "ApiGateway\LearningLantern.ApiGateway.ClassroomTests\LearningLantern.ApiGateway.ClassroomTests.csproj", "{133B8134-4756-4B74-A6C3-00CC83453075}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningLantern.ApiGateway.Tests", "ApiGateway\LearningLantern.ApiGateway.Tests\LearningLantern.ApiGateway.Tests.csproj", "{09C9F5DC-096E-48DC-9032-819D28B9FA57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningLantern.ApiGateway.Tests", "ApiGateway\LearningLantern.ApiGateway.Tests\LearningLantern.ApiGateway.Tests.csproj", "{09C9F5DC-096E-48DC-9032-819D28B9FA57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningLantern.Video", "..\..\..\..\Documents\4th last semster\Video\LearningLantern.Video.csproj", "{2DB75D1D-F204-4D7E-AA02-4CEABECF0F34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Video", "Video", "{550C3A49-6089-4A48-A602-4243CF708B37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +71,10 @@ Global
 		{09C9F5DC-096E-48DC-9032-819D28B9FA57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09C9F5DC-096E-48DC-9032-819D28B9FA57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09C9F5DC-096E-48DC-9032-819D28B9FA57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DB75D1D-F204-4D7E-AA02-4CEABECF0F34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DB75D1D-F204-4D7E-AA02-4CEABECF0F34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DB75D1D-F204-4D7E-AA02-4CEABECF0F34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DB75D1D-F204-4D7E-AA02-4CEABECF0F34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +87,7 @@ Global
 		{B0C26116-8A91-4625-9C95-B4D35A75DA6C} = {F2F40C5B-1854-415C-B0EF-12DF198D4047}
 		{133B8134-4756-4B74-A6C3-00CC83453075} = {F2F40C5B-1854-415C-B0EF-12DF198D4047}
 		{09C9F5DC-096E-48DC-9032-819D28B9FA57} = {F2F40C5B-1854-415C-B0EF-12DF198D4047}
+		{2DB75D1D-F204-4D7E-AA02-4CEABECF0F34} = {550C3A49-6089-4A48-A602-4243CF708B37}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {147AED9E-4B93-411E-8F46-7ABDA73A783C}
