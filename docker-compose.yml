@@ -1,6 +1,22 @@
 version: '3.4'
 
 services:
+  TodoList:
+    image: ahmedezzatg/learninglantern.todolist
+    build:
+      context: .
+      dockerfile: TodoList/LearningLantern.TodoList/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+
+  Calendar:
+    image: ahmedezzatg/learninglantern.calendar
+    build:
+      context: .
+      dockerfile: Calendar/LearningLantern.Calendar/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+
   ApiGateway:
     image: ahmedezzatg/learninglantern.apigateway
     build:
