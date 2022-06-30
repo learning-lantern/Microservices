@@ -1,3 +1,4 @@
+using System.Web;
 using AutoMapper;
 using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Users.Events;
@@ -20,12 +21,14 @@ public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand, Response
     private readonly IEventBus _eventBus;
     private readonly IMapper _mapper;
     private readonly UserManager<UserModel> _userManager;
+    private readonly ILogger<ConfirmEmailHandler> _logger;
 
-    public ConfirmEmailHandler(IEventBus eventBus, IMapper mapper, UserManager<UserModel> userManager)
+    public ConfirmEmailHandler(IEventBus eventBus, IMapper mapper, UserManager<UserModel> userManager, ILogger<ConfirmEmailHandler> logger)
     {
         _eventBus = eventBus;
         _mapper = mapper;
         _userManager = userManager;
+        _logger = logger;
     }
 
     public async Task<Response> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
@@ -33,7 +36,12 @@ public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand, Response
         var user = await _userManager.FindByIdAsync(request.UserId);
         if (user is null) return ResponseFactory.Fail(ErrorsList.UserIdNotFound(request.UserId));
 
-        var result = await _userManager.ConfirmEmailAsync(user, request.Token);
+        var token = HttpUtility.UrlEncode(request.Token);
+        
+        _logger.LogInformation($"requst token = {request.Token}");
+        _logger.LogInformation($"token = {token}");
+
+        var result = await _userManager.ConfirmEmailAsync(user, token);
 
         if (result.Succeeded) _eventBus.Publish(_mapper.Map<UpdateUserEvent>(user));
 

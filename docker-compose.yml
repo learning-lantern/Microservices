@@ -1,29 +1,6 @@
 version: '3.4'
 
 services:
-  RabbitMQ:
-    image: rabbitmq:3.10-management
-    hostname: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-
-  TodoList:
-    image: ahmedezzatg/learninglantern.todolist
-    build:
-      context: .
-      dockerfile: TodoList/LearningLantern.TodoList/Dockerfile
-    environment:
-      - ASPNETCORE_URLS=http://+:80
-
-  Calendar:
-    image: ahmedezzatg/learninglantern.calendar
-    build:
-      context: .
-      dockerfile: Calendar/LearningLantern.Calendar/Dockerfile
-    environment:
-      - ASPNETCORE_URLS=http://+:80
-
   ApiGateway:
     image: ahmedezzatg/learninglantern.apigateway
     build:
@@ -33,7 +10,3 @@ services:
       - "80:80"
     environment:
       - ASPNETCORE_URLS=http://+:80
-    depends_on:
-      - TodoList
-      - Calendar
-      - RabbitMQ
