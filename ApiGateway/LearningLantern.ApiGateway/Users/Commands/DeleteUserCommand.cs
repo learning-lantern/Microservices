@@ -12,7 +12,7 @@ namespace LearningLantern.ApiGateway.Users.Commands;
 
 public class DeleteUserDTO
 {
-    public string Password { get; set; }
+    public string Password { get; set; } = null!;
 }
 
 public class DeleteUserCommand : AuthorizedWithPasswordRequest<Response>

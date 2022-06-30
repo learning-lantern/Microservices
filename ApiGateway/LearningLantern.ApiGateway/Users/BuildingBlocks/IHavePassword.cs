@@ -5,12 +5,12 @@ namespace LearningLantern.ApiGateway.Users.BuildingBlocks;
 
 public interface IHavePassword
 {
-    public string Password { get; set; }
+    string Password { get; set; }
 }
 
 public class PasswordObj : IHavePassword
 {
-    public string Password { get; set; }
+    public string Password { get; set; } = null!;
 }
 public class PasswordValidator : AbstractValidator<IHavePassword>
 {

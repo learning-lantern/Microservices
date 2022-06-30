@@ -18,25 +18,25 @@ public class ConfirmEmailCommand : IRequest<Response>
 
 public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand, Response>
 {
-    private readonly IEventBus _eventBus;
-    private readonly IMapper _mapper;
-    private readonly UserManager<UserModel> _userManager;
+    private readonly IEventBus eventBus;
+    private readonly IMapper mapper;
+    private readonly UserManager<UserModel> userManager;
 
     public ConfirmEmailHandler(IEventBus eventBus, IMapper mapper, UserManager<UserModel> userManager)
     {
-        _eventBus = eventBus;
-        _mapper = mapper;
-        _userManager = userManager;
+        this.eventBus = eventBus;
+        this.mapper = mapper;
+        this.userManager = userManager;
     }
 
     public async Task<Response> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByIdAsync(request.UserId);
+        var user = await userManager.FindByIdAsync(request.UserId);
         if (user is null) return ResponseFactory.Fail(ErrorsList.UserIdNotFound(request.UserId));
 
-        var result = await _userManager.ConfirmEmailAsync(user, request.Token);
+        var result = await userManager.ConfirmEmailAsync(user, request.Token);
 
-        if (result.Succeeded) _eventBus.Publish(_mapper.Map<UpdateUserEvent>(user));
+        if (result.Succeeded) eventBus.Publish(mapper.Map<UpdateUserEvent>(user));
 
         return result.ToApplicationResponse();
     }
