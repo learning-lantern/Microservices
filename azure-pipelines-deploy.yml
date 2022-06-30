@@ -36,12 +36,6 @@ stages:
               containerregistrytype: 'Container Registry'
               dockerRegistryEndpoint: 'Docker Hub'
               dockerComposeFile: $(dockerComposeFile)
-              action: 'Build services'
-          - task: DockerCompose@0
-            inputs:
-              containerregistrytype: 'Container Registry'
-              dockerRegistryEndpoint: 'Docker Hub'
-              dockerComposeFile: $(dockerComposeFile)
               action: 'Push services'
           - task: AzureWebAppContainer@1
             inputs:
