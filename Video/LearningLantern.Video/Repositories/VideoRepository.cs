@@ -26,19 +26,19 @@ public class VideoRepository : IVideoRepository
 
         await _context.SaveChangesAsync();
 
-        var containerClient = _blobServiceClient.GetBlobContainerClient("Videos");
+        var containerClient = _blobServiceClient.GetBlobContainerClient("videos");
         var blobClient = containerClient.GetBlobClient(videoModel.Id.ToString());
         await blobClient.UploadAsync(video.Path, new BlobHttpHeaders { ContentType = video.Path.GetContentType() });
         return ResponseFactory.Ok();
     }
 
-    public async Task<Response<BlobDownloadInfo>> GetAsync(int videoId)
+    public async Task<Response> GetAsync(int videoId)
     {
-        var containerClient = _blobServiceClient.GetBlobContainerClient("Videos");
+        var containerClient = _blobServiceClient.GetBlobContainerClient("videos");
         var blobClient = containerClient.GetBlobClient(videoId.ToString());
-        var blobDownloadInfo = await blobClient.DownloadAsync();
+        var blobDownloadInfo = await blobClient.DownloadToAsync(".");
 
-        return ResponseFactory.Ok(blobDownloadInfo.Value);
+        return ResponseFactory.Ok(blobDownloadInfo);
     }
 
     public async Task<Response> UpdateAsync(VideoModel video)
@@ -63,7 +63,7 @@ public class VideoRepository : IVideoRepository
 
         var result = await _context.SaveChangesAsync() != 0;
 
-        var containerClient = _blobServiceClient.GetBlobContainerClient("Videos");
+        var containerClient = _blobServiceClient.GetBlobContainerClient("videos");
         var blobClient = containerClient.GetBlobClient(videoId.ToString());
         await blobClient.DeleteIfExistsAsync();
 

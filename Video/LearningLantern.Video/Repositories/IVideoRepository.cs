@@ -7,7 +7,7 @@ namespace LearningLantern.Video.Repositories;
 public interface IVideoRepository
 {
     Task<Response> AddAsync(string userId, AddVideoDTO video);
-    Task<Response<BlobDownloadInfo>> GetAsync(int videoId);
+    Task<Response> GetAsync(int videoId);
     Task<Response> UpdateAsync(VideoModel video);
     Task<Response> RemoveAsync(int videoId);
 }

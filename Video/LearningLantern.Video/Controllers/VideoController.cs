@@ -29,7 +29,7 @@ namespace Video.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add([FromBody] AddVideoDTO video)
         {
-            var userId = _currentUserService.UserId;
+            var userId = "test";
             var response = await _videoRepository.AddAsync(userId!, video);
             return ResponseToIActionResult(response);
         }
