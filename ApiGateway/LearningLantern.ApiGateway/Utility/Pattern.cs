@@ -1,23 +1,5 @@
-using System.Text.RegularExpressions;
-using LearningLantern.ApiGateway.Users.Commands;
-using LearningLantern.Common.Response;
-
 namespace LearningLantern.ApiGateway.Utility;
 
-public static class Validator
-{
-    public static List<Error> Validate(SignupCommand signupDTO)
-    {
-        var errors = new List<Error>();
-
-        if (IsValidName(signupDTO.FirstName) == false || IsValidName(signupDTO.LastName) == false)
-            errors.Add(ErrorsList.NameNotValid());
-
-        return errors;
-    }
-
-    private static bool IsValidName(string name) => new Regex(Pattern.Name).IsMatch(name.Replace(" ", ""));
-}
 
 public static class Pattern
 {

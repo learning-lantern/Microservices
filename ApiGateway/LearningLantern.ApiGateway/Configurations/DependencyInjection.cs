@@ -51,26 +51,6 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IApplicationBuilder AddRabbitMQConfiguration(this IApplicationBuilder app)
-    {
-        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-        eventBus.AddEvent<UpdateUserEvent>("Users");
-        eventBus.AddEvent<CreateUserEvent>("Users");
-        eventBus.AddEvent<DeleteUserEvent>("Users");
-        return app;
-    }
-
-    private static IServiceCollection AddRabbitMQConfiguration(this IServiceCollection services)
-    {
-        IConnectionFactory connectionFactory = new ConnectionFactory
-        {
-            HostName = ConfigProvider.RabbitMQHost,
-            Port = ConfigProvider.RabbitMQPortNumber
-        };
-        services.AddRabbitMQ(connectionFactory);
-        return services;
-    }
-
     private static IServiceCollection AddDatabaseConfiguration(this IServiceCollection services)
     {
         services.AddDbContext<ILearningLanternContext, LearningLanternContext>(builder =>
@@ -80,6 +60,8 @@ public static class DependencyInjection
         {
             setupAction.SignIn.RequireConfirmedAccount = false;
             setupAction.User.RequireUniqueEmail = true;
+            setupAction.Password.RequireNonAlphanumeric = false;
+            setupAction.Password.RequiredUniqueChars = 0;
         }).AddEntityFrameworkStores<LearningLanternContext>().AddDefaultTokenProviders();
         return services;
     }
@@ -112,6 +94,26 @@ public static class DependencyInjection
         );
         services.AddSingleton<IEventProcessor, EventProcessor>();
         services.AddTransient<IClassroomRepository, ClassroomRepository>();
+        return services;
+    }
+
+    public static IApplicationBuilder AddRabbitMQConfiguration(this IApplicationBuilder app)
+    {
+        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+        eventBus.AddEvent<UpdateUserEvent>("Users");
+        eventBus.AddEvent<CreateUserEvent>("Users");
+        eventBus.AddEvent<DeleteUserEvent>("Users");
+        return app;
+    }
+
+    private static IServiceCollection AddRabbitMQConfiguration(this IServiceCollection services)
+    {
+        IConnectionFactory connectionFactory = new ConnectionFactory
+        {
+            HostName = ConfigProvider.RabbitMQHost,
+            Port = ConfigProvider.RabbitMQPortNumber
+        };
+        services.AddRabbitMQ(connectionFactory);
         return services;
     }
 
