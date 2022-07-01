@@ -68,7 +68,6 @@ public class RabbitMQBus : IEventBus
     public void Subscribe(string queueName)
     {
         if (!_connection.IsConnected) return;
-
         var consumer = new EventingBasicConsumer(_channel);
         consumer.Received += async (s, eventArgs) =>
         {

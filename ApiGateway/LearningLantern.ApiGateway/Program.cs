@@ -37,7 +37,7 @@ app.UseEndpoints(endpoints =>
 
 app.UseSwagger();
 app.UseSwaggerForOcelotUI(options => { options.PathToSwaggerGenerator = "/swagger/docs"; }).UseOcelot().Wait();
-app.UseSwaggerUI();
+//app.UseSwaggerUI();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -47,6 +47,7 @@ using (var scope = app.Services.CreateScope())
         if (!eventBus.SetupConfiguration()) return;
         eventBus.AddEvent<UserEvent>("auth");
         eventBus.AddEvent<DeleteUserEvent>("auth");
+        eventBus.Subscribe("auth");
     });
 }
 

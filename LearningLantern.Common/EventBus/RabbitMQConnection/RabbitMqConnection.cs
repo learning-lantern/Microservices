@@ -34,7 +34,7 @@ public class RabbitMQConnection : IRabbitMQConnection
         }
     }
 
-    public bool IsConnected => _connection is {IsOpen: true} && !_disposed;
+    public bool IsConnected => !_disposed && _connection is {IsOpen: true};
 
     public bool TryConnect()
     {

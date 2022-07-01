@@ -44,7 +44,11 @@ public class AuthorizedBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
         if (failures.Any()) return ResponseFactory.CreateFailObject<TResponse>(failures)!;
 
-        authorizedRequest.User = user!;
+        var prop = request.GetType().GetProperties();
+
+        foreach (var x in prop)
+            if (x.Name == "User")
+                x.SetValue(request, user);
 
         return await next();
     }

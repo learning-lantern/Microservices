@@ -1,14 +1,15 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using FluentValidation.AspNetCore;
+using LearningLantern.ApiGateway.Classroom.Events;
 using LearningLantern.ApiGateway.Classroom.Repositories;
 using LearningLantern.ApiGateway.Data;
 using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.PipelineBehaviors;
-using LearningLantern.ApiGateway.Users.Events;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.DependencyInjection;
-using LearningLantern.Common.EventBus;
 using LearningLantern.Common.EventBus.EventProcessor;
+using LearningLantern.Common.EventBus.Events;
 using LearningLantern.Common.Services;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -42,7 +43,7 @@ public static class DependencyInjection
         services.AddRabbitMQConfiguration();
 
         services.AddAutoMapper(typeof(MappingProfile));
-        services.AddInfrastructure();
+        services.AddInfrastructure().AddEventsHandler();
 
         services.AddValidations();
         services.AddMediatRConfiguration();
@@ -93,8 +94,14 @@ public static class DependencyInjection
             op => new EmailSender(ConfigProvider.MyEmail, ConfigProvider.MyPassword,
                 ConfigProvider.SmtpServerAddress, ConfigProvider.MailPort)
         );
-        services.AddSingleton<IEventProcessor, EventProcessor>();
         services.AddTransient<IClassroomRepository, ClassroomRepository>();
+        return services;
+    }
+
+    private static IServiceCollection AddEventsHandler(this IServiceCollection services)
+    {
+        services.AddTransient<IIntegrationEventHandler<NewRoomEvent>, NewRoomEventHandler>();
+        services.AddSingleton<IEventProcessor, EventProcessor>();
         return services;
     }
 
