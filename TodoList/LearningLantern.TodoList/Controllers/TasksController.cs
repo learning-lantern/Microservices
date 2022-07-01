@@ -32,11 +32,20 @@ public class TasksController : ApiControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(Response<IEnumerable<TaskModel>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<Dictionary<int, TaskDTO>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromQuery] string? list)
     {
         var userId = _currentUserService.UserId;
-        var response = await _todoRepository.GetByIdAsync(userId, list);
+        var response = await _todoRepository.GetListAsync(userId, list);
+        return ResponseToIActionResult(response);
+    }
+
+    [HttpGet("{taskId:int}")]
+    [ProducesResponseType(typeof(Response<Dictionary<int, TaskDTO>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetById([FromBody] int taskId)
+    {
+        var userId = _currentUserService.UserId;
+        var response = await _todoRepository.GetByIdAsync(userId, taskId);
         return ResponseToIActionResult(response);
     }
 

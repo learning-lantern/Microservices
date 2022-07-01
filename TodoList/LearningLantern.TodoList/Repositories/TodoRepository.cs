@@ -57,7 +57,7 @@ public class TodoRepository : ITodoRepository
         return await _context.SaveChangesAsync() != 0 ? ResponseFactory.Ok() : ResponseFactory.Fail();
     }
 
-    public async Task<Response<IEnumerable<TaskDTO>>> GetByIdAsync(string userId, string? list)
+    public async Task<Response<Dictionary<int, TaskDTO>>> GetListAsync(string userId, string? list)
     {
         list = list?.ToLower();
         var query = await (list switch
@@ -67,14 +67,15 @@ public class TodoRepository : ITodoRepository
                 "important" => GetTasks(task => task.UserId == userId && task.Important),
                 _ => GetTasks(task => task.UserId == userId)
             })
-            .Select(task => _mapper.Map<TaskDTO>(task)).ToListAsync();
+            .Select(task => _mapper.Map<TaskDTO>(task)).ToDictionaryAsync(task => task.Id);
 
-        return ResponseFactory.Ok<IEnumerable<TaskDTO>>(query);
+        return ResponseFactory.Ok(query);
     }
 
-    public async Task<Response<TaskDTO>> GetByIdAsync(int taskId)
+    public async Task<Response<TaskDTO>> GetByIdAsync(string userId, int taskId)
     {
-        var task = GetTasks(task => task.Id == taskId).Select(task => _mapper.Map<TaskDTO>(task)).FirstOrDefault();
+        var task = await GetTasks(task => task.Id == taskId && task.UserId == userId)
+            .Select(task => _mapper.Map<TaskDTO>(task)).FirstOrDefaultAsync();
         return task is null ? ResponseFactory.Fail<TaskDTO>(ErrorsList.TaskNotFound(taskId)) : ResponseFactory.Ok(task);
     }
 
