@@ -14,7 +14,8 @@ public class MappingTests : MappingTestsSetup
     }
 
     [Theory]
-    [InlineData(typeof(AddTaskDTO), typeof(TaskModel))]
+    [InlineData(typeof(TaskProperties), typeof(TaskModel))]
+    [InlineData(typeof(TaskModel), typeof(TaskDTO))]
     public override void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
     {
         base.ShouldSupportMappingFromSourceToDestination(source, destination);

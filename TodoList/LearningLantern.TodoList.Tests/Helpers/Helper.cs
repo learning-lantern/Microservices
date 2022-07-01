@@ -1,4 +1,5 @@
 using System;
+using AutoFixture;
 using AutoMapper;
 using Bogus;
 using LearningLantern.TodoList.Data.Models;
@@ -9,6 +10,8 @@ namespace LearningLantern.TodoList.Tests.Helpers;
 
 public static class Helper
 {
+    private static Fixture _fixture = new();
+
     static Helper()
     {
         Randomizer.Seed = new Random(8675309);
@@ -19,33 +22,10 @@ public static class Helper
 
     public static TaskProperties GenerateTaskProperties()
     {
-        var task = new Faker<TaskProperties>()
-            .RuleFor(t => t.Title, f => f.Random.String(1, 10))
-            .RuleFor(t => t.Note, f => f.Random.String(1, 10))
-            .RuleFor(t => t.DueDate, f => DateTime.UtcNow.OrNull(f))
-            .RuleFor(t => t.MyDay, f => f.Random.Bool())
-            .RuleFor(t => t.Completed, f => f.Random.Bool())
-            .RuleFor(t => t.Important, f => f.Random.Bool())
-            .RuleFor(t => t.Repeated, f => f.Random.Number(1, 100));
+        var task = _fixture.Create<TaskProperties>();
         return task;
     }
-
-
-    public static AddTaskDTO GenerateAddTaskDTO()
-    {
-        var task = new Faker<AddTaskDTO>()
-            .RuleFor(t => t.Title, f => f.Random.String(1, 10))
-            .RuleFor(t => t.Note, f => f.Random.String(1, 10))
-            .RuleFor(t => t.DueDate, f => DateTime.UtcNow.OrNull(f))
-            .RuleFor(t => t.MyDay, f => f.Random.Bool())
-            .RuleFor(t => t.Completed, f => f.Random.Bool())
-            .RuleFor(t => t.Important, f => f.Random.Bool())
-            .RuleFor(t => t.Repeated, f => f.Random.Number(1, 100))
-            .RuleFor(t => t.TempId, f => f.Random.String(1, 10));
-        return task;
-    }
-
-
+    
     public static TodoContextMock CreateTodoContextMock(string name)
     {
         var builder = new DbContextOptionsBuilder();

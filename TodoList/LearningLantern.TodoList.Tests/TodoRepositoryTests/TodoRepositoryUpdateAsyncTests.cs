@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentAssertions;
 using LearningLantern.TodoList.Data.Models;
 using LearningLantern.TodoList.Tests.Helpers;
@@ -12,9 +13,9 @@ public class TodoRepositoryUpdateAsyncTests : TodoRepositoryTestSetup
     public TodoRepositoryUpdateAsyncTests()
     {
         var userId = Helper.GenerateRandomUserId();
-        var randomTask = Helper.GenerateAddTaskDTO();
+        var randomTask = Helper.GenerateTaskProperties();
         var response = TodoRepository.AddAsync(userId, randomTask).Result;
-        _taskModel = response.Data!.Task;
+        _taskModel = Context.Tasks.Single(x => x.Id == response.Data!.Id);
         Context.CountCalls = 0;
     }
 

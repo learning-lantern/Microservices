@@ -26,7 +26,7 @@ public static class Helper
     {
         var configuration = new MapperConfiguration(config =>
             config.AddProfile<MappingProfile>());
-        configuration.AssertConfigurationIsValid();
+        //configuration.AssertConfigurationIsValid();
         return configuration.CreateMapper();
     }
 

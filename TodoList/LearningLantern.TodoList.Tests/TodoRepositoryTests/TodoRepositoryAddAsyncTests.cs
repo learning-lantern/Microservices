@@ -7,13 +7,13 @@ namespace LearningLantern.TodoList.Tests.TodoRepositoryTests;
 
 public class TodoRepositoryAddAsyncTests : TodoRepositoryTestSetup
 {
-    private readonly AddTaskDTO _randomTask;
+    private readonly TaskProperties _randomTask;
     private readonly string _userId;
 
     public TodoRepositoryAddAsyncTests()
     {
         _userId = Helper.GenerateRandomUserId();
-        _randomTask = Helper.GenerateAddTaskDTO();
+        _randomTask = Helper.GenerateTaskProperties();
     }
 
     [Fact]
@@ -34,9 +34,8 @@ public class TodoRepositoryAddAsyncTests : TodoRepositoryTestSetup
         var response = await TodoRepository.AddAsync(_userId, _randomTask);
         //assert
         var taskModel = Assert.Single(Context.Tasks);
-        taskModel.Should().BeEquivalentTo(response.Data!.Task);
-        taskModel.Should().BeEquivalentTo(_randomTask,
-            options => options.Excluding(x => x.TempId));
+        taskModel.Should().BeEquivalentTo(response.Data!);
+        taskModel.Should().BeEquivalentTo(_randomTask);
     }
 
     [Fact]
@@ -46,7 +45,6 @@ public class TodoRepositoryAddAsyncTests : TodoRepositoryTestSetup
         //act
         var response = await TodoRepository.AddAsync(_userId, _randomTask);
         //assert
-        Assert.True(response.Succeeded);
-        Assert.Equal(response.Data!.TempId, _randomTask.TempId);
+        response.Succeeded.Should().BeTrue();
     }
 }

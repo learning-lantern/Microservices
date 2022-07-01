@@ -11,9 +11,9 @@ public class TodoRepositoryRemoveAsyncTests : TodoRepositoryTestSetup
     async private Task<int> AddTaskToRepository()
     {
         var userId = Helper.GenerateRandomUserId();
-        var randomTask = Helper.GenerateAddTaskDTO();
+        var randomTask = Helper.GenerateTaskProperties();
         var response = await TodoRepository.AddAsync(userId, randomTask);
-        var id = response.Data!.Task.Id;
+        var id = response.Data!.Id;
         Context.CountCalls = 0;
         return id;
     }

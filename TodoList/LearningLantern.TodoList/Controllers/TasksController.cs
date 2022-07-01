@@ -22,9 +22,9 @@ public class TasksController : ApiControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Response<AddTaskResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<TaskDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Add([FromBody] AddTaskDTO task)
+    public async Task<IActionResult> Add([FromBody] TaskProperties task)
     {
         var userId = _currentUserService.UserId;
         var response = await _todoRepository.AddAsync(userId, task);
@@ -36,7 +36,7 @@ public class TasksController : ApiControllerBase
     public async Task<IActionResult> Get([FromQuery] string? list)
     {
         var userId = _currentUserService.UserId;
-        var response = await _todoRepository.GetAsync(userId, list);
+        var response = await _todoRepository.GetByIdAsync(userId, list);
         return ResponseToIActionResult(response);
     }
 

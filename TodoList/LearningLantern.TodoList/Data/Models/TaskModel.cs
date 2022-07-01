@@ -2,19 +2,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LearningLantern.TodoList.Data.Models;
 
-public class TaskModel : TaskProperties
+public class TaskModel : TaskDTO
 {
-    [Required] [Key] public int Id { get; set; }
     [Required] public string UserId { get; set; }
 
     public void Update(TaskProperties taskProperties)
     {
         Title = taskProperties.Title;
+        StartDate = taskProperties.StartDate;
         DueDate = taskProperties.DueDate;
-        Note = taskProperties.Note;
-        MyDay = taskProperties.MyDay;
+        Description = taskProperties.Description;
         Completed = taskProperties.Completed;
         Important = taskProperties.Important;
-        Repeated = taskProperties.Repeated;
     }
 }
