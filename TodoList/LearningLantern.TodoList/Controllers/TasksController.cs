@@ -22,8 +22,8 @@ public class TasksController : ApiControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Response<TaskDTO>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(TaskDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] TaskProperties task)
     {
         var userId = _currentUserService.UserId;
@@ -32,7 +32,9 @@ public class TasksController : ApiControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(Response<Dictionary<int, TaskDTO>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Dictionary<int, TaskDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status400BadRequest)]
+
     public async Task<IActionResult> Get([FromQuery] string? list)
     {
         var userId = _currentUserService.UserId;
@@ -41,8 +43,9 @@ public class TasksController : ApiControllerBase
     }
 
     [HttpGet("{taskId:int}")]
-    [ProducesResponseType(typeof(Response<Dictionary<int, TaskDTO>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetById([FromBody] int taskId)
+    [ProducesResponseType(typeof(TaskDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetById([FromRoute] int taskId)
     {
         var userId = _currentUserService.UserId;
         var response = await _todoRepository.GetByIdAsync(userId, taskId);
