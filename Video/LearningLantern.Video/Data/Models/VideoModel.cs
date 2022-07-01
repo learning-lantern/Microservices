@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-
-namespace LearningLantern.Video.Data.Models;
+using LearningLantern.Video.Data.Models;
 
 public class VideoModel : VideoProperties
 {
@@ -12,8 +11,10 @@ public class VideoModel : VideoProperties
     public string UserId { get; set; } = null!;
 
     public VideoModel() { }
-    public VideoModel(string userId, AddVideoDTO video) : base(video)
+    public VideoModel(string userId, AddVideoDTO video)
     {
         UserId = userId;
+        Name = video.Name;
+        ClassroomId = video.ClassroomId;
     }
 }

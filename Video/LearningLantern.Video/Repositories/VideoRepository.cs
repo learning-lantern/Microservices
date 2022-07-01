@@ -4,14 +4,14 @@ using LearningLantern.Common.Response;
 using LearningLantern.Video.Data;
 using LearningLantern.Video.Data.Models;
 using LearningLantern.Video.Utility;
-using Microsoft.AspNetCore.Mvc;
 
 namespace LearningLantern.Video.Repositories;
 
 public class VideoRepository : IVideoRepository
 {
-    private readonly IVideoContext _context;
     private readonly BlobServiceClient _blobServiceClient;
+
+    private readonly IVideoContext _context;
 
     public VideoRepository(IVideoContext context, BlobServiceClient blobServiceClient)
     {
@@ -21,57 +21,54 @@ public class VideoRepository : IVideoRepository
 
     public async Task<Response<VideoModel>> AddAsync(string userId, AddVideoDTO video)
     {
-        var videoEntity = await _context.Videos.AddAsync(new VideoModel(userId, video));
-        var result = await _context.SaveChangesAsync();
+        var videoModel = new VideoModel(userId, video);
+        await _context.Videos.AddAsync(videoModel);
 
-        var blobContainerClient = _blobServiceClient.GetBlobContainerClient("videos");
-        var blobClient = blobContainerClient.GetBlobClient(videoEntity.Entity.Id.ToString());
+        await _context.SaveChangesAsync();
 
-        await blobClient.UploadAsync(video.Path, new BlobHttpHeaders { ContentType = video.Path.GetContentType() });
-
-        return result == 0
-            ? ResponseFactory.Fail<VideoModel>()
-            : ResponseFactory.Ok(videoEntity.Entity);
+        var containerClient = _blobServiceClient.GetBlobContainerClient("videos");
+        var blobClient = containerClient.GetBlobClient(videoModel.Id.ToString());
+        var header = new BlobHttpHeaders {ContentType = video.Path.GetContentType()};
+        var response =
+            await blobClient.UploadAsync(video.Path, header);
+        return ResponseFactory.Ok(videoModel);
     }
 
-    public async Task<Response<FileStreamResult>> GetAsync(int videoId)
+    public async Task<Response<BlobDownloadInfo>> GetAsync(int videoId)
     {
-        var blobContainerClient = _blobServiceClient.GetBlobContainerClient("videos");
-        var blobClient = blobContainerClient.GetBlobClient(videoId.ToString());
-
-        var blobDownloadInfo = (await blobClient.DownloadAsync()).Value;
-
-        return blobDownloadInfo is null
-                ? ResponseFactory.Fail<FileStreamResult>(ErrorsList.VideoNotFound(videoId))
-                : ResponseFactory.Ok(new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType));
+        var containerClient = _blobServiceClient.GetBlobContainerClient("videos");
+        var blobClient = containerClient.GetBlobClient(videoId.ToString());
+        var response = await blobClient.DownloadAsync();
+        var blobDownloadInfo = response.Value;
+        return ResponseFactory.Ok(blobDownloadInfo);
     }
 
-    // public async Task<Response> UpdateAsync(VideoModel video)
-    // {
-    //     var videoModel = await _context.Videos.FindAsync(video.Id);
+    public async Task<Response> UpdateAsync(VideoModel video)
+    {
+        var videoModel = await _context.Videos.FindAsync(video.Id);
 
-    //     if (videoModel == null) return ResponseFactory.Fail();
+        if (videoModel == null) return ResponseFactory.Fail();
 
-    //     videoModel.Name = video.Name;
+        videoModel.Name = video.Name;
 
-    //     var result = await _context.SaveChangesAsync() != 0;
-    //     return result ? ResponseFactory.Ok() : ResponseFactory.Fail();
-    // }
+        var result = await _context.SaveChangesAsync() != 0;
+        return result ? ResponseFactory.Ok() : ResponseFactory.Fail();
+    }
 
-    // public async Task<Response> RemoveAsync(int videoId)
-    // {
-    //     var video = await _context.Videos.FindAsync(videoId);
+    public async Task<Response> RemoveAsync(int videoId)
+    {
+        var video = await _context.Videos.FindAsync(videoId);
 
-    //     if (video == null) return ResponseFactory.Ok();
+        if (video == null) return ResponseFactory.Ok();
 
-    //     _context.Videos.Remove(video);
+        _context.Videos.Remove(video);
 
-    //     var result = await _context.SaveChangesAsync() != 0;
+        var result = await _context.SaveChangesAsync() != 0;
 
-    //     var containerClient = _blobServiceClient.GetBlobContainerClient("videos");
-    //     var blobClient = containerClient.GetBlobClient(videoId.ToString());
-    //     await blobClient.DeleteIfExistsAsync();
+        var containerClient = _blobServiceClient.GetBlobContainerClient("videos");
+        var blobClient = containerClient.GetBlobClient(videoId.ToString());
+        await blobClient.DeleteIfExistsAsync();
 
-    //     return result ? ResponseFactory.Ok() : ResponseFactory.Fail();
-    // }
+        return result ? ResponseFactory.Ok() : ResponseFactory.Fail();
+    }
 }

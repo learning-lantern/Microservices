@@ -1,17 +1,20 @@
-﻿using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.StaticFiles;
 
-namespace LearningLantern.Video.Utility;
-
-public static class Extensions
+namespace LearningLantern.Video.Utility
 {
-    private static readonly FileExtensionContentTypeProvider provider = new();
-    public static string GetContentType(this string fileName)
+    public static class Extensions
     {
-        if (!provider.TryGetContentType(fileName, out var contentType))
+        private static readonly FileExtensionContentTypeProvider provider = new();
+        public static string GetContentType(this string fileName)
         {
-            contentType = "application/octet-stream";
+
+            if (!provider.TryGetContentType(fileName, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+            return contentType;
+
         }
 
-        return contentType;
     }
 }

@@ -1,6 +1,7 @@
-﻿using LearningLantern.Common.Response;
-using LearningLantern.Common.Services;
+using Azure.Storage.Blobs.Models;
 using LearningLantern.Common;
+using LearningLantern.Common.Response;
+using LearningLantern.Common.Services;
 using LearningLantern.Video.Data.Models;
 using LearningLantern.Video.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ public class VideoController : ApiControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Response<VideoModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] AddVideoDTO video)
     {
@@ -31,11 +32,18 @@ public class VideoController : ApiControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(Response<FileStreamResult>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Response<FileStreamResult>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response<BlobDownloadInfo>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromQuery] int videoId)
     {
         var response = await _videoRepository.GetAsync(videoId);
+
+        if (response.Succeeded)
+        {
+            var blobDownloadInfo = response.Data!;
+            var file = new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType);
+            return file;
+        }
+
         return ResponseToIActionResult(response);
     }
 

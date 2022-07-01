@@ -2,6 +2,7 @@ using Azure.Storage.Blobs;
 using LearningLantern.Common.DependencyInjection;
 using LearningLantern.Common.Logging;
 using LearningLantern.Video;
+using LearningLantern.Video.Repositories;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args).AddSerilog();
@@ -21,13 +22,17 @@ builder.Services.AddAuthorizedSwaggerGen("Video.API", "v1");
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
+
 app.UseHttpsRedirection();
 
+
+// Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 
