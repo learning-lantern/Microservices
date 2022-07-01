@@ -27,7 +27,7 @@ public class VideoRepository : IVideoRepository
         await _context.SaveChangesAsync();
 
         var containerClient = _blobServiceClient.GetBlobContainerClient("videos");
-        var blobClient = containerClient.GetBlobClient(videoModel.Id.ToString());
+        var blobClient = containerClient.GetBlobClient(videoModel.Id.ToString()+"."+video.Type);
         var header = new BlobHttpHeaders {ContentType = video.Path.GetContentType()};
         var response =
             await blobClient.UploadAsync(video.Path, header);

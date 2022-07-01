@@ -10,12 +10,13 @@ public class VideoProperties
 
     [Required]
     public int ClassroomId { get; set; }
-
+   
     public VideoProperties() { }
 
     public VideoProperties(VideoProperties video)
     {
         Name = video.Name;
         ClassroomId = video.ClassroomId;
+        
     }
 }
