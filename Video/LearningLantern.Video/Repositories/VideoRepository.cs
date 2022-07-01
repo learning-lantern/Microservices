@@ -9,9 +9,9 @@ namespace LearningLantern.Video.Repositories;
 
 public class VideoRepository : IVideoRepository
 {
+    private readonly BlobServiceClient _blobServiceClient;
 
     private readonly IVideoContext _context;
-    private readonly BlobServiceClient _blobServiceClient;
 
     public VideoRepository(IVideoContext context, BlobServiceClient blobServiceClient)
     {
@@ -19,7 +19,7 @@ public class VideoRepository : IVideoRepository
         _blobServiceClient = blobServiceClient;
     }
 
-    public async Task<Response> AddAsync(string userId, AddVideoDTO video)
+    public async Task<Response<VideoModel>> AddAsync(string userId, AddVideoDTO video)
     {
         var videoModel = new VideoModel(userId, video);
         await _context.Videos.AddAsync(videoModel);
@@ -28,16 +28,18 @@ public class VideoRepository : IVideoRepository
 
         var containerClient = _blobServiceClient.GetBlobContainerClient("videos");
         var blobClient = containerClient.GetBlobClient(videoModel.Id.ToString());
-        await blobClient.UploadAsync(video.Path, new BlobHttpHeaders { ContentType = video.Path.GetContentType() });
-        return ResponseFactory.Ok();
+        var header = new BlobHttpHeaders {ContentType = video.Path.GetContentType()};
+        var response =
+            await blobClient.UploadAsync(video.Path, header);
+        return ResponseFactory.Ok(videoModel);
     }
 
-    public async Task<Response> GetAsync(int videoId)
+    public async Task<Response<BlobDownloadInfo>> GetAsync(int videoId)
     {
         var containerClient = _blobServiceClient.GetBlobContainerClient("videos");
         var blobClient = containerClient.GetBlobClient(videoId.ToString());
-        var blobDownloadInfo = await blobClient.DownloadToAsync(".");
-
+        var response = await blobClient.DownloadAsync();
+        var blobDownloadInfo = response.Value;
         return ResponseFactory.Ok(blobDownloadInfo);
     }
 
