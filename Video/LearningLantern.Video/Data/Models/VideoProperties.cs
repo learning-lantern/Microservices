@@ -12,7 +12,6 @@ public class VideoProperties
     public int ClassroomId { get; set; }
 
     public VideoProperties() { }
-
     public VideoProperties(VideoProperties video)
     {
         Name = video.Name;
