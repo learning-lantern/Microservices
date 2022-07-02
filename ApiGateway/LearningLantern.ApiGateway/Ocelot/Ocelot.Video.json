@@ -25,7 +25,8 @@
       ],
       "UpstreamPathTemplate": "/api/v1/Video{everything}",
       "UpstreamHttpMethod": [
-        "Get"
+        "Get",
+        "Delete"
       ]
     }
   ]
