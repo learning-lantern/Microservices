@@ -34,7 +34,7 @@ public class TodoRepository : ITodoRepository
             : ResponseFactory.Ok(_mapper.Map<TaskDTO>(taskModel.Entity));
     }
 
-    public async Task<Response<Dictionary<int, TaskDTO>>> GetListAsync(string userId, string? list)
+    public async Task<Response<Dictionary<int, TaskDTO>>> GetDictionaryAsync(string userId, string? list)
     {
         list = list?.ToLower();
         var query = await (list switch
@@ -44,7 +44,22 @@ public class TodoRepository : ITodoRepository
                 "important" => GetTasks(task => task.UserId == userId && task.Important),
                 _ => GetTasks(task => task.UserId == userId)
             })
-            .Select(task => _mapper.Map<TaskDTO>(task)).ToDictionaryAsync(task => task.Id);
+            .Select(task => _mapper.Map<TaskDTO>(task)).ToDictionaryAsync(x => x.Id);
+
+        return ResponseFactory.Ok(query);
+    }
+
+    public async Task<Response<IEnumerable<TaskDTO>>> GetListAsync(string userId, string? list)
+    {
+        list = list?.ToLower();
+        IEnumerable<TaskDTO> query = await (list switch
+            {
+                "myday" => GetTasks(task => task.UserId == userId && task.MyDay),
+                "completed" => GetTasks(task => task.UserId == userId && task.Completed),
+                "important" => GetTasks(task => task.UserId == userId && task.Important),
+                _ => GetTasks(task => task.UserId == userId)
+            })
+            .Select(task => _mapper.Map<TaskDTO>(task)).ToListAsync();
 
         return ResponseFactory.Ok(query);
     }

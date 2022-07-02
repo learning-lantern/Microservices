@@ -33,3 +33,16 @@ services:
       - ASPNETCORE_URLS=http://+:80
     depends_on:
       - Seq
+      
+  TodoList:
+    image: learninglantern.todolist
+    build:
+      context: .
+      dockerfile: TodoList/LearningLantern.TodoList/Dockerfile
+    ports:
+      - "5003:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - Seq

@@ -45,7 +45,7 @@ public class TasksController : ApiControllerBase
     public async Task<IActionResult> Get([FromQuery] string? list)
     {
         var userId = _currentUserService.UserId;
-        var response = await _todoRepository.GetListAsync(userId, list);
+        var response = (await _todoRepository.GetDictionaryAsync(userId, list));
         return ResponseToIActionResult(response);
     }
 

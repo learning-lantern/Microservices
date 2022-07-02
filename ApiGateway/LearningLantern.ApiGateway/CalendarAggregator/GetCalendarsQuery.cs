@@ -30,9 +30,16 @@ public class GetCalendarsQueryHandler : IRequestHandler<GetCalendarsQuery, Respo
             .Select(x => x.ClassroomId);
         var calendarsResult = await _calendarService.GetAllCalendarsAsync(classroomIds);
         var todoResult = await _todoService.GetAllTasksAsync(request.User.Id);
-        IEnumerable<CalendarEventDTO> result;
-        IEnumerable<Error> errors;
-        //result.Union(calendarsResult)
-        return calendarsResult;
+        IEnumerable<CalendarEventDTO> result = new CalendarEventDTO[] { };
+        if (calendarsResult.Data is not null) result = result.Union(calendarsResult.Data);
+        if (todoResult.Data is not null) result = result.Union(todoResult.Data);
+
+        IEnumerable<Error> errors = new Error[] { };
+        if (calendarsResult.Errors is not null) errors = errors.Union(calendarsResult.Errors);
+        if (todoResult.Errors is not null) errors = errors.Union(todoResult.Errors);
+
+        if (calendarsResult.Succeeded || todoResult.Succeeded) return ResponseFactory.Ok(result);
+
+        return ResponseFactory.Fail<IEnumerable<CalendarEventDTO>>(errors);
     }
 }
