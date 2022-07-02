@@ -8,7 +8,7 @@ namespace LearningLantern.ApiGateway.Utility;
 public class EventProcessor : IEventProcessor
 {
     private readonly IServiceScopeFactory _scopeFactory;
-    private ILogger<EventProcessor> _logger;
+    private readonly ILogger<EventProcessor> _logger;
 
     public EventProcessor(IServiceScopeFactory scopeFactory)
     {
@@ -21,9 +21,12 @@ public class EventProcessor : IEventProcessor
 
     public Task ProcessEvent(string eventName, string message)
     {
+        _logger.LogDebug($"{eventName} with message= {message}");
         return eventName switch
         {
-            "newRoom" => ProcessEvent<NewRoomEvent>(message),
+            "LearningLantern.newRoom" => ProcessEvent<NewRoomEvent>(message),
+            "joinRoom" => ProcessEvent<JoinRoomEvent>(message),
+            "UserEvent" => Task.CompletedTask,
             _ => throw new Exception()
         };
     }

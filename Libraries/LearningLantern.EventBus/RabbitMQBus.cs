@@ -5,6 +5,7 @@ using LearningLantern.EventBus.RabbitMQConnection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Serilog;
 
 namespace LearningLantern.EventBus;
 
@@ -31,8 +32,9 @@ public class RabbitMQBus : IEventBus
         try
         {
             _channel = _connection.CreateModel();
-            if (ExchangeName.Length > 0) _channel.ExchangeDeclare(ExchangeName, ExchangeType.Direct);
+            if (ExchangeName.Length > 0) _channel.ExchangeDeclare(ExchangeName, ExchangeType.Fanout);
             _channel.BasicQos(0, 1, false);
+            Log.Logger.Debug("create done");
         }
         catch (Exception ex)
         {
@@ -46,7 +48,6 @@ public class RabbitMQBus : IEventBus
     public void Publish(IntegrationEvent @event)
     {
         if (!_connection.IsConnected) return;
-
         var message = JsonConvert.SerializeObject(@event);
         var properties = _channel.CreateBasicProperties();
         properties.Persistent = true;
@@ -72,12 +73,15 @@ public class RabbitMQBus : IEventBus
             try
             {
                 var eventName = eventArgs.RoutingKey;
-                var jsonSpecified = eventArgs.Body.ToString();
+                Log.Logger.Debug($"{eventName} Received");
+                var jsonSpecified = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
+                Log.Logger.Debug(jsonSpecified);
                 await _eventProcessor.ProcessEvent(eventName, jsonSpecified);
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
             }
             catch (Exception _)
             {
+                Log.Logger.Debug("Error happen");
                 // ignored
             }
         };

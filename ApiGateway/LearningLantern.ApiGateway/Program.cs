@@ -45,9 +45,11 @@ using (var scope = app.Services.CreateScope())
     Task.Run(() =>
     {
         if (!eventBus.SetupConfiguration()) return;
+        Log.Logger.Debug("SetupConfiguration done");
         eventBus.AddEvent<UserEvent>("auth");
         eventBus.AddEvent<DeleteUserEvent>("auth");
         eventBus.Subscribe("auth");
+        Log.Logger.Debug("Subscribe done");
     });
 }
 

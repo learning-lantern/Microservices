@@ -4,18 +4,18 @@ using LearningLantern.EventBus.Events;
 
 namespace LearningLantern.ApiGateway.Classroom.Events;
 
-public class NewRoomEvent : IntegrationEvent
+public class JoinRoomEvent : IntegrationEvent
 {
     public string ClassId { get; set; } = null!;
     public string UserId { get; set; } = null!;
 }
 
-public class NewRoomEventHandler : IIntegrationEventHandler<NewRoomEvent>
+public class JoinRoomEventHandler : IIntegrationEventHandler<NewRoomEvent>
 {
     private readonly IClassroomRepository _classroomRepository;
-    private readonly ILogger<NewRoomEventHandler> _logger;
+    private readonly ILogger<JoinRoomEventHandler> _logger;
 
-    public NewRoomEventHandler(ILogger<NewRoomEventHandler> logger, IClassroomRepository classroomRepository)
+    public JoinRoomEventHandler(ILogger<JoinRoomEventHandler> logger, IClassroomRepository classroomRepository)
     {
         _logger = logger;
         _classroomRepository = classroomRepository;
@@ -23,7 +23,7 @@ public class NewRoomEventHandler : IIntegrationEventHandler<NewRoomEvent>
 
     public Task Handle(NewRoomEvent @event)
     {
-        _logger.LogInformation("NewRoomEventHandler = " + @event.ToJsonStringContent());
+        _logger.LogInformation("JoinRoomEvent = " + @event.ToJsonStringContent());
         return Task.CompletedTask;
     }
 }
