@@ -1,6 +1,5 @@
 using LearningLantern.ApiGateway.Configurations;
 using LearningLantern.Common.Response;
-using LearningLantern.Common.Services;
 
 namespace LearningLantern.ApiGateway.CalendarAggregator;
 
@@ -8,7 +7,7 @@ public class TodoService
 {
     private readonly HttpClient _httpClient;
 
-    public TodoService(HttpClient httpClient, ICurrentUserService currentUserService)
+    public TodoService(HttpClient httpClient)
     {
         _httpClient = httpClient;
         _httpClient.BaseAddress = ConfigProvider.TodoListGetTaskEndPoint;
