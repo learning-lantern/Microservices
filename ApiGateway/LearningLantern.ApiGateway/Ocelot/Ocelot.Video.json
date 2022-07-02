@@ -1,0 +1,32 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/Video",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "Video",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/Video",
+      "UpstreamHttpMethod": [
+        "Post"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Video{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "Video",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/Video{everything}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
+    }
+  ]
+}

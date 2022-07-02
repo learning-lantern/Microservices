@@ -42,3 +42,14 @@ services:
       - ASPNETCORE_URLS=http://+:80
     depends_on:
       - Seq
+    
+  Video:
+    image: learninglantern.video
+    build:
+      context: .
+      dockerfile: Video/LearningLantern.Video/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - Seq

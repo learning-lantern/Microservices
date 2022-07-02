@@ -26,3 +26,13 @@ services:
       - "80:80"
     environment:
       - ASPNETCORE_URLS=http://+:80
+  
+  Video:
+    image: ahmedezzatg/learninglantern.video
+    build:
+      context: .
+      dockerfile: Video/LearningLantern.Video/Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - ASPNETCORE_URLS=http://+:80
