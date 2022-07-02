@@ -69,10 +69,17 @@ public class RabbitMQBus : IEventBus
         var consumer = new EventingBasicConsumer(_channel);
         consumer.Received += async (s, eventArgs) =>
         {
-            var eventName = eventArgs.RoutingKey;
-            var jsonSpecified = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
-            await _eventProcessor.ProcessEvent(eventName, jsonSpecified);
-            _channel.BasicAck(eventArgs.DeliveryTag, false);
+            try
+            {
+                var eventName = eventArgs.RoutingKey;
+                var jsonSpecified = eventArgs.Body.ToString();
+                await _eventProcessor.ProcessEvent(eventName, jsonSpecified);
+                _channel.BasicAck(eventArgs.DeliveryTag, false);
+            }
+            catch (Exception _)
+            {
+                // ignored
+            }
         };
         _channel.BasicConsume(queueName, false, consumer);
     }
