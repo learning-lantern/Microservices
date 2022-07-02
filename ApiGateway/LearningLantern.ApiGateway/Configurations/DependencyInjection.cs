@@ -1,5 +1,6 @@
 using System.Reflection;
 using FluentValidation.AspNetCore;
+using LearningLantern.ApiGateway.CalendarAggregator;
 using LearningLantern.ApiGateway.Classroom.Events;
 using LearningLantern.ApiGateway.Classroom.Repositories;
 using LearningLantern.ApiGateway.Data;
@@ -95,6 +96,9 @@ public static class DependencyInjection
                 ConfigProvider.SmtpServerAddress, ConfigProvider.MailPort)
         );
         services.AddTransient<IClassroomRepository, ClassroomRepository>();
+
+        services.AddHttpClient<CalendarService>();
+
         return services;
     }
 

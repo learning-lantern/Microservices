@@ -20,3 +20,16 @@ services:
       - ASPNETCORE_URLS=http://+:80
     depends_on:
       - Seq
+        
+  Calendar:
+    image: learninglantern.calendar
+    build:
+      context: .
+      dockerfile: Calendar/LearningLantern.Calendar/Dockerfile
+    ports:
+      - "5002:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - Seq

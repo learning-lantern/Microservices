@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace LearningLantern.ApiGateway.Controllers;
 
 [Route("api/[controller]/[action]")]
-[Authorize]
 public class ClassroomController : ApiControllerBase
 {
     private readonly IClassroomRepository _classroomRepository;
@@ -33,7 +32,6 @@ public class ClassroomController : ApiControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = LearningLanternRoles.UniversityAdmin)]
     [ProducesResponseType(typeof(Response<IEnumerable<ClassroomDTO>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
@@ -43,7 +41,6 @@ public class ClassroomController : ApiControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = LearningLanternRoles.UniversityAdmin)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] AddClassroomDTO addClassroomDTO)
@@ -54,7 +51,6 @@ public class ClassroomController : ApiControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = LearningLanternRoles.UniversityAdmin)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
@@ -65,7 +61,6 @@ public class ClassroomController : ApiControllerBase
     }
 
     [HttpPut]
-    [Authorize(Roles = LearningLanternRoles.UniversityAdmin)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
@@ -77,7 +72,6 @@ public class ClassroomController : ApiControllerBase
     }
 
     [HttpDelete]
-    [Authorize(Roles = LearningLanternRoles.UniversityAdmin)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]
@@ -89,7 +83,6 @@ public class ClassroomController : ApiControllerBase
     }
 
     [HttpDelete]
-    [Authorize(Roles = LearningLanternRoles.UniversityAdmin)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(Response), StatusCodes.Status400BadRequest)]

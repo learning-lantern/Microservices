@@ -10,7 +10,7 @@ public class RabbitMQConnection : IRabbitMQConnection
 {
     private const int RetryCount = 3;
     private readonly IConnectionFactory _connectionFactory;
-    private readonly object sync_object = new();
+    private readonly object _syncObject = new();
     private IConnection _connection;
     private bool _disposed;
 
@@ -42,7 +42,7 @@ public class RabbitMQConnection : IRabbitMQConnection
             return true;
 
 
-        lock (sync_object)
+        lock (_syncObject)
         {
             var policy = Policy.Handle<SocketException>()
                 .Or<BrokerUnreachableException>()
