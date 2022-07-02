@@ -1,3 +1,4 @@
+using LearningLantern.AzureBlobStorage;
 using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Services;
 using LearningLantern.Video.Data;
@@ -14,10 +15,14 @@ public static class DependencyInjection
         services.AddDatabase();
         services.AddAuthenticationConfigurations();
 
+        services.AddHttpContextAccessor();
         services.AddAutoMapper(typeof(MappingProfile));
+
+        services.AddBlobService("videos");
+
         services.AddTransient<IVideoRepository, VideoRepository>();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
-        services.AddHttpContextAccessor();
+
         return services;
     }
 
@@ -33,6 +38,7 @@ public static class DependencyInjection
                 $"Server={myServerAddress};Database={myDatabase};User Id={myUsername};Password={password}";
             builder.UseSqlServer(connectionString);
         });
+        
         return services;
     }
 }
