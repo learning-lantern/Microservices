@@ -20,8 +20,8 @@ public static class Helper
         var eventProperties = new Faker<EventProperties>()
             .RuleFor(t => t.Title, f => f.Random.String(1, 1000))
             .RuleFor(t => t.Description, f => f.Random.String(1, 1000))
-            .RuleFor(t => t.StartTime, f => DateTime.UtcNow)
-            .RuleFor(t => t.EndTime, f => DateTime.UtcNow);
+            .RuleFor(t => t.StartDate, f => DateTime.UtcNow)
+            .RuleFor(t => t.DueDate, f => DateTime.UtcNow);
 
         return eventProperties;
     }
@@ -31,8 +31,8 @@ public static class Helper
         var eventDTO = new Faker<AddEventDTO>()
             .RuleFor(t => t.Title, f => f.Random.String(1, 1000))
             .RuleFor(t => t.Description, f => f.Random.String(1, 1000))
-            .RuleFor(t => t.StartTime, f => DateTime.UtcNow)
-            .RuleFor(t => t.EndTime, f => DateTime.UtcNow)
+            .RuleFor(t => t.StartDate, f => DateTime.UtcNow)
+            .RuleFor(t => t.DueDate, f => DateTime.UtcNow)
             .RuleFor(t => t.ClassroomId, f => f.Random.Int(1, 100));
 
         return eventDTO;

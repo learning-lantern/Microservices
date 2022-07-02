@@ -7,6 +7,8 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        CreateMap<EventModel, EventDTO>();
+        
         CreateMap<AddEventDTO, EventModel>().ForMember(
             x => x.Id, opt => opt.Ignore());
     }

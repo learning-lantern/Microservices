@@ -10,7 +10,7 @@ public class EventModel : AddEventDTO
     {
         Title = eventProperties.Title;
         Description = eventProperties.Description;
-        StartTime = eventProperties.StartTime;
-        EndTime = eventProperties.EndTime;
+        StartDate = eventProperties.StartDate;
+        DueDate = eventProperties.DueDate;
     }
 }

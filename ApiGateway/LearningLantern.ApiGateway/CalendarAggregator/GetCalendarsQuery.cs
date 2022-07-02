@@ -13,11 +13,14 @@ public class GetCalendarsQueryHandler : IRequestHandler<GetCalendarsQuery, Respo
 {
     private readonly CalendarService _calendarService;
     private readonly ILearningLanternContext _context;
+    private readonly TodoService _todoService;
 
-    public GetCalendarsQueryHandler(CalendarService calendarService, ILearningLanternContext context)
+    public GetCalendarsQueryHandler(
+        CalendarService calendarService, ILearningLanternContext context, TodoService todoService)
     {
         _calendarService = calendarService;
         _context = context;
+        _todoService = todoService;
     }
 
     public async Task<Response<IEnumerable<CalendarEventDTO>>> Handle(
@@ -25,7 +28,11 @@ public class GetCalendarsQueryHandler : IRequestHandler<GetCalendarsQuery, Respo
     {
         var classroomIds = _context.ClassroomUsers.Where(x => x.UserId == request.User.Id)
             .Select(x => x.ClassroomId);
-        var result = await _calendarService.GetAllCalendarsAsync(classroomIds);
-        return result;
+        var calendarsResult = await _calendarService.GetAllCalendarsAsync(classroomIds);
+        var todoResult = await _todoService.GetAllTasksAsync(request.User.Id);
+        IEnumerable<CalendarEventDTO> result;
+        IEnumerable<Error> errors;
+        //result.Union(calendarsResult)
+        return calendarsResult;
     }
 }

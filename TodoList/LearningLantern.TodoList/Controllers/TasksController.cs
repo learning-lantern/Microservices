@@ -31,6 +31,14 @@ public class TasksController : ApiControllerBase
         return ResponseToIActionResult(response);
     }
 
+    [AllowAnonymous]
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetUser([FromRoute] string userId)
+    {
+        var response = await _todoRepository.GetListAsync(userId, null);
+        return ResponseToIActionResult(response);
+    }
+
     [HttpGet]
     [ProducesResponseType(typeof(Dictionary<int, TaskDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status400BadRequest)]

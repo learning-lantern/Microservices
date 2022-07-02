@@ -16,7 +16,7 @@ public class EventModelTests
         // assert
         Assert.Equal(eventModel.Title, eventProperties.Title);
         Assert.Equal(eventModel.Description, eventProperties.Description);
-        Assert.Equal(eventModel.StartTime, eventProperties.StartTime);
-        Assert.Equal(eventModel.EndTime, eventProperties.EndTime);
+        Assert.Equal(eventModel.StartDate, eventProperties.StartDate);
+        Assert.Equal(eventModel.DueDate, eventProperties.DueDate);
     }
 }

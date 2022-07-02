@@ -30,6 +30,7 @@ public class MappingTests
     [Theory]
     [InlineData(typeof(EventModel), typeof(AddEventDTO))]
     [InlineData(typeof(AddEventDTO), typeof(EventModel))]
+    [InlineData(typeof(EventModel), typeof(EventDTO))]
     public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
     {
         var instance = GetInstanceOf(source);

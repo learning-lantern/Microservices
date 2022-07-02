@@ -74,10 +74,10 @@ public class TodoRepository : ITodoRepository
         if (task == null) return ResponseFactory.Fail<TaskDTO>(ErrorsList.TaskNotFound(taskId));
 
         task.Update(taskProperties);
-        _context.Tasks.Update(task);
+        var updatedTask = _context.Tasks.Update(task);
 
         return await _context.SaveChangesAsync() != 0
-            ? ResponseFactory.Ok(_mapper.Map<TaskDTO>(task))
+            ? ResponseFactory.Ok(_mapper.Map<TaskDTO>(updatedTask))
             : ResponseFactory.Fail<TaskDTO>();
     }
 

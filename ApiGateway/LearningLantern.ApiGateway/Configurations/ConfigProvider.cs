@@ -20,6 +20,7 @@ public static class ConfigProvider
 
     //Calendar
     public static Uri CalendarGetEventsEndPoint => Get<Uri>("Calendar:GetEventsEndPoint");
+    public static Uri TodoListGetTaskEndPoint => Get<Uri>("TodoList:GetTaskEndPoint");
 
     //helpers
     private static string Get(string name) => Get<string>(name);

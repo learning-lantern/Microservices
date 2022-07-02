@@ -99,6 +99,7 @@ public static class DependencyInjection
                 ConfigProvider.SmtpServerAddress, ConfigProvider.MailPort)
         );
         services.AddHttpClient<CalendarService>();
+        services.AddHttpClient<TodoService>();
 
 
         services.AddTransient<IClassroomRepository, ClassroomRepository>();
