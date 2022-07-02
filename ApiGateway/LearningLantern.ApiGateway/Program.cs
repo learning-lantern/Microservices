@@ -47,7 +47,7 @@ using (var scope = app.Services.CreateScope())
         if (!eventBus.SetupConfiguration()) return;
         eventBus.AddEvent<UserEvent>("auth");
         eventBus.AddEvent<DeleteUserEvent>("auth");
-        eventBus.Subscribe("auth");
+        //eventBus.Subscribe("auth");
     });
 }
 
