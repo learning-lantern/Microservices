@@ -9,7 +9,8 @@ EXPOSE 587
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["ApiGateway/LearningLantern.ApiGateway/LearningLantern.ApiGateway.csproj", "ApiGateway/LearningLantern.ApiGateway/"]
-COPY ["LearningLantern.Common/LearningLantern.Common.csproj", "LearningLantern.Common/"]
+COPY ["Libraries/LearningLantern.Common/LearningLantern.Common.csproj", "Libraries/LearningLantern.Common/"]
+COPY ["Libraries/LearningLantern.EventBus/LearningLantern.EventBus.csproj", "Libraries/LearningLantern.EventBus/"]
 RUN dotnet restore "ApiGateway/LearningLantern.ApiGateway/LearningLantern.ApiGateway.csproj"
 COPY . .
 WORKDIR "/src/ApiGateway/LearningLantern.ApiGateway"

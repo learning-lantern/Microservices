@@ -8,7 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["TodoList/LearningLantern.TodoList/LearningLantern.TodoList.csproj", "TodoList/LearningLantern.TodoList/"]
-COPY ["LearningLantern.Common/LearningLantern.Common.csproj", "LearningLantern.Common/"]
+COPY ["Libraries/LearningLantern.Common/LearningLantern.Common.csproj", "Libraries/LearningLantern.Common/"]
 RUN dotnet restore "TodoList/LearningLantern.TodoList/LearningLantern.TodoList.csproj"
 COPY . .
 WORKDIR "/src/TodoList/LearningLantern.TodoList"

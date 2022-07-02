@@ -8,7 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Calendar/LearningLantern.Calendar/LearningLantern.Calendar.csproj", "Calendar/LearningLantern.Calendar/"]
-COPY ["LearningLantern.Common/LearningLantern.Common.csproj", "LearningLantern.Common/"]
+COPY ["Libraries/LearningLantern.Common/LearningLantern.Common.csproj", "Libraries/LearningLantern.Common/"]
 RUN dotnet restore "Calendar/LearningLantern.Calendar/LearningLantern.Calendar.csproj"
 COPY . .
 WORKDIR "/src/Calendar/LearningLantern.Calendar"
