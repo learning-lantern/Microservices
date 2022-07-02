@@ -15,9 +15,9 @@ public static class Helper
         Faker.DefaultStrictMode = true;
     }
 
-    public static UpdateEventDTO GenerateUpdateEventDTO()
+    public static EventProperties GenerateUpdateEventDTO()
     {
-        var eventProperties = new Faker<UpdateEventDTO>()
+        var eventProperties = new Faker<EventProperties>()
             .RuleFor(t => t.Title, f => f.Random.String(1, 1000))
             .RuleFor(t => t.Description, f => f.Random.String(1, 1000))
             .RuleFor(t => t.StartTime, f => DateTime.UtcNow)
@@ -26,9 +26,9 @@ public static class Helper
         return eventProperties;
     }
 
-    public static EventDTO GenerateEventDTO()
+    public static AddEventDTO GenerateEventDTO()
     {
-        var eventDTO = new Faker<EventDTO>()
+        var eventDTO = new Faker<AddEventDTO>()
             .RuleFor(t => t.Title, f => f.Random.String(1, 1000))
             .RuleFor(t => t.Description, f => f.Random.String(1, 1000))
             .RuleFor(t => t.StartTime, f => DateTime.UtcNow)

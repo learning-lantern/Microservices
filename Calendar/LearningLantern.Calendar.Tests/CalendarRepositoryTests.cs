@@ -85,18 +85,4 @@ public class CalendarRepositoryTests
         var eventModel = Assert.Single(context.Events);
         Assert.Equal(eventModel.Id, response.Data.Id);
     }
-
-    [Fact]
-    public async void ShouldThrowEventNotFoundException()
-    {
-        //arrange
-        await using var context = Helper.CreateCalendarContextMock(
-            nameof(ShouldThrowEventNotFoundException));
-        var calendarRepository = new CalendarRepository(context, _mapper);
-        //act
-        //assert
-        await Assert.ThrowsAsync<EventNotFoundException>(
-            () => calendarRepository.UpdateAsync(123, Helper.GenerateUpdateEventDTO())
-        );
-    }
 }
