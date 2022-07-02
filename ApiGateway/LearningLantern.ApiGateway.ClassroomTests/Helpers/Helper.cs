@@ -20,7 +20,7 @@ public static class Helper
         var builder = new DbContextOptionsBuilder();
         builder.UseInMemoryDatabase(name);
         return new LearningLanternContextMock(builder.Options);
-    } 
+    }
 
     public static IMapper CreateAutoMapper()
     {

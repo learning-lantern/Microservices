@@ -1,7 +1,6 @@
 using Azure.Storage.Blobs.Models;
 using LearningLantern.Common.Response;
 using LearningLantern.Video.Data.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace LearningLantern.Video.Repositories;
 

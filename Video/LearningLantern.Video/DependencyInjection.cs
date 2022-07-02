@@ -1,8 +1,7 @@
-using LearningLantern.Common.DependencyInjection;
+using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Services;
 using LearningLantern.Video.Data;
 using LearningLantern.Video.Repositories;
-using LearningLantern.Video.Utility;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.Video;

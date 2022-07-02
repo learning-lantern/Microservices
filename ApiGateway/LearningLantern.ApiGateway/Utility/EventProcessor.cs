@@ -1,6 +1,6 @@
 using LearningLantern.ApiGateway.Classroom.Events;
-using LearningLantern.Common.EventBus.EventProcessor;
-using LearningLantern.Common.EventBus.Events;
+using LearningLantern.EventBus.EventProcessor;
+using LearningLantern.EventBus.Events;
 using Newtonsoft.Json;
 
 namespace LearningLantern.ApiGateway.Utility;

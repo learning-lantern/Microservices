@@ -1,4 +1,4 @@
-using LearningLantern.Common.EventBus.Events;
+using LearningLantern.EventBus.Events;
 
 namespace LearningLantern.ApiGateway.Users.Events;
 

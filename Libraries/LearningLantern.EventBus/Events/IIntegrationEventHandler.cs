@@ -1,4 +1,4 @@
-namespace LearningLantern.Common.EventBus.Events;
+namespace LearningLantern.EventBus.Events;
 
 public interface IIntegrationEventHandler<in TIntegrationEvent> : IIntegrationEventHandler
     where TIntegrationEvent : IntegrationEvent

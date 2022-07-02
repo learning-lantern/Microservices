@@ -1,4 +1,4 @@
-namespace LearningLantern.Common.EventBus.EventProcessor;
+namespace LearningLantern.EventBus.EventProcessor;
 
 public interface IEventProcessor
 {

@@ -14,7 +14,6 @@ public static class ResponseFactory
 
     public static TResponse? CreateFailObject<TResponse>(IEnumerable<Error> failures)
         where TResponse : Response
-
     {
         var responseType = typeof(TResponse);
         if (!responseType.IsGenericType) return Activator.CreateInstance(responseType, false, failures) as TResponse;

@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 
-namespace LearningLantern.Common;
+namespace LearningLantern.Common.Extensions;
 
-public static class HttpHelperMethods
+public static class HttpExtensionsMethods
 {
     public static string ToJsonStringContent<T>(this T data) =>
         JsonConvert.SerializeObject(data);

@@ -6,7 +6,7 @@ using LearningLantern.Video.Data.Models;
 using LearningLantern.Video.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Video.Controllers;
+namespace LearningLantern.Video.Controllers;
 
 //[Authorize]
 [Route("api/v1/[controller]")]

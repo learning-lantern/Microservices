@@ -1,6 +1,6 @@
 using RabbitMQ.Client;
 
-namespace LearningLantern.Common.EventBus.RabbitMQConnection;
+namespace LearningLantern.EventBus.RabbitMQConnection;
 
 public interface IRabbitMQConnection : IDisposable
 {

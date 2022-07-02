@@ -1,4 +1,3 @@
-using System.Web;
 using FluentValidation;
 using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Users.BuildingBlocks;

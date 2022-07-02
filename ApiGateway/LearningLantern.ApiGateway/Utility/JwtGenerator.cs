@@ -3,7 +3,6 @@ using System.Security.Claims;
 using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.Common;
-using LearningLantern.Common.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 

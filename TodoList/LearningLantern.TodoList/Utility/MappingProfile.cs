@@ -9,8 +9,9 @@ public class MappingProfile : Profile
     {
         CreateMap<TaskModel, TaskDTO>().ReverseMap();
         CreateMap<TaskProperties, TaskModel>().ForMember(
-            x => x.Id, opt => opt.Ignore())
+                x => x.Id, opt => opt.Ignore())
             .ForMember(
-                x => x.UserId, opt => opt.Ignore());;
+                x => x.UserId, opt => opt.Ignore());
+        ;
     }
 }

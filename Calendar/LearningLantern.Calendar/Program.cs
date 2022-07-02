@@ -1,5 +1,5 @@
 using LearningLantern.Calendar;
-using LearningLantern.Common.DependencyInjection;
+using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Logging;
 using Serilog;
 

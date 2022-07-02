@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using Serilog;
 
-namespace LearningLantern.Common.EventBus.RabbitMQConnection;
+namespace LearningLantern.EventBus.RabbitMQConnection;
 
 public class RabbitMQConnection : IRabbitMQConnection
 {

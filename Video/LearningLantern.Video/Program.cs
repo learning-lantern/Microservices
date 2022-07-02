@@ -1,8 +1,7 @@
 using Azure.Storage.Blobs;
-using LearningLantern.Common.DependencyInjection;
+using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Logging;
 using LearningLantern.Video;
-using LearningLantern.Video.Repositories;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args).AddSerilog();

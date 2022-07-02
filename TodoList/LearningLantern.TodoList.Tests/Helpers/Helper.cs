@@ -10,7 +10,7 @@ namespace LearningLantern.TodoList.Tests.Helpers;
 
 public static class Helper
 {
-    private static Fixture _fixture = new();
+    private static readonly Fixture _fixture = new();
 
     static Helper()
     {
@@ -25,7 +25,7 @@ public static class Helper
         var task = _fixture.Create<TaskProperties>();
         return task;
     }
-    
+
     public static TodoContextMock CreateTodoContextMock(string name)
     {
         var builder = new DbContextOptionsBuilder();

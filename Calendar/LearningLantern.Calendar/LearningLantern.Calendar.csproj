@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\LearningLantern.Common\LearningLantern.Common.csproj"/>
+        <ProjectReference Include="..\..\Libraries\LearningLantern.Common\LearningLantern.Common.csproj"/>
     </ItemGroup>
 
 

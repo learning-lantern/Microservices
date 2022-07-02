@@ -1,13 +1,12 @@
 using System.Text;
-using LearningLantern.Common.EventBus.EventProcessor;
-using LearningLantern.Common.EventBus.Events;
-using LearningLantern.Common.EventBus.RabbitMQConnection;
+using LearningLantern.EventBus.EventProcessor;
+using LearningLantern.EventBus.Events;
+using LearningLantern.EventBus.RabbitMQConnection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using Serilog;
 
-namespace LearningLantern.Common.EventBus;
+namespace LearningLantern.EventBus;
 
 public class RabbitMQBus : IEventBus
 {
@@ -37,7 +36,6 @@ public class RabbitMQBus : IEventBus
         }
         catch (Exception ex)
         {
-            Log.Logger.Debug(ex.Message);
             return false;
         }
 

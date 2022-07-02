@@ -1,3 +1,4 @@
+using LearningLantern.Video.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.Video.Data;

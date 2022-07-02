@@ -2,7 +2,7 @@ using LearningLantern.Calendar.Data.Models;
 using LearningLantern.Calendar.Exceptions;
 using LearningLantern.Calendar.Repositories;
 using LearningLantern.Calendar.Utility;
-using LearningLantern.Common;
+using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Response;
 using Microsoft.AspNetCore.Mvc;
 

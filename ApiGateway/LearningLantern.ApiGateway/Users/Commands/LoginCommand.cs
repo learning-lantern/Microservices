@@ -38,9 +38,9 @@ public class LoginDTOCommandValidator : AbstractValidator<LoginCommand>
 
 public class LoginCommandCommandHandler : IRequestHandler<LoginCommand, Response<TokenResponseDTO>>
 {
+    private readonly JWTGenerator _jwtGenerator;
     private readonly SignInManager<UserModel> _signInManager;
     private readonly UserManager<UserModel> _userManager;
-    private readonly JWTGenerator _jwtGenerator;
 
     public LoginCommandCommandHandler(
         SignInManager<UserModel> signInManager, UserManager<UserModel> userManager, JWTGenerator jwtGenerator)

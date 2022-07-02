@@ -7,6 +7,19 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "6001:80"
+  
+  ApiGateway:
+    image: learninglantern.apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/LearningLantern.ApiGateway/Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - Seq
 
   TodoList:
     image: learninglantern.todolist
@@ -29,19 +42,3 @@ services:
       - ASPNETCORE_URLS=http://+:80
     depends_on:
       - Seq
-
-  ApiGateway:
-    image: learninglantern.apigateway
-    build:
-      context: .
-      dockerfile: ApiGateway/LearningLantern.ApiGateway/Dockerfile
-    ports:
-      - "5001:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-    depends_on:
-      - TodoList
-      - Calendar
-      - Seq
-      - RabbitMQ

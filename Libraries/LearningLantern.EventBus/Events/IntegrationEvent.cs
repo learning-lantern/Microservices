@@ -1,4 +1,4 @@
-namespace LearningLantern.Common.EventBus.Events;
+namespace LearningLantern.EventBus.Events;
 
 public class IntegrationEvent
 {

@@ -1,3 +1,4 @@
+using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

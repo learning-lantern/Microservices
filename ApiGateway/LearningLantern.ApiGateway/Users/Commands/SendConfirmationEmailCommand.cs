@@ -1,5 +1,4 @@
 using System.Web;
-using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Users.BuildingBlocks;
 using LearningLantern.ApiGateway.Utility;

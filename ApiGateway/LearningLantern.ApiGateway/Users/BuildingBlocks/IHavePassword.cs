@@ -12,6 +12,7 @@ public class PasswordObj : IHavePassword
 {
     public string Password { get; set; }
 }
+
 public class PasswordValidator : AbstractValidator<IHavePassword>
 {
     public PasswordValidator()

@@ -1,8 +1,8 @@
 using LearningLantern.ApiGateway.Configurations;
 using LearningLantern.ApiGateway.Users.Events;
-using LearningLantern.Common.DependencyInjection;
-using LearningLantern.Common.EventBus;
+using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Logging;
+using LearningLantern.EventBus;
 using Ocelot.Middleware;
 using Serilog;
 

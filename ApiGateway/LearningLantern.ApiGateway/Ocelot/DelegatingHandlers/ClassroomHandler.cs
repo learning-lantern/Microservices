@@ -1,6 +1,6 @@
 using System.Net;
 using LearningLantern.ApiGateway.Classroom.Repositories;
-using LearningLantern.Common;
+using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Services;
 
 namespace LearningLantern.ApiGateway.Ocelot.DelegatingHandlers;

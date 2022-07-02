@@ -34,7 +34,6 @@ public class TasksController : ApiControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(Dictionary<int, TaskDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status400BadRequest)]
-
     public async Task<IActionResult> Get([FromQuery] string? list)
     {
         var userId = _currentUserService.UserId;
