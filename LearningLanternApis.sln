@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningLantern.Common", "L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningLantern.EventBus", "Libraries\LearningLantern.EventBus\LearningLantern.EventBus.csproj", "{26517B71-217C-4D75-8FAA-F4E96BDE78EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningLantern.BlobStorage", "Libraries\LearningLantern.BlobStorage\LearningLantern.BlobStorage.csproj", "{B981EE63-BF14-40A9-B2A6-3A61770F3F3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{26517B71-217C-4D75-8FAA-F4E96BDE78EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26517B71-217C-4D75-8FAA-F4E96BDE78EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26517B71-217C-4D75-8FAA-F4E96BDE78EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B981EE63-BF14-40A9-B2A6-3A61770F3F3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B981EE63-BF14-40A9-B2A6-3A61770F3F3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B981EE63-BF14-40A9-B2A6-3A61770F3F3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B981EE63-BF14-40A9-B2A6-3A61770F3F3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +104,7 @@ Global
 		{F07729E6-294B-4A78-9BF9-8809CD9715C2} = {550C3A49-6089-4A48-A602-4243CF708B37}
 		{A5F7EF6D-9A09-4941-A756-6C3A307934C8} = {AD311DCA-3DE7-434F-9F01-4B510F78D5DE}
 		{26517B71-217C-4D75-8FAA-F4E96BDE78EB} = {AD311DCA-3DE7-434F-9F01-4B510F78D5DE}
+		{B981EE63-BF14-40A9-B2A6-3A61770F3F3C} = {AD311DCA-3DE7-434F-9F01-4B510F78D5DE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {147AED9E-4B93-411E-8F46-7ABDA73A783C}

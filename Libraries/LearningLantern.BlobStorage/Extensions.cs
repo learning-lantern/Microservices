@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.StaticFiles;
 
-namespace LearningLantern.Video.Utility;
+namespace LearningLantern.AzureBlobStorage;
 
 public static class Extensions
 {
