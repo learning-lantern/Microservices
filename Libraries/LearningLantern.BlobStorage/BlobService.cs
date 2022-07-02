@@ -31,14 +31,12 @@ public class BlobService : IBlobService
         return response.Value;
     }
 
-    public async Task<bool> UploadBlobAsync(string name, IFormFile file)
+    public async Task<string> UploadBlobAsync(string name, IFormFile file)
     {
         var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
 
 
         var blobClient = containerClient.GetBlobClient(name);
-
-        var response = await containerClient.ExistsAsync();
 
         var result
             = await blobClient.UploadAsync(file.OpenReadStream(),
@@ -48,7 +46,7 @@ public class BlobService : IBlobService
                 });
         
 
-        return result is not null && !result.GetRawResponse().IsError;
+        return result is not null && !result.GetRawResponse().IsError ? blobClient.Uri.AbsoluteUri : string.Empty;
     }
 
     public async Task<bool> DeleteBlobAsync(string name)

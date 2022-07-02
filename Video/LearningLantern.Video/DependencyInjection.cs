@@ -15,13 +15,12 @@ public static class DependencyInjection
         services.AddDatabase();
         services.AddAuthenticationConfigurations();
 
-        services.AddHttpContextAccessor();
         services.AddAutoMapper(typeof(MappingProfile));
-
         services.AddBlobService("videos");
-
         services.AddTransient<IVideoRepository, VideoRepository>();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        
+        services.AddHttpContextAccessor();
 
         return services;
     }

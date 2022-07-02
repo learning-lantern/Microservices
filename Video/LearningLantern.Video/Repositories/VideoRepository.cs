@@ -1,5 +1,5 @@
 using AutoMapper;
-using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs;
 using LearningLantern.AzureBlobStorage;
 using LearningLantern.Common.Response;
 using LearningLantern.Video.Data;
@@ -24,49 +24,38 @@ public class VideoRepository : IVideoRepository
         _logger = logger;
     }
 
-    public async Task<Response<VideoDTO>> AddAsync(string userId, AddVideoDTO video)
+    public async Task<Response<VideoDTO>> AddAsync(AddVideoDTO video)
     {
-        var videoModel = new VideoModel(userId, video)
+        var videoModel = new VideoModel()
         {
-            BlobName = Guid.NewGuid().ToString()
+            BlobName = Guid.NewGuid().ToString(),
+            QuizList = video.QuizList
         };
 
         var result = await _blobServiceClient.UploadBlobAsync(videoModel.BlobName, video.File);
-
-        if (result == false)
+        
+        if (result == string.Empty)
             return ResponseFactory.Fail<VideoDTO>(ErrorsList.CantUploadFile());
+        
+        videoModel.Path = result;
 
         var entity = await _context.Videos.AddAsync(videoModel);
 
         var saveResult = await _context.SaveChangesAsync();
+
         return saveResult != 0
             ? ResponseFactory.Ok(_mapper.Map<VideoDTO>(entity.Entity))
             : ResponseFactory.Fail<VideoDTO>();
     }
 
-    public async Task<Response<BlobDownloadInfo>> GetAsync(int videoId)
+    public async Task<Response<VideoDTO>> GetAsync(int videoId)
     {
         var video = await _context.Videos.FindAsync(videoId);
+
         if (video is null)
-            return ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.VideoNotFound(videoId));
+            return ResponseFactory.Fail<VideoDTO>(ErrorsList.VideoNotFound(videoId));
 
-        var result = await _blobServiceClient.DownloadBlobAsync(video.BlobName);
-
-        return result is null
-            ? ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.CantDownloadFile())
-            : ResponseFactory.Ok(result);
-    }
-
-    public async Task<Response> UpdateAsync(VideoModel video)
-    {
-        var videoModel = await _context.Videos.FindAsync(video.Id);
-
-        if (videoModel == null) return ResponseFactory.Fail();
-
-        videoModel.Name = video.Name;
-
-        var result = await _context.SaveChangesAsync() != 0;
-        return result ? ResponseFactory.Ok() : ResponseFactory.Fail();
+        return ResponseFactory.Ok(_mapper.Map<VideoDTO>(video));
     }
 
     public async Task<Response> RemoveAsync(int videoId)
@@ -75,7 +64,7 @@ public class VideoRepository : IVideoRepository
 
         if (video == null) return ResponseFactory.Ok();
 
-        await _blobServiceClient.DeleteBlobAsync(video.BlobName);
+        await  _blobServiceClient.DeleteBlobAsync(video.BlobName);
 
         _context.Videos.Remove(video);
 
