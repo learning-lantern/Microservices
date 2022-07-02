@@ -24,7 +24,7 @@ public class VideoController : ApiControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Add([FromBody] AddVideoDTO video)
+    public async Task<IActionResult> Add([FromForm] AddVideoDTO video)
     {
         var userId = _currentUserService.UserId ?? "test";
         var response = await _videoRepository.AddAsync(userId, video);
@@ -37,14 +37,12 @@ public class VideoController : ApiControllerBase
     {
         var response = await _videoRepository.GetAsync(videoId);
 
-        if (response.Succeeded)
-        {
-            var blobDownloadInfo = response.Data!;
-            var file = new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType);
-            return file;
-        }
+        if (!response.Succeeded) return ResponseToIActionResult(response);
+        
+        var blobDownloadInfo = response.Data!;
+        var file = new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType);
+        return file;
 
-        return ResponseToIActionResult(response);
     }
 
     // [HttpPut("{videoId:int}")]

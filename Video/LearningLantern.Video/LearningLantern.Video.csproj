@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Libraries\LearningLantern.BlobStorage\LearningLantern.BlobStorage.csproj" />
         <ProjectReference Include="..\..\Libraries\LearningLantern.Common\LearningLantern.Common.csproj" />
     </ItemGroup>
   

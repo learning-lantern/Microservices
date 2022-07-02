@@ -1,16 +1,12 @@
-//using AutoMapper;
-//using LearningLantern.TodoList.Data.Models;
+using AutoMapper;
+using LearningLantern.Video.Data.Models;
 
-//namespace LearningLantern.TodoList.Utility;
+namespace LearningLantern.Video.Utility;
 
-//public class MappingProfile : Profile
-//{
-//    public MappingProfile()
-//    {
-//        CreateMap<AddTaskDTO, TaskModel>().ForMember(
-//                x => x.Id, opt => opt.Ignore())
-//            .ForMember(
-//                x => x.UserId, opt => opt.Ignore());
-//    }
-//}
-
+public class MappingProfile : Profile
+{
+    public MappingProfile()
+    {
+        CreateMap<VideoModel, VideoDTO>();
+    }
+}

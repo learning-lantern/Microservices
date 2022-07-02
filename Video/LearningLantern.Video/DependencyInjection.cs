@@ -2,6 +2,7 @@ using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Services;
 using LearningLantern.Video.Data;
 using LearningLantern.Video.Repositories;
+using LearningLantern.Video.Utility;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.Video;
@@ -13,7 +14,7 @@ public static class DependencyInjection
         services.AddDatabase();
         services.AddAuthenticationConfigurations();
 
-        //services.AddAutoMapper(typeof(MappingProfile));
+        services.AddAutoMapper(typeof(MappingProfile));
         services.AddTransient<IVideoRepository, VideoRepository>();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
         services.AddHttpContextAccessor();

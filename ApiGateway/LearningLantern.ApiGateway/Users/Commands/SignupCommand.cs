@@ -5,6 +5,7 @@ using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Users.BuildingBlocks;
 using LearningLantern.ApiGateway.Users.Events;
 using LearningLantern.ApiGateway.Utility;
+using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Response;
 using LearningLantern.EventBus;
 using MediatR;

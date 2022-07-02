@@ -2,9 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LearningLantern.Video.Data.Models;
 
-public class AddVideoDTO
+public class VideoDTO
 {
-    [Required] public int ClassroomId { get; set; }
+    [Key] [Required] public int Id { get; set; }
     [Required] [StringLength(450)] public string Name { get; set; } = null!;
-    [Required] public IFormFile File { get; set; } = null!;
 }

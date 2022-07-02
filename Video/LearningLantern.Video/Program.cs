@@ -1,4 +1,4 @@
-using Azure.Storage.Blobs;
+using LearningLantern.AzureBlobStorage;
 using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Logging;
 using LearningLantern.Video;
@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args).AddSerilog();
 
 // Add services to the container.
 
-builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration["BlobStorageConnectionString"]));
+builder.Services.AddBlobService(builder.Configuration["BlobStorageConnectionString"], "videos");
 builder.Services.AddApplication();
 builder.Services.AddControllers();
 
