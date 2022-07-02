@@ -40,7 +40,7 @@ public class VideoRepository : IVideoRepository
 
         var saveResult = await _context.SaveChangesAsync();
         return saveResult != 0
-            ? ResponseFactory.Ok(_mapper.Map<VideoDTO>(videoModel))
+            ? ResponseFactory.Ok(_mapper.Map<VideoDTO>(entity.Entity))
             : ResponseFactory.Fail<VideoDTO>();
     }
 

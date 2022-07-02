@@ -40,9 +40,7 @@ public class VideoController : ApiControllerBase
         if (!response.Succeeded) return ResponseToIActionResult(response);
         
         var blobDownloadInfo = response.Data!;
-        var file = new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType);
-        return file;
-
+        return new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType);
     }
 
     // [HttpPut("{videoId:int}")]
