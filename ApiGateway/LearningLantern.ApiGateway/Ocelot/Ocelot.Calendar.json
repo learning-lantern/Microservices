@@ -11,10 +11,25 @@
       ],
       "UpstreamPathTemplate": "/api/v1/Events",
       "UpstreamHttpMethod": [
-        "Post",
-        "Get"
+        "Post"
       ],
-      "Priority": 1
+      "DelegatingHandlers": [
+        "ClassroomHandler"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Events",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "Calendar",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/Events",
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/Events{everything}",
@@ -28,8 +43,7 @@
       "UpstreamPathTemplate": "/api/v1/Events{everything}",
       "UpstreamHttpMethod": [
         "Get"
-      ],
-      "Priority": 1
+      ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/Events/{eventId}",
@@ -45,8 +59,7 @@
         "Get",
         "Put",
         "Delete"
-      ],
-      "Priority": 1
+      ]
     }
   ]
 }

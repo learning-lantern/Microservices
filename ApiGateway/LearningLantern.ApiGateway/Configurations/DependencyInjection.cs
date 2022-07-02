@@ -6,6 +6,7 @@ using LearningLantern.ApiGateway.Classroom.Events;
 using LearningLantern.ApiGateway.Classroom.Repositories;
 using LearningLantern.ApiGateway.Data;
 using LearningLantern.ApiGateway.Data.Models;
+using LearningLantern.ApiGateway.Ocelot.DelegatingHandlers;
 using LearningLantern.ApiGateway.PipelineBehaviors;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.Extensions;
@@ -30,7 +31,8 @@ public static class DependencyInjection
         // https://mahedee.net/configure-swagger-on-api-gateway-using-ocelot-in-asp.net-core-application/
         const string routes = "Ocelot";
         builder.Configuration.AddOcelotWithSwaggerSupport(options => { options.Folder = routes; });
-        builder.Services.AddOcelot(builder.Configuration).AddPolly();
+        builder.Services.AddOcelot(builder.Configuration).AddPolly()
+            .AddDelegatingHandler<ClassroomHandler>();
         builder.Services.AddSwaggerForOcelot(builder.Configuration);
         builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
             .AddOcelot(routes, builder.Environment)

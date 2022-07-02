@@ -1,42 +1,58 @@
 using System.Net;
 using LearningLantern.ApiGateway.Classroom.Repositories;
+using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.Extensions;
+using LearningLantern.Common.Response;
 using LearningLantern.Common.Services;
+using Newtonsoft.Json;
 
 namespace LearningLantern.ApiGateway.Ocelot.DelegatingHandlers;
 
+internal class ClassroomIdType
+{
+    public int ClassroomId { get; set; }
+}
+
 public class ClassroomHandler : DelegatingHandler
 {
-    private readonly IClassroomRepository _classroomRepository;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly IServiceScopeFactory _scopeFactory;
 
-
-    public ClassroomHandler(ICurrentUserService currentUserService, IClassroomRepository classroomRepository)
+    public ClassroomHandler(IServiceScopeFactory scopeFactory)
     {
-        _currentUserService = currentUserService;
-        _classroomRepository = classroomRepository;
+        _scopeFactory = scopeFactory;
     }
 
-    public ClassroomHandler(
-        HttpMessageHandler innerHandler, ICurrentUserService currentUserService, IClassroomRepository classroomRepository) :
+    public ClassroomHandler(HttpMessageHandler innerHandler, IServiceScopeFactory scopeFactory) :
         base(innerHandler)
     {
-        _currentUserService = currentUserService;
-        _classroomRepository = classroomRepository;
+        _scopeFactory = scopeFactory;
     }
 
     async protected override Task<HttpResponseMessage> SendAsync(
         HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var classroomId = int.Parse(request.GetQueryString("classroomId") ?? "0");
-        var userId = _currentUserService.UserId ?? string.Empty;
-        var classroom = (await _classroomRepository.GetAsync(userId)).Data!.FirstOrDefault(dto => dto.Id == classroomId);
+        //setup
+        using var scope = _scopeFactory.CreateScope();
+        var currentUserService = scope.ServiceProvider.GetService<ICurrentUserService>()!;
+        var classroomRepository = scope.ServiceProvider.GetRequiredService<IClassroomRepository>();
+        var _logger = scope.ServiceProvider.GetRequiredService<ILogger<ClassroomHandler>>();
+        //code
+
+        var jsonRequest = await request.Content?.ReadAsStringAsync(cancellationToken)!;
+        var obj = JsonConvert.DeserializeObject<ClassroomIdType>(jsonRequest);
+        _logger.LogInformation(obj.ToJsonStringContent());
+        var classroomId = obj!.ClassroomId;
+        var userId = currentUserService.UserId ?? string.Empty;
+
+        var classroom = (await classroomRepository.GetAsync(userId)).Data!.FirstOrDefault(dto => dto.Id == classroomId);
 
         if (classroom is not null) return await base.SendAsync(request, cancellationToken);
 
-        var response = new HttpResponseMessage();
-        response.StatusCode = HttpStatusCode.NotFound;
-        //TODO: return response object
+        var result = ResponseFactory.Fail(ErrorsList.ClassroomIdNotFound(classroomId));
+
+        var response = new HttpResponseMessage(HttpStatusCode.NotFound);
+        response.Content = new StringContent(result.Errors.ToJsonStringContent());
+
         return response;
     }
 }
