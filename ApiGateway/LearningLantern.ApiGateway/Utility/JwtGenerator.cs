@@ -54,7 +54,7 @@ public class JWTGenerator
             claims,
             expires: DateTime.UtcNow.AddDays(30),
             signingCredentials: new SigningCredentials(JWT.IssuerSigningKey,
-                SecurityAlgorithms.HmacSha256Signature)
+                SecurityAlgorithms.HmacSha256)
         ));
         return new TokenResponseDTO(token);
     }
