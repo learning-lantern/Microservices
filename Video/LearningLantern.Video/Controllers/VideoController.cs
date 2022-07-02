@@ -27,9 +27,9 @@ public class VideoController : ApiControllerBase
         return ResponseToIActionResult(response);
     }
 
-    [HttpGet]
+    [HttpGet("{videoId:int}")]
     [ProducesResponseType(typeof(Response<VideoDTO>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get([FromQuery] int videoId)
+    public async Task<IActionResult> Get([FromRoute] int videoId)
     {
         var response = await _videoRepository.GetAsync(videoId);
         return ResponseToIActionResult(response);
