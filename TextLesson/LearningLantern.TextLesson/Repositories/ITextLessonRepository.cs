@@ -6,8 +6,7 @@ namespace LearningLantern.TextLesson.Repositories;
 
 public interface ITextLessonRepository
 {
-    Task<Response<TextLessonDTO>> AddAsync(string userId, AddTextLessonDTO textLesson);
-    Task<Response<BlobDownloadInfo>> GetAsync(int textLessonId);
-    Task<Response> UpdateAsync(TextLessonModel textLesson);
+    Task<Response<TextLessonDTO>> AddAsync(AddTextLessonDTO textLesson);
+    Task<Response<TextLessonDTO>> GetAsync(int textLessonId);
     Task<Response> RemoveAsync(int textLessonId);
 }

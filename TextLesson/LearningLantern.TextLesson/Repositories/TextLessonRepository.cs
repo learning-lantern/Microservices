@@ -1,5 +1,5 @@
 using AutoMapper;
-using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs;
 using LearningLantern.AzureBlobStorage;
 using LearningLantern.Common.Response;
 using LearningLantern.TextLesson.Data;
@@ -24,49 +24,38 @@ public class TextLessonRepository : ITextLessonRepository
         _logger = logger;
     }
 
-    public async Task<Response<TextLessonDTO>> AddAsync(string userId, AddTextLessonDTO textLesson)
+    public async Task<Response<TextLessonDTO>> AddAsync(AddTextLessonDTO textLesson)
     {
-        var textLessonModel = new TextLessonModel(userId, textLesson)
+        var textLessonModel = new TextLessonModel()
         {
-            BlobName = Guid.NewGuid().ToString()
+            BlobName = Guid.NewGuid().ToString(),
+            QuizList = textLesson.QuizList
         };
 
         var result = await _blobServiceClient.UploadBlobAsync(textLessonModel.BlobName, textLesson.File);
-
-        if (result == false)
+        
+        if (result == string.Empty)
             return ResponseFactory.Fail<TextLessonDTO>(ErrorsList.CantUploadFile());
+        
+        textLessonModel.Path = result;
 
         var entity = await _context.TextLessons.AddAsync(textLessonModel);
 
         var saveResult = await _context.SaveChangesAsync();
+
         return saveResult != 0
             ? ResponseFactory.Ok(_mapper.Map<TextLessonDTO>(entity.Entity))
             : ResponseFactory.Fail<TextLessonDTO>();
     }
 
-    public async Task<Response<BlobDownloadInfo>> GetAsync(int textLessonId)
+    public async Task<Response<TextLessonDTO>> GetAsync(int textLessonId)
     {
         var textLesson = await _context.TextLessons.FindAsync(textLessonId);
+
         if (textLesson is null)
-            return ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.TextLessonNotFound(textLessonId));
+            return ResponseFactory.Fail<TextLessonDTO>(ErrorsList.TextLessonNotFound(textLessonId));
 
-        var result = await _blobServiceClient.DownloadBlobAsync(textLesson.BlobName);
-
-        return result is null
-            ? ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.CantDownloadFile())
-            : ResponseFactory.Ok(result);
-    }
-
-    public async Task<Response> UpdateAsync(TextLessonModel textLesson)
-    {
-        var textLessonModel = await _context.TextLessons.FindAsync(textLesson.Id);
-
-        if (textLessonModel == null) return ResponseFactory.Fail();
-
-        textLessonModel.Name = textLesson.Name;
-
-        var result = await _context.SaveChangesAsync() != 0;
-        return result ? ResponseFactory.Ok() : ResponseFactory.Fail();
+        return ResponseFactory.Ok(_mapper.Map<TextLessonDTO>(textLesson));
     }
 
     public async Task<Response> RemoveAsync(int textLessonId)
@@ -75,7 +64,7 @@ public class TextLessonRepository : ITextLessonRepository
 
         if (textLesson == null) return ResponseFactory.Ok();
 
-        await _blobServiceClient.DeleteBlobAsync(textLesson.BlobName);
+        await  _blobServiceClient.DeleteBlobAsync(textLesson.BlobName);
 
         _context.TextLessons.Remove(textLesson);
 

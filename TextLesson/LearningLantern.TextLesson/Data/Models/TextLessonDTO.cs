@@ -5,5 +5,6 @@ namespace LearningLantern.TextLesson.Data.Models;
 public class TextLessonDTO
 {
     [Key] [Required] public int Id { get; set; }
-    [Required] [StringLength(450)] public string Name { get; set; } = null!;
+    [Required] public string Path { get; set; } = null!;
+    [Required] public List<TextLessonQuiz> QuizList { get; set; } = null!;
 }
