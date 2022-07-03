@@ -28,18 +28,26 @@ public class GetCalendarsQueryHandler : IRequestHandler<GetCalendarsQuery, Respo
     {
         var classroomIds = _context.ClassroomUsers.Where(x => x.UserId == request.User.Id)
             .Select(x => x.ClassroomId);
-        var calendarsResult = await _calendarService.GetAllCalendarsAsync(classroomIds);
-        var todoResult = await _todoService.GetAllTasksAsync(request.User.Id);
-        IEnumerable<CalendarEventDTO> result = new CalendarEventDTO[] { };
-        if (calendarsResult.Data is not null) result = result.Union(calendarsResult.Data);
-        if (todoResult.Data is not null) result = result.Union(todoResult.Data);
 
-        IEnumerable<Error> errors = new Error[] { };
-        if (calendarsResult.Errors is not null) errors = errors.Union(calendarsResult.Errors);
-        if (todoResult.Errors is not null) errors = errors.Union(todoResult.Errors);
+        var calendarTask = _calendarService.GetAllCalendarsAsync(classroomIds);
+        var todoTask = _todoService.GetAllTasksAsync(request.User.Id);
+        await Task.WhenAll(calendarTask, todoTask);
+        var calendarsResult = calendarTask.Result;
+        var todoResult = todoTask.Result;
+
+
+        var result = UnionData(calendarsResult.Data, todoResult.Data);
+        var errors = UnionData(calendarsResult.Errors, todoResult.Errors);
 
         if (calendarsResult.Succeeded || todoResult.Succeeded) return ResponseFactory.Ok(result);
 
         return ResponseFactory.Fail<IEnumerable<CalendarEventDTO>>(errors);
+    }
+
+    private static IEnumerable<T> UnionData<T>(params IEnumerable<T>?[] arr)
+    {
+        IEnumerable<T> result = Array.Empty<T>();
+        result = arr.Aggregate(result, (current, x) => current.Union(x ?? Array.Empty<T>()));
+        return result;
     }
 }
