@@ -1,0 +1,33 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/TextLesson",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "TextLesson",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/TextLesson",
+      "UpstreamHttpMethod": [
+        "Post"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/TextLesson{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "TextLesson",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/TextLesson{everything}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Delete"
+      ]
+    }
+  ]
+}

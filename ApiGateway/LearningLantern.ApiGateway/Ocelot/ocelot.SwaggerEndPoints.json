@@ -1,6 +1,16 @@
 {
   "SwaggerEndPoints": [
     {
+      "Key": "ApiGateway",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "ApiGateway",
+          "Version": "1.0",
+          "Url": "http://ApiGateway/swagger/v1/swagger.json"
+        }
+      ]
+    },{
       "Key": "Calendar",
       "TransformByOcelotConfig": false,
       "Config": [
@@ -34,13 +44,13 @@
       ]
     },
     {
-      "Key": "ApiGateway",
+      "Key": "TextLesson",
       "TransformByOcelotConfig": false,
       "Config": [
         {
-          "Name": "ApiGateway",
+          "Name": "TextLesson.API",
           "Version": "1.0",
-          "Url": "http://ApiGateway/swagger/v1/swagger.json"
+          "Url": "http://TextLesson/swagger/v1/swagger.json"
         }
       ]
     }
