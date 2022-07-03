@@ -1,4 +1,5 @@
 using LearningLantern.ApiGateway.Classroom.Events;
+using LearningLantern.EventBus;
 using LearningLantern.EventBus.EventProcessor;
 using LearningLantern.EventBus.Events;
 using Newtonsoft.Json;
@@ -7,8 +8,8 @@ namespace LearningLantern.ApiGateway.Utility;
 
 public class EventProcessor : IEventProcessor
 {
-    private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<EventProcessor> _logger;
+    private readonly IServiceScopeFactory _scopeFactory;
 
     public EventProcessor(IServiceScopeFactory scopeFactory)
     {
@@ -26,7 +27,7 @@ public class EventProcessor : IEventProcessor
         {
             "newRoom" => ProcessEvent<NewRoomEvent>(message),
             "joinRoom" => ProcessEvent<JoinRoomEvent>(message),
-            _ => throw new Exception()
+            _ => throw new UnhandledEventException()
         };
     }
 

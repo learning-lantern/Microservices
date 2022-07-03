@@ -79,9 +79,12 @@ public class RabbitMQBus : IEventBus
                 await _eventProcessor.ProcessEvent(eventName, jsonSpecified);
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
             }
-            catch (Exception _)
+            catch (UnhandledEventException _)
             {
-                Log.Logger.Debug("Error happen");
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Debug(ex.Message);
             }
         };
         _channel.BasicConsume(queueName, false, consumer);
