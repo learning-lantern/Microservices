@@ -29,7 +29,6 @@ public class TextLessonRepository : ITextLessonRepository
         var textLessonModel = new TextLessonModel()
         {
             BlobName = Guid.NewGuid().ToString(),
-            QuizList = textLesson.QuizList
         };
 
         var result = await _blobServiceClient.UploadBlobAsync(textLessonModel.BlobName, textLesson.File);

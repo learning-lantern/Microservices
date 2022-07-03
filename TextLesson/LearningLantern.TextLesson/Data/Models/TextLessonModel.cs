@@ -7,5 +7,4 @@ public class TextLessonModel
     [Key] [Required] public int Id { get; set; }
     [Required] public string BlobName { get; set; } = null!;
     [Required] public string Path { get; set; } = null!;
-    [Required] public List<TextLessonQuiz> QuizList { get; set; } = null!;
 }
