@@ -16,7 +16,6 @@ builder.Services.AddAuthorizedSwaggerGen("TextLesson.API", "v1");
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
-app.UseHttpsRedirection();
 
 app.UseSwagger();
 app.UseSwaggerUI();

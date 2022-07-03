@@ -4,7 +4,7 @@
 
 namespace LearningLantern.TextLesson.Migrations
 {
-    public partial class TextLessons : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

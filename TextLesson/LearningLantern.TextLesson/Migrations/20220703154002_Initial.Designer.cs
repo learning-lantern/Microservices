@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearningLantern.TextLesson.Migrations
 {
     [DbContext(typeof(TextLessonContext))]
-    [Migration("20220703153458_TextLessons")]
-    partial class TextLessons
+    [Migration("20220703154002_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
