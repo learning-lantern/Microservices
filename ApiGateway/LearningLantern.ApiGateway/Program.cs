@@ -48,7 +48,7 @@ using (var scope = app.Services.CreateScope())
         Log.Logger.Debug("SetupConfiguration done");
         eventBus.AddEvent<UserEvent>("auth");
         eventBus.AddEvent<DeleteUserEvent>("auth");
-        eventBus.Subscribe("auth");
+        eventBus.Subscribe("chat");
         Log.Logger.Debug("Subscribe done");
     });
 }
