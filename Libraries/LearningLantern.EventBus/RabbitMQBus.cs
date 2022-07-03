@@ -32,9 +32,9 @@ public class RabbitMQBus : IEventBus
         try
         {
             _channel = _connection.CreateModel();
-            if (ExchangeName.Length > 0) _channel.ExchangeDeclare(ExchangeName, ExchangeType.Fanout);
+            if (ExchangeName.Length > 0) _channel.ExchangeDeclare(ExchangeName, ExchangeType.Direct);
             _channel.BasicQos(0, 1, false);
-            Log.Logger.Debug("create done");
+            Log.Logger.Debug("create channel done");
         }
         catch (Exception ex)
         {
@@ -82,7 +82,6 @@ public class RabbitMQBus : IEventBus
             catch (Exception _)
             {
                 Log.Logger.Debug("Error happen");
-                // ignored
             }
         };
         _channel.BasicConsume(queueName, false, consumer);

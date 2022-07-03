@@ -51,16 +51,19 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, Response<Toke
 {
     private readonly IEventBus _eventBus;
     private readonly JWTGenerator _jwtGenerator;
+    private readonly ILogger<SignupCommandHandler> _logger;
     private readonly IMapper _mapper;
     private readonly UserManager<UserModel> _userManager;
 
     public SignupCommandHandler(
-        IEventBus eventBus, IMapper mapper, UserManager<UserModel> userManager, JWTGenerator jwtGenerator)
+        IEventBus eventBus, IMapper mapper, UserManager<UserModel> userManager, JWTGenerator jwtGenerator,
+        ILogger<SignupCommandHandler> logger)
     {
         _eventBus = eventBus;
         _mapper = mapper;
         _userManager = userManager;
         _jwtGenerator = jwtGenerator;
+        _logger = logger;
     }
 
     public async Task<Response<TokenResponseDTO>> Handle(SignupCommand request, CancellationToken cancellationToken)
@@ -73,7 +76,15 @@ public class SignupCommandHandler : IRequestHandler<SignupCommand, Response<Toke
 
         if (createAsyncResult.Succeeded == false) return createAsyncResult.ToApplicationResponse<TokenResponseDTO>();
 
-        _eventBus.Publish(_mapper.Map<UserEvent>(user));
+        try
+        {
+            _eventBus.Publish(_mapper.Map<UserEvent>(user));
+        }
+        catch (Exception e)
+        {
+            _logger.LogCritical($"Can't publish the event in {nameof(SignupCommandHandler)}, Exception");
+            _logger.LogCritical(e.Message);
+        }
 
         var result = await _jwtGenerator.GenerateJwtSecurityToken(user);
 

@@ -24,9 +24,8 @@ public class EventProcessor : IEventProcessor
         _logger.LogDebug($"{eventName} with message= {message}");
         return eventName switch
         {
-            "LearningLantern.newRoom" => ProcessEvent<NewRoomEvent>(message),
+            "newRoom" => ProcessEvent<NewRoomEvent>(message),
             "joinRoom" => ProcessEvent<JoinRoomEvent>(message),
-            "UserEvent" => Task.CompletedTask,
             _ => throw new Exception()
         };
     }

@@ -43,15 +43,18 @@ public class UpdateNameCommandValidator : AbstractValidator<UpdateNameCommand>
 public class UpdateNameCommandHandler : IRequestHandler<UpdateNameCommand, Response>
 {
     private readonly IEventBus _eventBus;
+    private readonly ILogger<UpdateNameCommandHandler> _logger;
     private readonly IMapper _mapper;
     private readonly UserManager<UserModel> _userManager;
 
 
-    public UpdateNameCommandHandler(UserManager<UserModel> userManager, IEventBus eventBus, IMapper mapper)
+    public UpdateNameCommandHandler(
+        UserManager<UserModel> userManager, IEventBus eventBus, IMapper mapper, ILogger<UpdateNameCommandHandler> logger)
     {
         _userManager = userManager;
         _eventBus = eventBus;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<Response> Handle(UpdateNameCommand request, CancellationToken cancellationToken)
@@ -61,7 +64,16 @@ public class UpdateNameCommandHandler : IRequestHandler<UpdateNameCommand, Respo
 
         var updateAsyncResult = await _userManager.UpdateAsync(request.User);
 
-        if (updateAsyncResult.Succeeded) _eventBus.Publish(_mapper.Map<UserEvent>(request.User));
+        try
+        {
+            if (updateAsyncResult.Succeeded)
+                _eventBus.Publish(_mapper.Map<UserEvent>(request.User));
+        }
+        catch (Exception e)
+        {
+            _logger.LogCritical($"Can't publish the event in {nameof(UpdateNameCommandHandler)}, Exception");
+            _logger.LogCritical(e.Message);
+        }
 
         return updateAsyncResult.ToApplicationResponse();
     }
