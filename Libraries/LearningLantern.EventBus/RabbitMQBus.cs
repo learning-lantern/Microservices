@@ -1,6 +1,7 @@
 using System.Text;
 using LearningLantern.EventBus.EventProcessor;
 using LearningLantern.EventBus.Events;
+using LearningLantern.EventBus.Exceptions;
 using LearningLantern.EventBus.RabbitMQConnection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -79,8 +80,9 @@ public class RabbitMQBus : IEventBus
                 await _eventProcessor.ProcessEvent(eventName, jsonSpecified);
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
             }
-            catch (UnhandledEventException _)
+            catch (UnhandledEventException ex)
             {
+                Log.Logger.Debug(ex.Message);
             }
             catch (Exception ex)
             {

@@ -10,7 +10,7 @@ public class JoinRoomEvent : IntegrationEvent
     public string UserId { get; set; } = null!;
 }
 
-public class JoinRoomEventHandler : IIntegrationEventHandler<NewRoomEvent>
+public class JoinRoomEventHandler : IIntegrationEventHandler<JoinRoomEvent>
 {
     private readonly IClassroomRepository _classroomRepository;
     private readonly ILogger<JoinRoomEventHandler> _logger;
@@ -21,9 +21,9 @@ public class JoinRoomEventHandler : IIntegrationEventHandler<NewRoomEvent>
         _classroomRepository = classroomRepository;
     }
 
-    public Task Handle(NewRoomEvent @event)
+    public Task Handle(JoinRoomEvent @event)
     {
-        _logger.LogInformation("JoinRoomEvent = " + @event.ToJsonStringContent());
+        _logger.LogInformation("JoinRoomEventHandler = " + @event.ToJsonStringContent());
         return Task.CompletedTask;
     }
 }

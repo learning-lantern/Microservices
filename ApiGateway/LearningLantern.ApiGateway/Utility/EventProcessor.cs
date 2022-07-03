@@ -1,7 +1,7 @@
 using LearningLantern.ApiGateway.Classroom.Events;
-using LearningLantern.EventBus;
 using LearningLantern.EventBus.EventProcessor;
 using LearningLantern.EventBus.Events;
+using LearningLantern.EventBus.Exceptions;
 using Newtonsoft.Json;
 
 namespace LearningLantern.ApiGateway.Utility;
@@ -27,7 +27,7 @@ public class EventProcessor : IEventProcessor
         {
             "newRoom" => ProcessEvent<NewRoomEvent>(message),
             "joinRoom" => ProcessEvent<JoinRoomEvent>(message),
-            _ => throw new UnhandledEventException()
+            _ => throw new UnhandledEventException(eventName)
         };
     }
 

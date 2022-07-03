@@ -110,8 +110,10 @@ public static class DependencyInjection
 
     private static IServiceCollection AddEventsHandler(this IServiceCollection services)
     {
-        services.AddTransient<IIntegrationEventHandler<NewRoomEvent>, NewRoomEventHandler>();
         services.AddSingleton<IEventProcessor, EventProcessor>();
+        services.AddTransient<IIntegrationEventHandler<NewRoomEvent>, NewRoomEventHandler>();
+        services.AddTransient<IIntegrationEventHandler<JoinRoomEvent>, JoinRoomEventHandler>();
+
         return services;
     }
 
