@@ -19,12 +19,12 @@ public class VideoController : ApiControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<int> Add([FromForm] AddVideoDTO video)
+    public async Task<string> Add([FromForm] AddVideoDTO video)
     {
         var response = await _videoRepository.AddAsync(video);
-        return response.Data is not null ? response.Data.Id : 0;
+        return response.Data is not null ? response.Data.Id.ToString() : "0";
     }
 
     [HttpGet("{videoId:int}")]
