@@ -1,13 +1,6 @@
 version: '3.4'
 
 services:
-  Seq:
-    image: datalust/seq
-    environment:
-      - ACCEPT_EULA=Y
-    ports:
-      - "6001:80"
-  
   ApiGateway:
     image: learninglantern.apigateway
     build:
@@ -18,8 +11,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-    depends_on:
-      - Seq
 
   TodoList:
     image: learninglantern.todolist
@@ -29,8 +20,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-    depends_on:
-      - Seq
 
   Calendar:
     image: learninglantern.calendar
@@ -40,8 +29,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-    depends_on:
-      - Seq
     
   Video:
     image: learninglantern.video
@@ -51,5 +38,3 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-    depends_on:
-      - Seq

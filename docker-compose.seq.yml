@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  Seq:
+    image: datalust/seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "80:80"

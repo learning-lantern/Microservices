@@ -22,7 +22,7 @@ public static class SerilogMethods
 
         //set writeTo
         loggerConfiguration.WriteTo.Console()
-            .WriteTo.Seq("http://seq");
+            .WriteTo.Seq("https://learning-lantern-logs.azurewebsites.net");
 
         //set Enrich
         loggerConfiguration.Enrich.FromLogContext()
