@@ -32,7 +32,7 @@ public class RabbitMQBus : IEventBus
         try
         {
             _channel = _connection.CreateModel();
-            if (ExchangeName.Length > 0) _channel.ExchangeDeclare(ExchangeName, ExchangeType.Direct);
+            if (ExchangeName.Length > 0) _channel.ExchangeDeclare(ExchangeName, ExchangeType.Direct, true);
             _channel.BasicQos(0, 1, false);
             Log.Logger.Debug("create channel done");
         }
