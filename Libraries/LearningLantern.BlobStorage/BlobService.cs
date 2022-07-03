@@ -11,9 +11,9 @@ public class BlobService : IBlobService
     private readonly string _containerName;
     private readonly ILogger<BlobService> _logger;
 
-    public BlobService(string connectionString, string containerName, ILogger<BlobService> logger)
+    public BlobService(BlobServiceClient blobServiceClient, string containerName, ILogger<BlobService> logger)
     {
-        _blobServiceClient = new BlobServiceClient(connectionString);
+        _blobServiceClient = blobServiceClient;
         _containerName = containerName;
         _logger = logger;
     }
@@ -44,7 +44,7 @@ public class BlobService : IBlobService
                 {
                     ContentType = file.ContentType
                 });
-        
+
 
         return result is not null && !result.GetRawResponse().IsError ? blobClient.Uri.AbsoluteUri : string.Empty;
     }
