@@ -28,20 +28,15 @@ public class TextLessonController : ApiControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Response<BlobDownloadInfo>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IFormFile), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromForm] AddTextLessonDTO textLesson)
     {
         var response = await _textLessonRepository.AddAsync(textLesson);
-
-        if (!response.Succeeded) return ResponseToIActionResult(response);
-
-        var blobDownloadInfo = response.Data;
-
-        if (blobDownloadInfo is null) return ResponseToIActionResult(response);
-
-        return new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType);
+        return response.Succeeded
+            ? new FileStreamResult(response.Data!.OpenReadStream(), response.Data.ContentType)
+            : ResponseToIActionResult(response);
     }
 
     [HttpGet("{textLessonId:int}")]
