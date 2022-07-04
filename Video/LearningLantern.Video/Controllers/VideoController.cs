@@ -1,9 +1,9 @@
 using LearningLantern.Common;
 using LearningLantern.Common.Response;
-using LearningLantern.Common.Services;
 using LearningLantern.Video.Data.Models;
 using LearningLantern.Video.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace LearningLantern.Video.Controllers;
 
@@ -12,10 +12,12 @@ namespace LearningLantern.Video.Controllers;
 public class VideoController : ApiControllerBase
 {
     private readonly IVideoRepository _videoRepository;
+    private readonly ILogger<VideoController> _logger;
 
-    public VideoController(IVideoRepository videoRepository)
+    public VideoController(IVideoRepository videoRepository, ILogger<VideoController> logger)
     {
         _videoRepository = videoRepository;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -23,8 +25,12 @@ public class VideoController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<string> Add([FromForm] AddVideoDTO video)
     {
-        var response = await _videoRepository.AddAsync(video);
-        return response.Data is not null ? response.Data.Id.ToString() : "0";
+        // var response = await _videoRepository.AddAsync(video);
+        // return response.Data is not null ? response.Data.Id.ToString() : "0";
+        _logger.LogInformation(JsonConvert.SerializeObject(video),
+            DateTime.UtcNow.ToLongTimeString());
+
+        return "";
     }
 
     [HttpGet("{videoId:int}")]
