@@ -4,7 +4,7 @@ namespace LearningLantern.TextLesson.Utility;
 
 public static class ErrorsList
 {
-    public static Error TextLessonNotFound(int textLessonId) => new()
+    public static Error TextLessonNotFound(string textLessonId) => new()
     {
         StatusCode = StatusCodes.Status404NotFound,
         ErrorCode = nameof(TextLessonNotFound),

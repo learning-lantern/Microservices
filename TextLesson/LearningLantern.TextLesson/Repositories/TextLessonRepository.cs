@@ -26,7 +26,7 @@ public class TextLessonRepository : ITextLessonRepository
         _logger = logger;
     }
 
-    public async Task<Response<TextLessonDTO>> AddAsync(string title, int classroomId)
+    public async Task<Response<TextLessonDTO>> AddAsync(string title, string classroomId)
     {
         var textLessonModel = new TextLessonModel
         {
@@ -46,10 +46,10 @@ public class TextLessonRepository : ITextLessonRepository
 
     public async Task<Response<IFormFile>> AddAsync(AddTextLessonDTO textLesson)
     {
-        var textLessonModel = await _context.TextLessons.FindAsync(Convert.ToInt32(textLesson.Id));
+        var textLessonModel = await _context.TextLessons.FindAsync(textLesson.Id);
         
         if (textLessonModel is null)
-            return ResponseFactory.Fail<IFormFile>(ErrorsList.TextLessonNotFound(Convert.ToInt32(textLesson.Id)));
+            return ResponseFactory.Fail<IFormFile>(ErrorsList.TextLessonNotFound(textLesson.Id));
 
         var result = await _blobServiceClient.UploadBlobAsync(textLessonModel.BlobName, textLesson.File);
         
@@ -58,7 +58,7 @@ public class TextLessonRepository : ITextLessonRepository
             : ResponseFactory.Ok(textLesson.File);
     }
 
-    public async Task<Response<BlobDownloadInfo>> GetAsync(int textLessonId)
+    public async Task<Response<BlobDownloadInfo>> GetAsync(string textLessonId)
     {
         var textLesson = await _context.TextLessons.FindAsync(textLessonId);
 
@@ -73,9 +73,9 @@ public class TextLessonRepository : ITextLessonRepository
         return ResponseFactory.Ok(file);
     }
 
-    public async Task<Response<List<TextLessonDTO>>> GetTextLessonsAsync(int classroomId) => ResponseFactory.Ok(await _context.TextLessons.AsNoTracking().Where(textlesson => textlesson.ClassroomId == classroomId).Select(textLesson => _mapper.Map<TextLessonDTO>(textLesson)).ToListAsync());
+    public async Task<Response<List<TextLessonDTO>>> GetTextLessonsAsync(string classroomId) => ResponseFactory.Ok(await _context.TextLessons.AsNoTracking().Where(textlesson => textlesson.ClassroomId == classroomId).Select(textLesson => _mapper.Map<TextLessonDTO>(textLesson)).ToListAsync());
 
-    public async Task<Response> RemoveAsync(int textLessonId)
+    public async Task<Response> RemoveAsync(string textLessonId)
     {
         var textLesson = await _context.TextLessons.FindAsync(textLessonId);
 

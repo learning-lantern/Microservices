@@ -18,10 +18,10 @@ public class TextLessonController : ApiControllerBase
         _textLessonRepository = textLessonRepository;
     }
 
-    [HttpPost("{title}/Classroom/{classroomId:int}")]
+    [HttpPost("{title}/Classroom/{classroomId}")]
     [ProducesResponseType(typeof(TextLessonDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Add([FromRoute] string title, [FromRoute] int classroomId)
+    public async Task<IActionResult> Add([FromRoute] string title, [FromRoute] string classroomId)
     {
         var response = await _textLessonRepository.AddAsync(title, classroomId);
         return ResponseToIActionResult(response);
@@ -39,11 +39,11 @@ public class TextLessonController : ApiControllerBase
             : ResponseToIActionResult(response);
     }
 
-    [HttpGet("{textLessonId:int}")]
+    [HttpGet("{textLessonId}")]
     [ProducesResponseType(typeof(BlobDownloadInfo), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get([FromRoute] int textLessonId)
+    public async Task<IActionResult> Get([FromRoute] string textLessonId)
     {
         var response = await _textLessonRepository.GetAsync(textLessonId);
 
@@ -57,7 +57,7 @@ public class TextLessonController : ApiControllerBase
     [ProducesResponseType(typeof(List<TextLessonDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetTextLessons([FromRoute] int classroomId)
+    public async Task<IActionResult> GetTextLessons([FromRoute] string classroomId)
     {
         var response = await _textLessonRepository.GetTextLessonsAsync(classroomId);
         return ResponseToIActionResult(response);
@@ -66,7 +66,7 @@ public class TextLessonController : ApiControllerBase
     [HttpDelete("{textLessonId:int}")]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Remove([FromRoute] int textLessonId)
+    public async Task<IActionResult> Remove([FromRoute] string textLessonId)
     {
         var response = await _textLessonRepository.RemoveAsync(textLessonId);
         return ResponseToIActionResult(response);
