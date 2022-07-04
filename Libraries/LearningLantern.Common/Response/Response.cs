@@ -18,7 +18,7 @@ public static class ResponseFactory
         var responseType = typeof(TResponse);
         if (!responseType.IsGenericType) return Activator.CreateInstance(responseType, false, failures) as TResponse;
         var resultType = responseType.GetGenericArguments()[0];
-        var invalidResponseType = typeof(Response).MakeGenericType(resultType);
+        var invalidResponseType = typeof(TResponse).MakeGenericType(resultType);
         return Activator.CreateInstance(invalidResponseType, false, null, failures) as TResponse;
     }
 }
