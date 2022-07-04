@@ -1,6 +1,6 @@
+using Azure.Storage.Blobs.Models;
 using LearningLantern.Common;
 using LearningLantern.Common.Response;
-using LearningLantern.Common.Services;
 using LearningLantern.TextLesson.Data.Models;
 using LearningLantern.TextLesson.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +18,15 @@ public class TextLessonController : ApiControllerBase
         _textLessonRepository = textLessonRepository;
     }
 
+    [HttpPost()]
+    [ProducesResponseType(typeof(Response<TextLessonDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Add([FromBody] string title)
+    {
+        var response = await _textLessonRepository.AddAsync(title);
+        return ResponseToIActionResult(response);
+    }
+
     [HttpPost]
     [ProducesResponseType(typeof(Response<TextLessonDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -28,11 +37,15 @@ public class TextLessonController : ApiControllerBase
     }
 
     [HttpGet("{textLessonId:int}")]
-    [ProducesResponseType(typeof(Response<TextLessonDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<BlobDownloadInfo>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromRoute] int textLessonId)
     {
         var response = await _textLessonRepository.GetAsync(textLessonId);
-        return ResponseToIActionResult(response);
+
+        if (!response.Succeeded) return ResponseToIActionResult(response);
+
+        var blobDownloadInfo = response.Data!;
+        return new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType);
     }
 
     [HttpDelete("{textLessonId:int}")]
