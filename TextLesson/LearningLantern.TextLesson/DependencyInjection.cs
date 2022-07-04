@@ -1,4 +1,3 @@
-using LearningLantern.AzureBlobStorage;
 using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Services;
 using LearningLantern.TextLesson.Data;
@@ -18,8 +17,6 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         services.AddAutoMapper(typeof(MappingProfile));
 
-        services.AddBlobService("textlessons");
-
         services.AddTransient<ITextLessonRepository, TextLessonRepository>();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
@@ -38,7 +35,7 @@ public static class DependencyInjection
                 $"Server={myServerAddress};Database={myDatabase};User Id={myUsername};Password={password}";
             builder.UseSqlServer(connectionString);
         });
-        
+
         return services;
     }
 }

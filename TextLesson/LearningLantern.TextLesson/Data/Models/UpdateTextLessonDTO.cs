@@ -2,9 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LearningLantern.TextLesson.Data.Models;
 
-public class TextLessonDTO
+public class UpdateTextLessonDTO
 {
-    [Key] [Required] public int Id { get; set; }
-    [Required] public string Title { get; set; } = null!;
+    [Required] public int Id { get; set; }
     public string HtmlBody { get; set; } = string.Empty;
 }

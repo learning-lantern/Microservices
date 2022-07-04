@@ -28,7 +28,8 @@
       "UpstreamHttpMethod": [
         "Post",
         "Get",
-        "Delete"
+        "Delete",
+        "Put"
       ],
       "Priority": 0
     }

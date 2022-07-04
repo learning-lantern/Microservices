@@ -18,39 +18,33 @@ public class TextLessonController : ApiControllerBase
         _textLessonRepository = textLessonRepository;
     }
 
-    [HttpPost("{title}/Classroom/{classroomId}")]
+    [HttpPost]
     [ProducesResponseType(typeof(TextLessonDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Add([FromRoute] string title, [FromRoute] string classroomId)
+    public async Task<IActionResult> Add([FromBody] AddTextLessonDTO addTextLessonDTO)
     {
-        var response = await _textLessonRepository.AddAsync(title, classroomId);
+        var response = await _textLessonRepository.AddAsync(addTextLessonDTO);
         return ResponseToIActionResult(response);
     }
 
-    [HttpPost]
+    [HttpPut("{textLessonId:int}")]
     [ProducesResponseType(typeof(IFormFile), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Add([FromForm] AddTextLessonDTO textLesson)
+    public async Task<IActionResult> Update([FromRoute] int textLessonId, [FromBody] string htmlBody)
     {
-        var response = await _textLessonRepository.AddAsync(textLesson);
-        return response.Succeeded
-            ? new FileStreamResult(response.Data!.OpenReadStream(), response.Data.ContentType)
-            : ResponseToIActionResult(response);
+        var response = await _textLessonRepository.UpdateAsync(textLessonId, htmlBody);
+        return ResponseToIActionResult(response);
     }
 
-    [HttpGet("{textLessonId}")]
+    [HttpGet("{textLessonId:int}")]
     [ProducesResponseType(typeof(BlobDownloadInfo), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get([FromRoute] string textLessonId)
+    public async Task<IActionResult> Get([FromRoute] int textLessonId)
     {
         var response = await _textLessonRepository.GetAsync(textLessonId);
-
-        if (!response.Succeeded) return ResponseToIActionResult(response);
-
-        var blobDownloadInfo = response.Data!;
-        return new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType);
+        return ResponseToIActionResult(response);
     }
 
     [HttpGet("Classroom/{classroomId}")]
@@ -66,7 +60,7 @@ public class TextLessonController : ApiControllerBase
     [HttpDelete("{textLessonId}")]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Remove([FromRoute] string textLessonId)
+    public async Task<IActionResult> Remove([FromRoute] int textLessonId)
     {
         var response = await _textLessonRepository.RemoveAsync(textLessonId);
         return ResponseToIActionResult(response);
