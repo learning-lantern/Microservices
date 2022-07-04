@@ -1,23 +1,24 @@
 using System.Text;
 using LearningLantern.EventBus.EventProcessor;
-using LearningLantern.EventBus.Events;
 using LearningLantern.EventBus.Exceptions;
 using LearningLantern.EventBus.RabbitMQConnection;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Serilog;
 
-namespace LearningLantern.EventBus;
+namespace LearningLantern.EventBus.Subscriber;
 
-public class RabbitMQBus : IEventBus
+public class RabbitMQBusSubscriber : BackgroundService
 {
     private const string ExchangeName = "LearningLantern";
+    private const string QueueName = "chat";
+
     private readonly IRabbitMQConnection _connection;
     private readonly IEventProcessor _eventProcessor;
     private IModel _channel;
 
-    public RabbitMQBus(IRabbitMQConnection connection, IEventProcessor eventProcessor)
+    public RabbitMQBusSubscriber(IRabbitMQConnection connection, IEventProcessor eventProcessor)
     {
         _connection = connection;
         _eventProcessor = eventProcessor;
@@ -35,7 +36,7 @@ public class RabbitMQBus : IEventBus
             _channel = _connection.CreateModel();
             if (ExchangeName.Length > 0) _channel.ExchangeDeclare(ExchangeName, ExchangeType.Direct, true);
             _channel.BasicQos(0, 1, false);
-            Log.Logger.Debug("create channel done");
+            Log.Logger.Debug("create channel in Subscriber done");
         }
         catch (Exception ex)
         {
@@ -45,31 +46,16 @@ public class RabbitMQBus : IEventBus
         return true;
     }
 
-
-    public void Publish(IntegrationEvent @event)
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        if (!_connection.IsConnected) return;
-        var message = JsonConvert.SerializeObject(@event);
-        var properties = _channel.CreateBasicProperties();
-        properties.Persistent = true;
-        var body = Encoding.UTF8.GetBytes(message);
-        _channel.BasicPublish(ExchangeName, @event.GetType().Name, properties, body);
-    }
+        Task.Delay(10000, stoppingToken);
+        stoppingToken.ThrowIfCancellationRequested();
 
-    public void AddEvent<T>(string queueName)
-        where T : IntegrationEvent
-    {
-        if (!_connection.IsConnected) return;
+        if (SetupConfiguration() == false)
+            return Task.CompletedTask;
 
-        _channel.QueueDeclare(queueName, true, false, false);
-        _channel.QueueBind(queueName, ExchangeName, typeof(T).Name);
-    }
-
-    public void Subscribe(string queueName)
-    {
-        if (!_connection.IsConnected) return;
         var consumer = new EventingBasicConsumer(_channel);
-        consumer.Received += async (s, eventArgs) =>
+        consumer.Received += (s, eventArgs) =>
         {
             try
             {
@@ -77,7 +63,7 @@ public class RabbitMQBus : IEventBus
                 Log.Logger.Debug($"{eventName} Received");
                 var jsonSpecified = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
                 Log.Logger.Debug(jsonSpecified);
-                await _eventProcessor.ProcessEvent(eventName, jsonSpecified);
+                _eventProcessor.ProcessEvent(eventName, jsonSpecified).Wait(stoppingToken);
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
             }
             catch (UnhandledEventException ex)
@@ -89,6 +75,7 @@ public class RabbitMQBus : IEventBus
                 Log.Logger.Debug(ex.Message);
             }
         };
-        _channel.BasicConsume(queueName, false, consumer);
+        _channel.BasicConsume(QueueName, false, consumer);
+        return Task.CompletedTask;
     }
 }

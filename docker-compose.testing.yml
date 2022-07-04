@@ -1,6 +1,13 @@
 version: '3.4'
 
 services:
+  Seq:
+    image: datalust/seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "80:80"
+
   ApiGateway:
     image: learninglantern.apigateway
     build:
@@ -8,6 +15,16 @@ services:
       dockerfile: ApiGateway/LearningLantern.ApiGateway/Dockerfile
     ports:
       - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+        
+    
+  TextLesson:
+    image: learninglantern.textlesson
+    build:
+      context: .
+      dockerfile: TextLesson/LearningLantern.TextLesson/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80

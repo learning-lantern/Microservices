@@ -16,10 +16,9 @@ public static class SerilogMethods
     private static void ConfigureLogger(HostBuilderContext context, LoggerConfiguration loggerConfiguration)
     {
         //set Minimum Level
-        loggerConfiguration.MinimumLevel.Information() //Default
+        loggerConfiguration.MinimumLevel.Debug() //Default
             .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-            .MinimumLevel.Override("System", LogEventLevel.Warning)
-            .MinimumLevel.Override("LearningLantern", LogEventLevel.Debug);
+            .MinimumLevel.Override("System", LogEventLevel.Warning);
 
         //set writeTo
         loggerConfiguration.WriteTo.Console()

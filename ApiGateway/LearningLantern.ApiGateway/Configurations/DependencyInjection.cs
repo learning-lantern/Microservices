@@ -96,13 +96,13 @@ public static class DependencyInjection
         );
         services.AddHttpClient<CalendarService>();
         services.AddHttpClient<TodoService>();
-        
+
         return services;
     }
 
     private static IServiceCollection AddEventsHandler(this IServiceCollection services)
     {
-        services.AddSingleton<IEventProcessor, EventProcessor>();
+        services.AddTransient<IEventProcessor, EventProcessor>();
         services.AddTransient<IIntegrationEventHandler<NewRoomEvent>, NewRoomEventHandler>();
         services.AddTransient<IIntegrationEventHandler<JoinRoomEvent>, JoinRoomEventHandler>();
 
@@ -115,7 +115,8 @@ public static class DependencyInjection
         {
             Uri = ConfigProvider.RabbitMQUri
         };
-        services.AddRabbitMQ(connectionFactory);
+        services.AddRabbitMQConnection(connectionFactory);
+        services.AddPublisherRabbitMQ();
         return services;
     }
 

@@ -1,6 +1,6 @@
 using LearningLantern.EventBus.Events;
 
-namespace LearningLantern.EventBus;
+namespace LearningLantern.EventBus.Publisher;
 
 public interface IEventBus
 {
@@ -10,6 +10,4 @@ public interface IEventBus
 
     public void AddEvent<T>(string queueName)
         where T : IntegrationEvent;
-
-    public void Subscribe(string queueName);
 }

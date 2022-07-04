@@ -20,23 +20,29 @@ public class EventProcessor : IEventProcessor
         _logger = scope.ServiceProvider.GetRequiredService<ILogger<EventProcessor>>();
     }
 
-    public Task ProcessEvent(string eventName, string message)
+    public async Task ProcessEvent(string eventName, string message)
     {
         _logger.LogDebug($"{eventName} with message= {message}");
-        return eventName switch
+
+        switch (eventName)
         {
-            "newRoom" => ProcessEvent<NewRoomEvent>(message),
-            "joinRoom" => ProcessEvent<JoinRoomEvent>(message),
-            _ => throw new UnhandledEventException(eventName)
-        };
+            case "newRoom":
+                await ProcessEvent<NewRoomEvent>(message);
+                break;
+            case "joinRoom":
+                await ProcessEvent<JoinRoomEvent>(message);
+                break;
+            default:
+                throw new UnhandledEventException(eventName);
+        }
     }
 
-    private Task ProcessEvent<T>(string message)
+    async private Task ProcessEvent<T>(string message)
         where T : IntegrationEvent
     {
         using var scope = _scopeFactory.CreateScope();
         var handler = scope.ServiceProvider.GetRequiredService<IIntegrationEventHandler<T>>();
         var @event = JsonConvert.DeserializeObject<T>(message);
-        return @event is not null ? handler.Handle(@event) : Task.CompletedTask;
+        if (@event is not null) await handler.Handle(@event);
     }
 }

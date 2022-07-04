@@ -3,6 +3,7 @@ using LearningLantern.ApiGateway.Users.Events;
 using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Logging;
 using LearningLantern.EventBus;
+using LearningLantern.EventBus.Publisher;
 using Ocelot.Middleware;
 using Serilog;
 
@@ -45,13 +46,10 @@ using (var scope = app.Services.CreateScope())
     var eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
     Task.Run(() =>
     {
-        Task.Delay(1000);
         if (!eventBus.SetupConfiguration()) return;
         Log.Logger.Debug("SetupConfiguration done");
         eventBus.AddEvent<UserEvent>("auth");
         eventBus.AddEvent<DeleteUserEvent>("auth");
-        eventBus.Subscribe("chat");
-        Log.Logger.Debug("Subscribe done");
     });
 }
 

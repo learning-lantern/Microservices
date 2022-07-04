@@ -26,12 +26,12 @@ public class CreateNewClassroomCommandHandler : IRequestHandler<CreateNewClassro
         {
             Id = request.ClassroomId
         };
-        var tmp = await _context.Classrooms.FirstOrDefaultAsync(x => x.Id == request.ClassroomId);
+        var tmp = _context.Classrooms.FirstOrDefaultAsync(x => x.Id == request.ClassroomId, CancellationToken.None);
 
         if (tmp is not null) return ResponseFactory.Ok();
-        
-        await _context.Classrooms.AddAsync(classroom);
-        var result = await _context.SaveChangesAsync();
+
+        _context.Classrooms.Add(classroom);
+        var result = await _context.SaveChangesAsync(CancellationToken.None);
         return result != 0 ? ResponseFactory.Ok() : ResponseFactory.Fail();
     }
 }
