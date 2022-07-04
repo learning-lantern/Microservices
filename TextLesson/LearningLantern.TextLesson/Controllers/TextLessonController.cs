@@ -18,7 +18,7 @@ public class TextLessonController : ApiControllerBase
         _textLessonRepository = textLessonRepository;
     }
 
-    [HttpPost()]
+    [HttpPost]
     [ProducesResponseType(typeof(Response<TextLessonDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromBody] string title)
@@ -28,16 +28,23 @@ public class TextLessonController : ApiControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Response<TextLessonDTO>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Response<BlobDownloadInfo>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<BlobDownloadInfo>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response<BlobDownloadInfo>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromForm] AddTextLessonDTO textLesson)
     {
         var response = await _textLessonRepository.AddAsync(textLesson);
-        return ResponseToIActionResult(response);
+
+        if (!response.Succeeded) return ResponseToIActionResult(response);
+
+        var blobDownloadInfo = response.Data!;
+        return new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType);
     }
 
     [HttpGet("{textLessonId:int}")]
     [ProducesResponseType(typeof(Response<BlobDownloadInfo>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Response<BlobDownloadInfo>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Response<BlobDownloadInfo>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Get([FromRoute] int textLessonId)
     {
         var response = await _textLessonRepository.GetAsync(textLessonId);

@@ -42,23 +42,28 @@ public class TextLessonRepository : ITextLessonRepository
             : ResponseFactory.Fail<TextLessonDTO>();
     }
 
-    public async Task<Response<TextLessonDTO>> AddAsync(AddTextLessonDTO textLesson)
+    public async Task<Response<BlobDownloadInfo>> AddAsync(AddTextLessonDTO textLesson)
     {
         var textLessonModel = await _context.TextLessons.FindAsync(int.Parse(textLesson.Id));
 
         if (textLessonModel is null)
-            return ResponseFactory.Fail<TextLessonDTO>(ErrorsList.TextLessonNotFound(int.Parse(textLesson.Id)));
+            return ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.TextLessonNotFound(int.Parse(textLesson.Id)));
 
         var result = await _blobServiceClient.UploadBlobAsync(textLessonModel.BlobName, textLesson.File);
         
         if (result == string.Empty)
-            return ResponseFactory.Fail<TextLessonDTO>(ErrorsList.CantUploadFile());
+            return ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.CantUploadFile());
+
+        var file = await _blobServiceClient.DownloadBlobAsync(textLessonModel.BlobName);
+
+        if (file is null)
+            return ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.CantDownloadFile());
 
         var saveResult = await _context.SaveChangesAsync();
 
         return saveResult != 0
-            ? ResponseFactory.Ok(_mapper.Map<TextLessonDTO>(textLessonModel))
-            : ResponseFactory.Fail<TextLessonDTO>();
+            ? ResponseFactory.Ok(file)
+            : ResponseFactory.Fail<BlobDownloadInfo>();
     }
 
     public async Task<Response<BlobDownloadInfo>> GetAsync(int textLessonId)
