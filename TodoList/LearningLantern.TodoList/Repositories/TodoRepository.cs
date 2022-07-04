@@ -92,7 +92,7 @@ public class TodoRepository : ITodoRepository
         var updatedTask = _context.Tasks.Update(task);
 
         return await _context.SaveChangesAsync() != 0
-            ? ResponseFactory.Ok(_mapper.Map<TaskDTO>(updatedTask))
+            ? ResponseFactory.Ok(_mapper.Map<TaskDTO>(updatedTask.Entity))
             : ResponseFactory.Fail<TaskDTO>();
     }
 

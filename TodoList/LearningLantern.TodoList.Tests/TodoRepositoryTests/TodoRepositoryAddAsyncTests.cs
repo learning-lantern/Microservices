@@ -37,14 +37,4 @@ public class TodoRepositoryAddAsyncTests : TodoRepositoryTestSetup
         taskModel.Should().BeEquivalentTo(response.Data!);
         taskModel.Should().BeEquivalentTo(_randomTask);
     }
-
-    [Fact]
-    public async void ShouldReturnSameTempId()
-    {
-        //arrange
-        //act
-        var response = await TodoRepository.AddAsync(_userId, _randomTask);
-        //assert
-        response.Succeeded.Should().BeTrue();
-    }
 }
