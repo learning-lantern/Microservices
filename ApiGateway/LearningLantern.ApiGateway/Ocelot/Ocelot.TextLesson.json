@@ -11,7 +11,8 @@
       ],
       "UpstreamPathTemplate": "/api/v1/TextLesson",
       "UpstreamHttpMethod": [
-        "Post"
+        "Post",
+        "Put"
       ],
       "Priority": 1
     },
@@ -28,8 +29,7 @@
       "UpstreamHttpMethod": [
         "Post",
         "Get",
-        "Delete",
-        "Put"
+        "Delete"
       ],
       "Priority": 0
     }
