@@ -11,8 +11,8 @@ namespace LearningLantern.Video.Controllers;
 [Route("api/v1/[controller]")]
 public class VideoController : ApiControllerBase
 {
-    private readonly IVideoRepository _videoRepository;
     private readonly ILogger<VideoController> _logger;
+    private readonly IVideoRepository _videoRepository;
 
     public VideoController(IVideoRepository videoRepository, ILogger<VideoController> logger)
     {
@@ -23,14 +23,11 @@ public class VideoController : ApiControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<string> Add([FromForm] AddVideoDTO video)
+    public async Task<IActionResult> Add([FromForm] AddVideoDTO video)
     {
-        // var response = await _videoRepository.AddAsync(video);
-        // return response.Data is not null ? response.Data.Id.ToString() : "0";
-        
-        _logger.LogInformation(JsonConvert.SerializeObject(video));
-
-        return "";
+        _logger.LogDebug(JsonConvert.SerializeObject(video));
+        var response = await _videoRepository.AddAsync(video);
+        return ResponseToIActionResult(response);
     }
 
     [HttpGet("{videoId:int}")]
