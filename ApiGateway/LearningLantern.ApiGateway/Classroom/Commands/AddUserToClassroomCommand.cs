@@ -29,11 +29,11 @@ public class AddUserToClassroomCommandHandler : IRequestHandler<AddUserToClassro
     {
         var classroomTask = _context.Classrooms
             .FirstOrDefaultAsync(classroom => classroom.Id == request.ClassroomId, cancellationToken);
-        var UserTask = _userManager.Users.FirstOrDefaultAsync(user => user.Id == request.UserId, cancellationToken);
-        await Task.WhenAll(classroomTask, UserTask);
+        var userTask = _userManager.Users.FirstOrDefaultAsync(user => user.Id == request.UserId, cancellationToken);
+        await Task.WhenAll(classroomTask, userTask);
 
         var classroom = await classroomTask;
-        var user = await UserTask;
+        var user = await userTask;
 
         if (user is not null && classroom is not null)
         {
