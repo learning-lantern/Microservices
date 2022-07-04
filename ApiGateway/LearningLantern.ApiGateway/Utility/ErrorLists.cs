@@ -52,7 +52,7 @@ public static class ErrorsList
             "this name is not valid, the length of the alphabetic characters must be greater than or equal to 2."
     };
 
-    public static Error ClassroomIdNotFound(int classroomId) => new()
+    public static Error ClassroomIdNotFound(string classroomId) => new()
     {
         StatusCode = StatusCodes.Status404NotFound,
         ErrorCode = nameof(ClassroomIdNotFound),
