@@ -38,14 +38,14 @@ public class TextLessonRepository : ITextLessonRepository
             : ResponseFactory.Fail<TextLessonDTO>();
     }
 
-    public async Task<Response<int>> UpdateAsync(int textLessonId, string htmlBody)
+    public async Task<Response<int>> UpdateAsync(UpdateTextLessonDTO updateTextLessonDTO)
     {
-        var textLessonModel = await _context.TextLessons.FirstOrDefaultAsync(x => x.Id == textLessonId);
+        var textLessonModel = await _context.TextLessons.FirstOrDefaultAsync(x => x.Id == updateTextLessonDTO.Id);
 
         if (textLessonModel is null)
-            return ResponseFactory.Fail<int>(ErrorsList.TextLessonNotFound(textLessonId));
+            return ResponseFactory.Fail<int>(ErrorsList.TextLessonNotFound(updateTextLessonDTO.Id));
 
-        textLessonModel.HtmlBody = htmlBody;
+        textLessonModel.HtmlBody = updateTextLessonDTO.HtmlBody;
         _context.TextLessons.Update(textLessonModel);
         var result = await _context.SaveChangesAsync();
         return result != 0 ? ResponseFactory.Ok(textLessonModel.Id) : ResponseFactory.Fail<int>();

@@ -27,13 +27,13 @@ public class TextLessonController : ApiControllerBase
         return ResponseToIActionResult(response);
     }
 
-    [HttpPut("{textLessonId:int}")]
+    [HttpPut]
     [ProducesResponseType(typeof(IFormFile), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update([FromRoute] int textLessonId, [FromBody] string htmlBody)
+    public async Task<IActionResult> Update([FromBody] UpdateTextLessonDTO updateTextLessonDTO)
     {
-        var response = await _textLessonRepository.UpdateAsync(textLessonId, htmlBody);
+        var response = await _textLessonRepository.UpdateAsync(updateTextLessonDTO);
         return ResponseToIActionResult(response);
     }
 
@@ -57,7 +57,7 @@ public class TextLessonController : ApiControllerBase
         return ResponseToIActionResult(response);
     }
 
-    [HttpDelete("{textLessonId}")]
+    [HttpDelete("{textLessonId:int}")]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Remove([FromRoute] int textLessonId)
