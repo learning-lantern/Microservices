@@ -3,6 +3,7 @@ using LearningLantern.ApiGateway.Data.DTOs;
 using LearningLantern.ApiGateway.Users.Commands;
 using LearningLantern.ApiGateway.Users.Queries;
 using LearningLantern.Common;
+using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Response;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -14,11 +15,13 @@ namespace LearningLantern.ApiGateway.Controllers;
 [Route("api/user")]
 public class UserController : ApiControllerBase
 {
+    private readonly ILogger<UserController> _logger;
     private readonly IMediator _mediator;
 
-    public UserController(IMediator mediator)
+    public UserController(IMediator mediator, ILogger<UserController> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     [AllowAnonymous]
@@ -51,6 +54,7 @@ public class UserController : ApiControllerBase
     public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailCommand confirmEmailCommand)
     {
         var response = await _mediator.Send(confirmEmailCommand);
+        _logger.LogInformation(response.ToJsonStringContent());
         return ResponseToIActionResult(response);
     }
 

@@ -40,11 +40,8 @@ public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand, Response
     {
         var user = await _userManager.FindByIdAsync(request.UserId);
         if (user is null) return ResponseFactory.Fail<TokenResponseDTO>(ErrorsList.UserIdNotFound(request.UserId));
-
-        var token = HttpUtility.UrlDecode(request.Token);
-
-        _logger.LogInformation($"requst token = {request.Token}");
-        _logger.LogInformation($"token = {token}");
+        
+        _logger.LogInformation(request.ToJsonStringContent());
 
         var result = await _userManager.ConfirmEmailAsync(user, request.Token);
 
