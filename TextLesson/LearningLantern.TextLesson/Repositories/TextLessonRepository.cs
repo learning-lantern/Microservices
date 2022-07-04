@@ -42,23 +42,18 @@ public class TextLessonRepository : ITextLessonRepository
             : ResponseFactory.Fail<TextLessonDTO>();
     }
 
-    public async Task<Response<BlobDownloadInfo>> AddAsync(AddTextLessonDTO textLesson)
+    public async Task<Response<IFormFile>> AddAsync(AddTextLessonDTO textLesson)
     {
         var textLessonModel = await _context.TextLessons.FindAsync(Convert.ToInt32(textLesson.Id));
         
         if (textLessonModel is null)
-            return ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.TextLessonNotFound(Convert.ToInt32(textLesson.Id)));
+            return ResponseFactory.Fail<IFormFile>(ErrorsList.TextLessonNotFound(Convert.ToInt32(textLesson.Id)));
 
         var result = await _blobServiceClient.UploadBlobAsync(textLessonModel.BlobName, textLesson.File);
         
-        if (result == string.Empty)
-            return ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.CantUploadFile());
-
-        var file = await _blobServiceClient.DownloadBlobAsync(textLessonModel.BlobName);
-
-        return file is null
-            ? ResponseFactory.Ok(file)
-            : ResponseFactory.Fail<BlobDownloadInfo>();
+        return result == string.Empty
+            ? ResponseFactory.Fail<IFormFile>(ErrorsList.CantUploadFile())
+            : ResponseFactory.Ok(textLesson.File);
     }
 
     public async Task<Response<BlobDownloadInfo>> GetAsync(int textLessonId)
