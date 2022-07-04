@@ -16,7 +16,7 @@
       "Priority": 1
     },
     {
-      "DownstreamPathTemplate": "/api/v1/TextLesson{everything}",
+      "DownstreamPathTemplate": "/api/v1/TextLesson/{title}/Classroom/{classroomId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -24,11 +24,40 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/v1/TextLesson{everything}",
+      "UpstreamPathTemplate": "/api/v1/TextLesson/{title}/Classroom/{classroomId}",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "Priority": 1
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/TextLesson/{textLessonId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "TextLesson",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/TextLesson/{textLessonId}",
       "UpstreamHttpMethod": [
         "Get",
-        "Delete",
-        "Post"
+        "Delete"
+      ],
+      "Priority": 0
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/TextLesson/Classroom/{classroomId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "TextLesson",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/TextLesson/Classroom/{classroomId}",
+      "UpstreamHttpMethod": [
+        "Get"
       ],
       "Priority": 0
     }
