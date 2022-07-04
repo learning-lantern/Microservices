@@ -4,6 +4,6 @@ namespace LearningLantern.TextLesson.Data.Models;
 
 public class TextLessonDTO
 {
-    [Key] [Required] public int Id { get; set; }
-    [Required] public string Path { get; set; } = null!;
+    [Required] public string Id { get; set; } = null!;
+    [Required] public string Title { get; set; } = null!;
 }
