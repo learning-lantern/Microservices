@@ -45,6 +45,7 @@ using (var scope = app.Services.CreateScope())
     var eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
     Task.Run(() =>
     {
+        Task.Delay(1000);
         if (!eventBus.SetupConfiguration()) return;
         Log.Logger.Debug("SetupConfiguration done");
         eventBus.AddEvent<UserEvent>("auth");
