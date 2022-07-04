@@ -1,4 +1,7 @@
-﻿namespace LearningLantern.Common.Response;
+﻿using LearningLantern.Common.Extensions;
+using Serilog;
+
+namespace LearningLantern.Common.Response;
 
 public static class ResponseFactory
 {
@@ -16,9 +19,9 @@ public static class ResponseFactory
         where TResponse : Response
     {
         var responseType = typeof(TResponse);
-        if (!responseType.IsGenericType) return Activator.CreateInstance(responseType, false, failures) as TResponse;
-        var resultType = responseType.GetGenericArguments()[0];
-        var invalidResponseType = typeof(TResponse).MakeGenericType(resultType);
+        if (!responseType.IsGenericTypeDefinition)
+            return Activator.CreateInstance(responseType, false, null, failures) as TResponse;
+        var invalidResponseType = responseType.MakeGenericType(responseType.GetGenericArguments()[0]);
         return Activator.CreateInstance(invalidResponseType, false, null, failures) as TResponse;
     }
 }
@@ -26,6 +29,12 @@ public static class ResponseFactory
 public class Response
 {
     public Response(bool succeeded, IEnumerable<Error>? errors)
+    {
+        Succeeded = succeeded;
+        Errors = errors;
+    }
+
+    public Response(bool succeeded, object any, IEnumerable<Error>? errors)
     {
         Succeeded = succeeded;
         Errors = errors;
