@@ -1,4 +1,3 @@
-using LearningLantern.ApiGateway.Classroom.Repositories;
 using LearningLantern.Common.Extensions;
 using LearningLantern.EventBus.Events;
 
@@ -12,13 +11,11 @@ public class JoinRoomEvent : IntegrationEvent
 
 public class JoinRoomEventHandler : IIntegrationEventHandler<JoinRoomEvent>
 {
-    private readonly IClassroomRepository _classroomRepository;
     private readonly ILogger<JoinRoomEventHandler> _logger;
 
-    public JoinRoomEventHandler(ILogger<JoinRoomEventHandler> logger, IClassroomRepository classroomRepository)
+    public JoinRoomEventHandler(ILogger<JoinRoomEventHandler> logger)
     {
         _logger = logger;
-        _classroomRepository = classroomRepository;
     }
 
     public Task Handle(JoinRoomEvent @event)

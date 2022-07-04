@@ -15,7 +15,5 @@ public class MappingProfile : Profile
             opt => opt.MapFrom(x => x.Email));
         CreateMap<UserModel, UserEvent>();
         CreateMap<UserModel, UserDTO>().ReverseMap();
-        CreateMap<ClassroomModel, AddClassroomDTO>().ReverseMap();
-        CreateMap<ClassroomModel, ClassroomDTO>().ReverseMap();
     }
 }

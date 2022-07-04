@@ -1,5 +1,4 @@
 using AutoMapper;
-using LearningLantern.Calendar.Exceptions;
 using LearningLantern.Calendar.Repositories;
 using Xunit;
 

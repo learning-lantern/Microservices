@@ -1,5 +1,5 @@
+/*
 using System.Net;
-using LearningLantern.ApiGateway.Classroom.Repositories;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Response;
@@ -12,6 +12,7 @@ internal class ClassroomIdType
 {
     public int ClassroomId { get; set; }
 }
+
 
 public class ClassroomHandler : DelegatingHandler
 {
@@ -56,3 +57,4 @@ public class ClassroomHandler : DelegatingHandler
         return response;
     }
 }
+*/

@@ -1,14 +1,11 @@
-using LearningLantern.ApiGateway.Data.DTOs;
+using System.ComponentModel.DataAnnotations;
 
 namespace LearningLantern.ApiGateway.Data.Models;
 
-public class ClassroomModel : ClassroomDTO
+public class ClassroomModel
 {
-    public ICollection<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
-
-    public void Update(AddClassroomDTO addClassroomDTO)
-    {
-        Name = addClassroomDTO.Name;
-        Description = addClassroomDTO.Description;
-    }
+    [Key] [Required] public string Id { get; set; }
+    [StringLength(30)] public string? Name { get; set; }
+    public string? Description { get; set; }
+    public ICollection<UserModel> Users { get; set; }
 }

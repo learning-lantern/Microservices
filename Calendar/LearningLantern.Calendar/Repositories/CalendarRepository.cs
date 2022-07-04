@@ -64,7 +64,7 @@ public class CalendarRepository : ICalendarRepository
         return result ? ResponseFactory.Ok(eventId) : ResponseFactory.Fail<int>();
     }
 
-    public async Task<Response<IEnumerable<EventModel>>> GetAsync(IEnumerable<int> classroomIds)
+    public async Task<Response<IEnumerable<EventModel>>> GetAsync(IEnumerable<string> classroomIds)
     {
         IEnumerable<EventModel> result =
             await GetEvents(model => classroomIds.Any(x => x == model.ClassroomId)).ToListAsync();

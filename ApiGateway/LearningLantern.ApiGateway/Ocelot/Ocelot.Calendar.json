@@ -12,9 +12,6 @@
       "UpstreamPathTemplate": "/api/v1/Events",
       "UpstreamHttpMethod": [
         "Post"
-      ],
-      "DelegatingHandlers": [
-        "ClassroomHandler"
       ]
     },
     {

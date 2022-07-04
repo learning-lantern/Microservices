@@ -29,7 +29,7 @@ public class EventsController : ApiControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<EventModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(IEnumerable<Error>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Get([FromQuery] IEnumerable<int> classroomId)
+    public async Task<IActionResult> Get([FromQuery] IEnumerable<string> classroomId)
     {
         var response = await _calendarRepository.GetAsync(classroomId);
         return ResponseToIActionResult(response);

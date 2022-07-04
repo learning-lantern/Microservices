@@ -12,25 +12,37 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearningLantern.ApiGateway.Migrations
 {
     [DbContext(typeof(LearningLanternContext))]
-    [Migration("20220608165013_Initial")]
+    [Migration("20220704122714_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.4")
+                .HasAnnotation("ProductVersion", "6.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ClassroomModelUserModel", b =>
+                {
+                    b.Property<string>("ClassroomsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ClassroomsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ClassroomModelUserModel");
+                });
+
             modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.ClassroomModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -43,21 +55,6 @@ namespace LearningLantern.ApiGateway.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Classrooms");
-                });
-
-            modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.ClassroomUserModel", b =>
-                {
-                    b.Property<int>("ClassroomId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ClassroomId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ClassroomUsers");
                 });
 
             modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.UserModel", b =>
@@ -268,23 +265,19 @@ namespace LearningLantern.ApiGateway.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.ClassroomUserModel", b =>
+            modelBuilder.Entity("ClassroomModelUserModel", b =>
                 {
-                    b.HasOne("LearningLantern.ApiGateway.Data.Models.ClassroomModel", "Classroom")
-                        .WithMany("ClassroomUsers")
-                        .HasForeignKey("ClassroomId")
+                    b.HasOne("LearningLantern.ApiGateway.Data.Models.ClassroomModel", null)
+                        .WithMany()
+                        .HasForeignKey("ClassroomsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LearningLantern.ApiGateway.Data.Models.UserModel", "User")
-                        .WithMany("ClassroomUsers")
-                        .HasForeignKey("UserId")
+                    b.HasOne("LearningLantern.ApiGateway.Data.Models.UserModel", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Classroom");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -336,16 +329,6 @@ namespace LearningLantern.ApiGateway.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.ClassroomModel", b =>
-                {
-                    b.Navigation("ClassroomUsers");
-                });
-
-            modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.UserModel", b =>
-                {
-                    b.Navigation("ClassroomUsers");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,8 @@
-using LearningLantern.ApiGateway.Data;
+using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Users.BuildingBlocks;
 using LearningLantern.Common.Response;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace LearningLantern.ApiGateway.CalendarAggregator;
 
@@ -12,22 +13,22 @@ public class GetCalendarsQuery : AuthorizedRequest<Response<IEnumerable<Calendar
 public class GetCalendarsQueryHandler : IRequestHandler<GetCalendarsQuery, Response<IEnumerable<CalendarEventDTO>>>
 {
     private readonly CalendarService _calendarService;
-    private readonly ILearningLanternContext _context;
     private readonly TodoService _todoService;
+    private readonly UserManager<UserModel> _userManager;
 
     public GetCalendarsQueryHandler(
-        CalendarService calendarService, ILearningLanternContext context, TodoService todoService)
+        CalendarService calendarService, TodoService todoService, UserManager<UserModel> userManager)
     {
         _calendarService = calendarService;
-        _context = context;
         _todoService = todoService;
+        _userManager = userManager;
     }
 
     public async Task<Response<IEnumerable<CalendarEventDTO>>> Handle(
         GetCalendarsQuery request, CancellationToken cancellationToken)
     {
-        var classroomIds = _context.ClassroomUsers.Where(x => x.UserId == request.User.Id)
-            .Select(x => x.ClassroomId);
+        var classroomIds = _userManager.Users.Where(x => x.Id == request.User.Id)
+            .SelectMany(x => x.Classrooms).Select(x => x.Id);
 
         var calendarTask = _calendarService.GetAllCalendarsAsync(classroomIds);
         var todoTask = _todoService.GetAllTasksAsync(request.User.Id);

@@ -11,12 +11,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-  
-  TextLesson:
-    image: learninglantern.textlesson
+
+  Calendar:
+    image: learninglantern.calendar
     build:
       context: .
-      dockerfile: TextLesson/LearningLantern.TextLesson/Dockerfile
+      dockerfile: Calendar/LearningLantern.Calendar/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80

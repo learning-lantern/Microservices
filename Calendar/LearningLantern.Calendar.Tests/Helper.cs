@@ -33,7 +33,7 @@ public static class Helper
             .RuleFor(t => t.Description, f => f.Random.String(1, 1000))
             .RuleFor(t => t.StartDate, f => DateTime.UtcNow)
             .RuleFor(t => t.DueDate, f => DateTime.UtcNow)
-            .RuleFor(t => t.ClassroomId, f => f.Random.Int(1, 100));
+            .RuleFor(t => t.ClassroomId, f => f.Random.Guid().ToString());
 
         return eventDTO;
     }

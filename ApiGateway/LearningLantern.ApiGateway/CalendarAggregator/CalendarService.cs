@@ -13,7 +13,7 @@ public class CalendarService
         _httpClient.BaseAddress = ConfigProvider.CalendarGetEventsEndPoint;
     }
 
-    public async Task<Response<IEnumerable<CalendarEventDTO>>> GetAllCalendarsAsync(IEnumerable<int> classroomIds)
+    public async Task<Response<IEnumerable<CalendarEventDTO>>> GetAllCalendarsAsync(IEnumerable<string> classroomIds)
     {
         var queryString = "?" + string.Join("&", classroomIds.Select(x => $"ClassroomId={x}"));
 

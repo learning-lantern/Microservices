@@ -4,5 +4,5 @@ namespace LearningLantern.Calendar.Data.Models;
 
 public class AddEventDTO : EventProperties
 {
-    [Required] public int ClassroomId { get; set; }
+    [Required] public string ClassroomId { get; set; }
 }
