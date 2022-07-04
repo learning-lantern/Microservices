@@ -6,6 +6,7 @@ using LearningLantern.Common.Response;
 using LearningLantern.TextLesson.Data;
 using LearningLantern.TextLesson.Data.Models;
 using LearningLantern.TextLesson.Utility;
+using Microsoft.EntityFrameworkCore;
 
 namespace LearningLantern.TextLesson.Repositories;
 
@@ -25,11 +26,12 @@ public class TextLessonRepository : ITextLessonRepository
         _logger = logger;
     }
 
-    public async Task<Response<TextLessonDTO>> AddAsync(string title)
+    public async Task<Response<TextLessonDTO>> AddAsync(string title, int classroomId)
     {
         var textLessonModel = new TextLessonModel
         {
             Title = title,
+            ClassroomId = classroomId,
             BlobName = Guid.NewGuid().ToString()
         };
 
@@ -70,6 +72,8 @@ public class TextLessonRepository : ITextLessonRepository
 
         return ResponseFactory.Ok(file);
     }
+
+    public async Task<Response<List<TextLessonDTO>>> GetTextLessonsAsync(int classroomId) => ResponseFactory.Ok(await _context.TextLessons.AsNoTracking().Where(textlesson => textlesson.ClassroomId == classroomId).Select(textLesson => _mapper.Map<TextLessonDTO>(textLesson)).ToListAsync());
 
     public async Task<Response> RemoveAsync(int textLessonId)
     {
