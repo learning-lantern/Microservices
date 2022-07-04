@@ -22,21 +22,6 @@ namespace LearningLantern.ApiGateway.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ClassroomModelUserModel", b =>
-                {
-                    b.Property<string>("ClassroomsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ClassroomsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ClassroomModelUserModel");
-                });
-
             modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.ClassroomModel", b =>
                 {
                     b.Property<string>("Id")
@@ -52,6 +37,21 @@ namespace LearningLantern.ApiGateway.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Classrooms");
+                });
+
+            modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.ClassroomUserModel", b =>
+                {
+                    b.Property<string>("ClassroomId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ClassroomId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ClassroomUsers");
                 });
 
             modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.UserModel", b =>
@@ -262,19 +262,23 @@ namespace LearningLantern.ApiGateway.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ClassroomModelUserModel", b =>
+            modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.ClassroomUserModel", b =>
                 {
-                    b.HasOne("LearningLantern.ApiGateway.Data.Models.ClassroomModel", null)
-                        .WithMany()
-                        .HasForeignKey("ClassroomsId")
+                    b.HasOne("LearningLantern.ApiGateway.Data.Models.ClassroomModel", "Classroom")
+                        .WithMany("ClassroomUsers")
+                        .HasForeignKey("ClassroomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LearningLantern.ApiGateway.Data.Models.UserModel", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
+                    b.HasOne("LearningLantern.ApiGateway.Data.Models.UserModel", "User")
+                        .WithMany("ClassroomUsers")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -326,6 +330,16 @@ namespace LearningLantern.ApiGateway.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.ClassroomModel", b =>
+                {
+                    b.Navigation("ClassroomUsers");
+                });
+
+            modelBuilder.Entity("LearningLantern.ApiGateway.Data.Models.UserModel", b =>
+                {
+                    b.Navigation("ClassroomUsers");
                 });
 #pragma warning restore 612, 618
         }

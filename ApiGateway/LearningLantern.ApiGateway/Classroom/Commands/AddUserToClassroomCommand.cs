@@ -37,7 +37,9 @@ public class AddUserToClassroomCommandHandler : IRequestHandler<AddUserToClassro
 
         if (user is not null && classroom is not null)
         {
-            classroom.Users.Add(user);
+            await _context.ClassroomUsers.AddAsync(new ClassroomUserModel
+                {UserId = request.UserId, ClassroomId = request.ClassroomId}, cancellationToken);
+            
             var result = await _context.SaveChangesAsync(cancellationToken);
             return result != 0 ? ResponseFactory.Ok() : ResponseFactory.Fail();
         }

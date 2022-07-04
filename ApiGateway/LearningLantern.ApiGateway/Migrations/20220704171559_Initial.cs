@@ -55,7 +55,7 @@ namespace LearningLantern.ApiGateway.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -170,24 +170,24 @@ namespace LearningLantern.ApiGateway.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClassroomModelUserModel",
+                name: "ClassroomUsers",
                 columns: table => new
                 {
-                    ClassroomsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UsersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ClassroomId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassroomModelUserModel", x => new { x.ClassroomsId, x.UsersId });
+                    table.PrimaryKey("PK_ClassroomUsers", x => new { x.ClassroomId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_ClassroomModelUserModel_AspNetUsers_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_ClassroomUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClassroomModelUserModel_Classrooms_ClassroomsId",
-                        column: x => x.ClassroomsId,
+                        name: "FK_ClassroomUsers_Classrooms_ClassroomId",
+                        column: x => x.ClassroomId,
                         principalTable: "Classrooms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -233,9 +233,9 @@ namespace LearningLantern.ApiGateway.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClassroomModelUserModel_UsersId",
-                table: "ClassroomModelUserModel",
-                column: "UsersId");
+                name: "IX_ClassroomUsers_UserId",
+                table: "ClassroomUsers",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -256,7 +256,7 @@ namespace LearningLantern.ApiGateway.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ClassroomModelUserModel");
+                name: "ClassroomUsers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

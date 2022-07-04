@@ -12,5 +12,5 @@ public class UserModel : IdentityUser
 
     [StringLength(30)] public string LastName { get; set; } = null!;
 
-    public ICollection<ClassroomModel> Classrooms { get; set; } = null!;
+    public ICollection<ClassroomUserModel> ClassroomUsers { get; set; } = null!;
 }
