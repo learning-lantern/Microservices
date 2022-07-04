@@ -46,7 +46,7 @@ public class TextLessonRepository : ITextLessonRepository
 
     public async Task<Response<IFormFile>> AddAsync(AddTextLessonDTO textLesson)
     {
-        var textLessonModel = await _context.TextLessons.FindAsync(textLesson.Id);
+        var textLessonModel = await _context.TextLessons.FindAsync(Convert.ToInt32(textLesson.Id));
         
         if (textLessonModel is null)
             return ResponseFactory.Fail<IFormFile>(ErrorsList.TextLessonNotFound(textLesson.Id));
@@ -60,7 +60,7 @@ public class TextLessonRepository : ITextLessonRepository
 
     public async Task<Response<BlobDownloadInfo>> GetAsync(string textLessonId)
     {
-        var textLesson = await _context.TextLessons.FindAsync(textLessonId);
+        var textLesson = await _context.TextLessons.FindAsync(Convert.ToInt32(textLessonId));
 
         if (textLesson is null)
             return ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.TextLessonNotFound(textLessonId));
@@ -77,7 +77,7 @@ public class TextLessonRepository : ITextLessonRepository
 
     public async Task<Response> RemoveAsync(string textLessonId)
     {
-        var textLesson = await _context.TextLessons.FindAsync(textLessonId);
+        var textLesson = await _context.TextLessons.FindAsync(Convert.ToInt32(textLessonId));
 
         if (textLesson == null) return ResponseFactory.Ok();
 
