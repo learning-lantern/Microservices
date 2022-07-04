@@ -28,8 +28,8 @@ public class AddUserToClassroomCommandHandler : IRequestHandler<AddUserToClassro
     public async Task<Response> Handle(AddUserToClassroomCommand request, CancellationToken cancellationToken)
     {
         var classroomTask = _context.Classrooms
-            .FirstOrDefaultAsync(classroom => classroom.Id == request.ClassroomId, cancellationToken);
-        var userTask = _userManager.Users.FirstOrDefaultAsync(user => user.Id == request.UserId, cancellationToken);
+            .FirstOrDefaultAsync(classroom => classroom.Id == request.ClassroomId);
+        var userTask = _userManager.Users.FirstOrDefaultAsync(user => user.Id == request.UserId);
         await Task.WhenAll(classroomTask, userTask);
 
         var classroom = await classroomTask;
@@ -38,9 +38,9 @@ public class AddUserToClassroomCommandHandler : IRequestHandler<AddUserToClassro
         if (user is not null && classroom is not null)
         {
             await _context.ClassroomUsers.AddAsync(new ClassroomUserModel
-                {UserId = request.UserId, ClassroomId = request.ClassroomId}, cancellationToken);
+                {UserId = request.UserId, ClassroomId = request.ClassroomId});
             
-            var result = await _context.SaveChangesAsync(cancellationToken);
+            var result = await _context.SaveChangesAsync();
             return result != 0 ? ResponseFactory.Ok() : ResponseFactory.Fail();
         }
 
