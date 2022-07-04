@@ -6,7 +6,7 @@ namespace LearningLantern.TextLesson.Data.Models;
 public class TextLessonModel
 {
     [Key] [Required] public int Id { get; set; }
-    [Required] public string ClassroomId { get; set; }
+    [Required] public string ClassroomId { get; set; } = null!;
     [Required] public string Title { get; set; } = null!;
     [Required] public string BlobName { get; set; } = null!;
 }
