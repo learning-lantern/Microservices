@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearningLantern.TextLesson.Migrations
 {
     [DbContext(typeof(TextLessonContext))]
-    [Migration("20220704195737_Initial")]
+    [Migration("20220704220326_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,11 +31,11 @@ namespace LearningLantern.TextLesson.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("BlobName")
+                    b.Property<string>("ClassroomId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClassroomId")
+                    b.Property<string>("HtmlBody")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

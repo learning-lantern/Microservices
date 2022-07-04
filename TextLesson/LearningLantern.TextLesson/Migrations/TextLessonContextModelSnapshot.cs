@@ -29,11 +29,11 @@ namespace LearningLantern.TextLesson.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("BlobName")
+                    b.Property<string>("ClassroomId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClassroomId")
+                    b.Property<string>("HtmlBody")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

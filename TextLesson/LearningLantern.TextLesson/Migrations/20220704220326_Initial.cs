@@ -16,7 +16,7 @@ namespace LearningLantern.TextLesson.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClassroomId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BlobName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    HtmlBody = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
