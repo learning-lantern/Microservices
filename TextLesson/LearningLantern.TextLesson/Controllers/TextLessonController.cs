@@ -53,7 +53,7 @@ public class TextLessonController : ApiControllerBase
         return new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType);
     }
 
-    [HttpGet("Classroom/{classroomId:int}")]
+    [HttpGet("Classroom/{classroomId}")]
     [ProducesResponseType(typeof(List<TextLessonDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,7 +63,7 @@ public class TextLessonController : ApiControllerBase
         return ResponseToIActionResult(response);
     }
 
-    [HttpDelete("{textLessonId:int}")]
+    [HttpDelete("{textLessonId}")]
     [ProducesResponseType(typeof(Response), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Remove([FromRoute] string textLessonId)
