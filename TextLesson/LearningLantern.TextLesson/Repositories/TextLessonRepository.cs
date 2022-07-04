@@ -45,31 +45,18 @@ public class TextLessonRepository : ITextLessonRepository
     public async Task<Response<BlobDownloadInfo>> AddAsync(AddTextLessonDTO textLesson)
     {
         var textLessonModel = await _context.TextLessons.FindAsync(Convert.ToInt32(textLesson.Id));
-
-        Console.WriteLine("textLessonModel");
-
+        
         if (textLessonModel is null)
             return ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.TextLessonNotFound(Convert.ToInt32(textLesson.Id)));
 
         var result = await _blobServiceClient.UploadBlobAsync(textLessonModel.BlobName, textLesson.File);
-
-        Console.WriteLine("result");
         
         if (result == string.Empty)
             return ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.CantUploadFile());
 
         var file = await _blobServiceClient.DownloadBlobAsync(textLessonModel.BlobName);
 
-        Console.WriteLine("file");
-
-        if (file is null)
-            return ResponseFactory.Fail<BlobDownloadInfo>(ErrorsList.CantDownloadFile());
-
-        var saveResult = await _context.SaveChangesAsync();
-
-        Console.WriteLine("saveResult");
-
-        return saveResult != 0
+        return file is null
             ? ResponseFactory.Ok(file)
             : ResponseFactory.Fail<BlobDownloadInfo>();
     }
