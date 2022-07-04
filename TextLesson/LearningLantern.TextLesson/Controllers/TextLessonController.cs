@@ -18,10 +18,10 @@ public class TextLessonController : ApiControllerBase
         _textLessonRepository = textLessonRepository;
     }
 
-    [HttpPost]
+    [HttpPost("{title}")]
     [ProducesResponseType(typeof(Response<TextLessonDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Add([FromBody] string title)
+    public async Task<IActionResult> Add([FromRoute] string title)
     {
         var response = await _textLessonRepository.AddAsync(title);
         return ResponseToIActionResult(response);
@@ -37,7 +37,11 @@ public class TextLessonController : ApiControllerBase
 
         if (!response.Succeeded) return ResponseToIActionResult(response);
 
-        var blobDownloadInfo = response.Data!;
+        var blobDownloadInfo = response.Data;
+
+        if (blobDownloadInfo is null)
+            return ResponseToIActionResult(response);
+
         return new FileStreamResult(blobDownloadInfo.Content, blobDownloadInfo.ContentType);
     }
 
