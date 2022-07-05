@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using AutoMapper;
 using Azure.Storage.Blobs;
 using LearningLantern.AzureBlobStorage;
@@ -24,7 +25,7 @@ public class VideoRepository : IVideoRepository
         _logger = logger;
     }
 
-    public async Task<Response<VideoDTO>> AddAsync(AddVideoDTO video)
+    public async Task<Response<string>> AddAsync(AddVideoDTO video)
     {
         var videoModel = new VideoModel()
         {
@@ -35,7 +36,7 @@ public class VideoRepository : IVideoRepository
         var result = await _blobServiceClient.UploadBlobAsync(videoModel.BlobName, video.File);
         
         if (result == string.Empty)
-            return ResponseFactory.Fail<VideoDTO>(ErrorsList.CantUploadFile());
+            return ResponseFactory.Fail<string>(ErrorsList.CantUploadFile());
         
         videoModel.Path = result;
 
@@ -44,8 +45,8 @@ public class VideoRepository : IVideoRepository
         var saveResult = await _context.SaveChangesAsync();
 
         return saveResult != 0
-            ? ResponseFactory.Ok(_mapper.Map<VideoDTO>(entity.Entity))
-            : ResponseFactory.Fail<VideoDTO>();
+            ? ResponseFactory.Ok(videoModel.BlobName)
+            : ResponseFactory.Fail<string>();
     }
 
     public async Task<Response<VideoDTO>> GetAsync(int videoId)
