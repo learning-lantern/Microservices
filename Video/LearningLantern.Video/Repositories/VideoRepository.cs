@@ -28,13 +28,19 @@ public class VideoRepository : IVideoRepository
         {
             BlobName = Guid.NewGuid().ToString()
         };
-        var quizList = JsonConvert.DeserializeObject<List<VideoQuiz>>(video.QuizList);
 
-
-        if (quizList is not null)
+        try
         {
-            _logger.LogDebug(quizList.ToJsonStringContent());
-            videoModel.QuizList.AddRange(quizList);
+            var quizList = JsonConvert.DeserializeObject<List<VideoQuiz>>(video.QuizList);
+            if (quizList is not null)
+            {
+                _logger.LogDebug(quizList.ToJsonStringContent());
+                videoModel.QuizList.AddRange(quizList);
+            }
+        }
+        catch (Exception ex)
+        {
+            
         }
 
         var result = await _blobServiceClient.UploadBlobAsync(videoModel.BlobName, video.File);

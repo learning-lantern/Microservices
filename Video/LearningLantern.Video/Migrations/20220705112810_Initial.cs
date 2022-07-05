@@ -4,22 +4,23 @@
 
 namespace LearningLantern.Video.Migrations
 {
-    public partial class UpdateVideoModel : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "ClassroomId",
-                table: "Videos");
-
-            migrationBuilder.DropColumn(
-                name: "Name",
-                table: "Videos");
-
-            migrationBuilder.RenameColumn(
-                name: "UserId",
-                table: "Videos",
-                newName: "Path");
+            migrationBuilder.CreateTable(
+                name: "Videos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BlobName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Videos", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "VideoQuiz",
@@ -51,25 +52,8 @@ namespace LearningLantern.Video.Migrations
             migrationBuilder.DropTable(
                 name: "VideoQuiz");
 
-            migrationBuilder.RenameColumn(
-                name: "Path",
-                table: "Videos",
-                newName: "UserId");
-
-            migrationBuilder.AddColumn<int>(
-                name: "ClassroomId",
-                table: "Videos",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "Videos",
-                type: "nvarchar(450)",
-                maxLength: 450,
-                nullable: false,
-                defaultValue: "");
+            migrationBuilder.DropTable(
+                name: "Videos");
         }
     }
 }

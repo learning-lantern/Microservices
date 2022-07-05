@@ -17,5 +17,5 @@ public class VideoDTO
 
     [Key] [Required] public int Id { get; set; }
     [Required] public string Path { get; set; } = null!;
-    [Required] public List<VideoQuiz> QuizList { get; set; }  = new();
+    public List<VideoQuiz> QuizList { get; set; } = new();
 }
