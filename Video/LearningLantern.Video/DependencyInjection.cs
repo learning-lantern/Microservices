@@ -15,7 +15,6 @@ public static class DependencyInjection
         services.AddDatabase();
         services.AddAuthenticationConfigurations();
 
-        services.AddAutoMapper(typeof(MappingProfile));
         services.AddBlobService("videos");
         services.AddTransient<IVideoRepository, VideoRepository>();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
