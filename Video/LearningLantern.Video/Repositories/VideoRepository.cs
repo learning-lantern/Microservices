@@ -1,6 +1,4 @@
-using System.Runtime.CompilerServices;
 using AutoMapper;
-using Azure.Storage.Blobs;
 using LearningLantern.AzureBlobStorage;
 using LearningLantern.Common.Response;
 using LearningLantern.Video.Data;
@@ -25,19 +23,19 @@ public class VideoRepository : IVideoRepository
         _logger = logger;
     }
 
-    public async Task<Response<string>> AddAsync(AddVideoDTO video)
+    public async Task<Response<VideoDTO>> AddAsync(AddVideoDTO video)
     {
-        var videoModel = new VideoModel()
+        var videoModel = new VideoModel
         {
             BlobName = Guid.NewGuid().ToString(),
             QuizList = video.QuizList
         };
 
         var result = await _blobServiceClient.UploadBlobAsync(videoModel.BlobName, video.File);
-        
+
         if (result == string.Empty)
-            return ResponseFactory.Fail<string>(ErrorsList.CantUploadFile());
-        
+            return ResponseFactory.Fail<VideoDTO>(ErrorsList.CantUploadFile());
+
         videoModel.Path = result;
 
         var entity = await _context.Videos.AddAsync(videoModel);
@@ -45,8 +43,8 @@ public class VideoRepository : IVideoRepository
         var saveResult = await _context.SaveChangesAsync();
 
         return saveResult != 0
-            ? ResponseFactory.Ok(videoModel.BlobName)
-            : ResponseFactory.Fail<string>();
+            ? ResponseFactory.Ok(_mapper.Map<VideoDTO>(entity.Entity))
+            : ResponseFactory.Fail<VideoDTO>();
     }
 
     public async Task<Response<VideoDTO>> GetAsync(int videoId)
@@ -65,7 +63,7 @@ public class VideoRepository : IVideoRepository
 
         if (video == null) return ResponseFactory.Ok();
 
-        await  _blobServiceClient.DeleteBlobAsync(video.BlobName);
+        await _blobServiceClient.DeleteBlobAsync(video.BlobName);
 
         _context.Videos.Remove(video);
 

@@ -27,7 +27,7 @@ public class VideoController : ApiControllerBase
     {
         _logger.LogDebug(JsonConvert.SerializeObject(video));
         var response = await _videoRepository.AddAsync(video);
-        return ResponseToIActionResult(response);
+        return response.Succeeded ? Ok(response.Data!.Id) : ResponseToIActionResult(response);
     }
 
     [HttpGet("{videoId:int}")]

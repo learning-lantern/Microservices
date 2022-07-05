@@ -39,6 +39,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TextLesson", "TextLesson", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningLantern.TextLesson", "TextLesson\LearningLantern.TextLesson\LearningLantern.TextLesson.csproj", "{5EEAA14C-33F7-49DC-ABDA-4AD99202FCE4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Admin", "Admin", "{56EAAAB2-69AD-4ED1-BBF4-371EC96C7184}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningLantern.Admin", "Admin\LearningLantern.Admin\LearningLantern.Admin.csproj", "{50D86767-85BA-413A-A440-C2CE4EC99C04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +95,10 @@ Global
 		{5EEAA14C-33F7-49DC-ABDA-4AD99202FCE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EEAA14C-33F7-49DC-ABDA-4AD99202FCE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EEAA14C-33F7-49DC-ABDA-4AD99202FCE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50D86767-85BA-413A-A440-C2CE4EC99C04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50D86767-85BA-413A-A440-C2CE4EC99C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50D86767-85BA-413A-A440-C2CE4EC99C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50D86767-85BA-413A-A440-C2CE4EC99C04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +115,7 @@ Global
 		{26517B71-217C-4D75-8FAA-F4E96BDE78EB} = {AD311DCA-3DE7-434F-9F01-4B510F78D5DE}
 		{B981EE63-BF14-40A9-B2A6-3A61770F3F3C} = {AD311DCA-3DE7-434F-9F01-4B510F78D5DE}
 		{5EEAA14C-33F7-49DC-ABDA-4AD99202FCE4} = {D6C2C0FE-CE8E-4082-A12A-AF4BE1E2382A}
+		{50D86767-85BA-413A-A440-C2CE4EC99C04} = {56EAAAB2-69AD-4ED1-BBF4-371EC96C7184}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {147AED9E-4B93-411E-8F46-7ABDA73A783C}
