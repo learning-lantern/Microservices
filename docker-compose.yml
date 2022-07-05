@@ -1,6 +1,16 @@
 version: '3.4'
 
 services:
+  ApiGateway:
+    image: ahmedezzatg/learninglantern.apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/LearningLantern.ApiGateway/Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+  
   TodoList:
     image: ahmedezzatg/learninglantern.todolist
     build:
@@ -16,24 +26,12 @@ services:
       dockerfile: Calendar/LearningLantern.Calendar/Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+:80
-
-  ApiGateway:
-    image: ahmedezzatg/learninglantern.apigateway
-    build:
-      context: .
-      dockerfile: ApiGateway/LearningLantern.ApiGateway/Dockerfile
-    ports:
-      - "80:80"
-    environment:
-      - ASPNETCORE_URLS=http://+:80
   
   Video:
     image: ahmedezzatg/learninglantern.video
     build:
       context: .
       dockerfile: Video/LearningLantern.Video/Dockerfile
-    ports:
-      - "80:80"
     environment:
       - ASPNETCORE_URLS=http://+:80
         
@@ -42,7 +40,13 @@ services:
     build:
       context: .
       dockerfile: TextLesson/LearningLantern.TextLesson/Dockerfile
-    ports:
-      - "80:80"
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+    
+  Admin:
+    image: ahmedezzatg/learninglantern.admin
+    build:
+      context: .
+      dockerfile: Admin/LearningLantern.Admin/Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+:80

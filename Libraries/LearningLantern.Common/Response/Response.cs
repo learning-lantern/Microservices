@@ -1,7 +1,4 @@
-﻿using LearningLantern.Common.Extensions;
-using Serilog;
-
-namespace LearningLantern.Common.Response;
+﻿namespace LearningLantern.Common.Response;
 
 public static class ResponseFactory
 {

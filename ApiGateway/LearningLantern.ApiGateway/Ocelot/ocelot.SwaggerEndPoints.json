@@ -53,6 +53,17 @@
           "Url": "http://TextLesson/swagger/v1/swagger.json"
         }
       ]
+    },
+    {
+      "Key": "Admin",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Admin.API",
+          "Version": "1.0",
+          "Url": "http://Admin/swagger/v1/swagger.json"
+        }
+      ]
     }
   ]
 }

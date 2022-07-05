@@ -3,7 +3,6 @@ using LearningLantern.ApiGateway.Data.Models;
 using LearningLantern.ApiGateway.Utility;
 using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Response;
-using LearningLantern.EventBus;
 using LearningLantern.EventBus.Publisher;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

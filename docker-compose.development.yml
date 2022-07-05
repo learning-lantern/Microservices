@@ -47,3 +47,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+  
+  Admin:
+    image: learninglantern.admin
+    build:
+      context: .
+      dockerfile: Admin/LearningLantern.Admin/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:80

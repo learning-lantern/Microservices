@@ -75,6 +75,7 @@ public class UserController : ApiControllerBase
         return ResponseToIActionResult(response);
     }
 
+    [Authorize(Roles = LearningLanternRoles.Admin + "," + LearningLanternRoles.UniversityAdmin)]
     [HttpGet("all")]
     [ProducesResponseType(typeof(Response<IEnumerable<UserDTO>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllUsers([FromQuery] [Required] int page, [FromQuery] [Required] int limit)
