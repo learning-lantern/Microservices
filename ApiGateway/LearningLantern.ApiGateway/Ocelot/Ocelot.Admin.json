@@ -1,0 +1,20 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/Admin/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "Admin",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/Admin/{everything}",
+      "UpstreamHttpMethod": [
+        "Post",
+        "Get"
+      ],
+      "Priority": 1
+    }
+  ]
+}

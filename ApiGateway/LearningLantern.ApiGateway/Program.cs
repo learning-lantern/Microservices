@@ -2,7 +2,6 @@ using LearningLantern.ApiGateway.Configurations;
 using LearningLantern.ApiGateway.Users.Events;
 using LearningLantern.Common.Extensions;
 using LearningLantern.Common.Logging;
-using LearningLantern.EventBus;
 using LearningLantern.EventBus.Publisher;
 using Ocelot.Middleware;
 using Serilog;

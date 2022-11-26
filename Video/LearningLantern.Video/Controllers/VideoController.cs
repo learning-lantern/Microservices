@@ -25,9 +25,10 @@ public class VideoController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add([FromForm] AddVideoDTO video)
     {
-        _logger.LogDebug(JsonConvert.SerializeObject(video));
+        //video.QuizList = JsonConvert.SerializeObject(video.QuizList);
+        //_logger.LogDebug(video.QuizList);
         var response = await _videoRepository.AddAsync(video);
-        return ResponseToIActionResult(response);
+        return response.Succeeded ? Ok(response.Data!.Id) : ResponseToIActionResult(response);
     }
 
     [HttpGet("{videoId:int}")]
